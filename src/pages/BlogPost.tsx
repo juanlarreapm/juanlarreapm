@@ -14,7 +14,7 @@ const BlogPost = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("*, profiles(full_name)")
+        .select("*")
         .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
@@ -83,12 +83,10 @@ const BlogPost = () => {
             </h1>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              {post.profiles && (
-                <span className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  {post.profiles.full_name || "Anonymous"}
-                </span>
-              )}
+              <span className="flex items-center gap-2">
+                <User className="w-4 h-4" />
+                Juan Larrea
+              </span>
               <span className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 {format(new Date(post.published_at!), "MMMM d, yyyy")}
