@@ -54,6 +54,20 @@ const About = () => {
     },
   });
 
+  // Resume URL query
+  const { data: resumeSetting } = useQuery({
+    queryKey: ["site_settings", "resume_url"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "resume_url")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const isLoading = experiencesLoading || toolsLoading || methodologiesLoading || skillsLoading;
 
   return (
@@ -63,7 +77,17 @@ const About = () => {
           <div className="max-w-4xl mx-auto">
             <h1 className="font-display text-4xl md:text-5xl font-bold mb-6">About <span className="text-gradient">Me</span></h1>
             <p className="text-xl text-muted-foreground mb-8">Senior Product Manager with 8+ years of experience building impactful products across B2B SaaS, e-commerce, and travel industries.</p>
-            <Button asChild className="bg-gradient-primary hover:opacity-90"><a href="#"><Download className="mr-2 w-4 h-4" />Download Resume</a></Button>
+            {resumeSetting?.value ? (
+              <Button asChild className="bg-gradient-primary hover:opacity-90">
+                <a href={resumeSetting.value} target="_blank" rel="noopener noreferrer" download>
+                  <Download className="mr-2 w-4 h-4" />Download Resume
+                </a>
+              </Button>
+            ) : (
+              <Button disabled className="bg-gradient-primary opacity-50 cursor-not-allowed">
+                <Download className="mr-2 w-4 h-4" />Resume Coming Soon
+              </Button>
+            )}
           </div>
 
           <div className="max-w-4xl mx-auto mt-20">

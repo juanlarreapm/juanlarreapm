@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File } from "lucide-react";
 import { format } from "date-fns";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { getIcon } from "@/lib/iconMap";
@@ -16,6 +16,8 @@ const Admin = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user, isAdmin, loading } = useAdminRole();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
 
   // Blog posts query
   const { data: posts, isLoading: postsLoading } = useQuery({
@@ -100,6 +102,21 @@ const Admin = () => {
     enabled: !!user && isAdmin,
   });
 
+  // Resume URL query
+  const { data: resumeSetting, isLoading: resumeLoading } = useQuery({
+    queryKey: ["site_settings", "resume_url"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "resume_url")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
   // Delete mutations
   const deletePostMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -162,6 +179,48 @@ const Admin = () => {
     },
   });
 
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      toast({ title: "Error", description: "Please upload a PDF file", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      // Upload file to storage
+      const fileName = `resume-${Date.now()}.pdf`;
+      const { error: uploadError } = await supabase.storage
+        .from("resumes")
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from("resumes")
+        .getPublicUrl(fileName);
+
+      // Upsert site setting
+      const { error: settingError } = await supabase
+        .from("site_settings")
+        .upsert({ key: "resume_url", value: publicUrl }, { onConflict: "key" });
+
+      if (settingError) throw settingError;
+
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "resume_url"] });
+      toast({ title: "Resume uploaded successfully" });
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast({ title: "Error", description: "Failed to upload resume", variant: "destructive" });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/auth");
@@ -218,6 +277,10 @@ const Admin = () => {
                   <TabsTrigger value="toolkit" className="flex items-center gap-2">
                     <Wrench className="w-4 h-4" />
                     Toolkit
+                  </TabsTrigger>
+                  <TabsTrigger value="settings" className="flex items-center gap-2">
+                    <Settings className="w-4 h-4" />
+                    Settings
                   </TabsTrigger>
                 </>
               )}
@@ -560,6 +623,49 @@ const Admin = () => {
                       );
                     })}
                   </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Settings Tab */}
+            <TabsContent value="settings">
+              <div className="max-w-2xl">
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4">Resume</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Upload your resume (PDF) to enable the download button on the About page.
+                  </p>
+                  
+                  {resumeSetting?.value && (
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 mb-4">
+                      <File className="w-5 h-5 text-primary" />
+                      <span className="text-sm flex-1 truncate">Current resume uploaded</span>
+                      <a 
+                        href={resumeSetting.value} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-sm text-primary hover:underline"
+                      >
+                        View
+                      </a>
+                    </div>
+                  )}
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleResumeUpload}
+                    className="hidden"
+                  />
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="bg-gradient-primary hover:opacity-90"
+                  >
+                    <Upload className="mr-2 w-4 h-4" />
+                    {uploading ? "Uploading..." : resumeSetting?.value ? "Replace Resume" : "Upload Resume"}
+                  </Button>
                 </div>
               </div>
             </TabsContent>
