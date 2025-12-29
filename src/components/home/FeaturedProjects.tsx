@@ -1,35 +1,24 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const featuredProjects = [
-  {
-    title: "EstimateXpress",
-    company: "PartsTech",
-    description: "Led 0-to-1 launch of an estimating tool that revolutionized how auto repair shops create quotes",
-    metrics: ["500+ shops onboarded in Year 1", "First product of its kind in market"],
-    tags: ["0-to-1", "B2B SaaS", "Growth"],
-    gradient: "from-primary to-accent",
-  },
-  {
-    title: "Jobs Feature",
-    company: "PartsTech",
-    description: "Designed and launched a job management system that transformed the parts ordering workflow",
-    metrics: ["10% cart size increase", "Improved user retention"],
-    tags: ["Feature Development", "UX", "Analytics"],
-    gradient: "from-accent to-primary",
-  },
-  {
-    title: "Funnel Optimization",
-    company: "INWEGO",
-    description: "Comprehensive redesign of the conversion funnel for a travel insurance platform",
-    metrics: ["51% conversion increase", "Revenue impact"],
-    tags: ["Growth", "A/B Testing", "Conversion"],
-    gradient: "from-primary via-accent to-primary",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export function FeaturedProjects() {
+  const { data: projects, isLoading } = useQuery({
+    queryKey: ["featured-projects"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("is_featured", true)
+        .order("display_order", { ascending: true })
+        .limit(3);
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <section className="py-24">
       <div className="container mx-auto px-6">
@@ -50,60 +39,77 @@ export function FeaturedProjects() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {featuredProjects.map((project, index) => (
-            <Link
-              key={project.title}
-              to="/projects"
-              className="group block"
-            >
-              <article className="h-full p-6 rounded-xl bg-card border border-border card-hover overflow-hidden relative">
-                {/* Gradient accent */}
-                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient}`} />
-                
-                <div className="mb-4">
-                  <span className="text-xs text-primary font-medium uppercase tracking-wider">
-                    {project.company}
-                  </span>
-                  <h3 className="font-display text-xl font-semibold mt-1 text-foreground group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h3>
-                </div>
-
-                <p className="text-sm text-muted-foreground mb-4">
-                  {project.description}
-                </p>
-
-                {/* Metrics */}
-                <ul className="space-y-2 mb-6">
-                  {project.metrics.map((metric) => (
-                    <li key={metric} className="text-sm text-foreground flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                      {metric}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 text-xs rounded-md bg-secondary text-muted-foreground"
-                    >
-                      {tag}
+        {isLoading ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="p-6 rounded-xl bg-card border border-border animate-pulse">
+                <div className="h-4 bg-muted rounded w-1/4 mb-2" />
+                <div className="h-6 bg-muted rounded w-3/4 mb-4" />
+                <div className="h-4 bg-muted rounded w-full mb-4" />
+                <div className="h-4 bg-muted rounded w-2/3" />
+              </div>
+            ))}
+          </div>
+        ) : projects && projects.length > 0 ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {projects.map((project) => (
+              <Link
+                key={project.id}
+                to="/projects"
+                className="group block"
+              >
+                <article className="h-full p-6 rounded-xl bg-card border border-border card-hover overflow-hidden relative">
+                  {/* Gradient accent */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient || 'from-primary to-accent'}`} />
+                  
+                  <div className="mb-4">
+                    <span className="text-xs text-primary font-medium uppercase tracking-wider">
+                      {project.company}
                     </span>
-                  ))}
-                </div>
+                    <h3 className="font-display text-xl font-semibold mt-1 text-foreground group-hover:text-primary transition-colors">
+                      {project.title}
+                    </h3>
+                  </div>
 
-                {/* Hover arrow */}
-                <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ExternalLink className="w-5 h-5 text-primary" />
-                </div>
-              </article>
-            </Link>
-          ))}
-        </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {project.description}
+                  </p>
+
+                  {/* Metrics */}
+                  <ul className="space-y-2 mb-6">
+                    {project.metrics?.map((metric) => (
+                      <li key={metric} className="text-sm text-foreground flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        {metric}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags?.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 text-xs rounded-md bg-secondary text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Hover arrow */}
+                  <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ExternalLink className="w-5 h-5 text-primary" />
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 rounded-xl bg-card border border-border">
+            <p className="text-muted-foreground">No featured projects yet.</p>
+          </div>
+        )}
       </div>
     </section>
   );
