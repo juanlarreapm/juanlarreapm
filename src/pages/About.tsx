@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, Briefcase, Wrench, GitBranch, Lightbulb, LayoutList, FileText, Figma, Database, StickyNote, LayoutGrid, Video, ClipboardList, Cloud, Compass, Calculator, MessageSquare, TestTube2, Mic, MessageCircle, Flag, GitMerge, MousePointer, Snowflake, RefreshCw, PenTool, Rocket, Target, FlipHorizontal, CheckSquare } from "lucide-react";
+import { Download, Briefcase, Wrench, GitBranch, Lightbulb, LayoutList, FileText, Figma, Database, StickyNote, LayoutGrid, Video, ClipboardList, Cloud, Compass, Calculator, MessageSquare, TestTube2, Mic, MessageCircle, Flag, GitMerge, MousePointer, Snowflake, RefreshCw, PenTool, Rocket, Target, FlipHorizontal, CheckSquare, Crosshair, Map, PenLine, Users, Search, Handshake, BarChart3, Network, Zap, TrendingUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const experiences = [
@@ -44,7 +44,18 @@ const methodologies: { name: string; icon: LucideIcon }[] = [
   { name: "Jobs-to-be-Done", icon: CheckSquare },
 ];
 
-const skills = ["Product Strategy", "Roadmap Planning", "User Story Writing", "Customer Interviewing", "User Research", "Stakeholder Management", "Data Analysis", "Cross-functional Leadership", "0-to-1 Launches", "Growth Optimization"];
+const skills: { name: string; icon: LucideIcon }[] = [
+  { name: "Product Strategy", icon: Crosshair },
+  { name: "Roadmap Planning", icon: Map },
+  { name: "User Story Writing", icon: PenLine },
+  { name: "Customer Interviewing", icon: Users },
+  { name: "User Research", icon: Search },
+  { name: "Stakeholder Management", icon: Handshake },
+  { name: "Data Analysis", icon: BarChart3 },
+  { name: "Cross-functional Leadership", icon: Network },
+  { name: "0-to-1 Launches", icon: Zap },
+  { name: "Growth Optimization", icon: TrendingUp },
+];
 
 const About = () => {
   return (
@@ -113,7 +124,15 @@ const About = () => {
                   <Lightbulb className="w-5 h-5 text-primary" />Skills
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {skills.map((skill) => <span key={skill} className="px-3 py-1.5 rounded-lg bg-accent/10 text-accent-foreground text-sm">{skill}</span>)}
+                  {skills.map((skill) => {
+                    const Icon = skill.icon;
+                    return (
+                      <span key={skill.name} className="px-3 py-1.5 rounded-lg bg-accent/10 text-accent-foreground text-sm flex items-center gap-1.5">
+                        <Icon className="w-3.5 h-3.5" />
+                        {skill.name}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             </div>
