@@ -12,6 +12,9 @@ import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import PostEditor from "./pages/PostEditor";
+import ExperienceEditor from "./pages/ExperienceEditor";
+import ProjectEditor from "./pages/ProjectEditor";
+import ToolkitItemEditor from "./pages/ToolkitItemEditor";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +35,9 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<PostEditor />} />
+          <Route path="/admin/experiences/:id" element={<ExperienceEditor />} />
+          <Route path="/admin/projects/:id" element={<ProjectEditor />} />
+          <Route path="/admin/toolkit/:type/:id" element={<ToolkitItemEditor />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
