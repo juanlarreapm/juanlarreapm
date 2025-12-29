@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, Briefcase, Wrench, GitBranch, Lightbulb, LayoutList, FileText, Figma, Database, StickyNote, LayoutGrid, Video, ClipboardList, Cloud, Compass, Calculator, MessageSquare, TestTube2, Mic, MessageCircle, Flag, GitMerge, MousePointer, Snowflake } from "lucide-react";
+import { Download, Briefcase, Wrench, GitBranch, Lightbulb, LayoutList, FileText, Figma, Database, StickyNote, LayoutGrid, Video, ClipboardList, Cloud, Compass, Calculator, MessageSquare, TestTube2, Mic, MessageCircle, Flag, GitMerge, MousePointer, Snowflake, RefreshCw, PenTool, Rocket, Target, FlipHorizontal, CheckSquare } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const experiences = [
@@ -35,7 +35,14 @@ const tools: { name: string; icon: LucideIcon }[] = [
 
 
 
-const methodologies = ["Scrum", "Design Thinking", "Lean Startup", "OKRs", "A/B Testing", "Jobs-to-be-Done"];
+const methodologies: { name: string; icon: LucideIcon }[] = [
+  { name: "Scrum", icon: RefreshCw },
+  { name: "Design Thinking", icon: PenTool },
+  { name: "Lean Startup", icon: Rocket },
+  { name: "OKRs", icon: Target },
+  { name: "A/B Testing", icon: FlipHorizontal },
+  { name: "Jobs-to-be-Done", icon: CheckSquare },
+];
 
 const skills = ["Product Strategy", "Roadmap Planning", "User Story Writing", "Customer Interviewing", "User Research", "Stakeholder Management", "Data Analysis", "Cross-functional Leadership", "0-to-1 Launches", "Growth Optimization"];
 
@@ -90,7 +97,15 @@ const About = () => {
                   <GitBranch className="w-5 h-5 text-primary" />Methodologies
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {methodologies.map((method) => <span key={method} className="px-3 py-1.5 rounded-lg bg-secondary text-foreground text-sm">{method}</span>)}
+                  {methodologies.map((method) => {
+                    const Icon = method.icon;
+                    return (
+                      <span key={method.name} className="px-3 py-1.5 rounded-lg bg-secondary text-foreground text-sm flex items-center gap-1.5">
+                        <Icon className="w-3.5 h-3.5" />
+                        {method.name}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
               <div className="p-6 rounded-xl bg-card border border-border">
