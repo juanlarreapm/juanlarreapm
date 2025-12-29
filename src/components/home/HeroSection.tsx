@@ -81,15 +81,6 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <button
-          onClick={scrollToHighlights}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors animate-fade-in delay-700"
-          aria-label="Scroll to content"
-        >
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <ChevronDown className="w-5 h-5 animate-bounce" />
-        </button>
       </div>
     </section>
   );
