@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { getIcon } from "@/lib/iconMap";
@@ -17,7 +18,11 @@ const Admin = () => {
   const queryClient = useQueryClient();
   const { user, isAdmin, loading } = useAdminRole();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [bio, setBio] = useState("");
+  const [savingBio, setSavingBio] = useState(false);
 
   // Blog posts query
   const { data: posts, isLoading: postsLoading } = useQuery({
@@ -102,8 +107,8 @@ const Admin = () => {
     enabled: !!user && isAdmin,
   });
 
-  // Resume URL query
-  const { data: resumeSetting, isLoading: resumeLoading } = useQuery({
+  // Site settings queries
+  const { data: resumeSetting } = useQuery({
     queryKey: ["site_settings", "resume_url"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -112,6 +117,35 @@ const Admin = () => {
         .eq("key", "resume_url")
         .maybeSingle();
       if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
+  const { data: profilePhotoSetting } = useQuery({
+    queryKey: ["site_settings", "profile_photo_url"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "profile_photo_url")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
+  const { data: bioSetting } = useQuery({
+    queryKey: ["site_settings", "bio"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "bio")
+        .maybeSingle();
+      if (error) throw error;
+      if (data?.value && bio === "") setBio(data.value);
       return data;
     },
     enabled: !!user && isAdmin,
@@ -190,7 +224,6 @@ const Admin = () => {
 
     setUploading(true);
     try {
-      // Upload file to storage
       const fileName = `resume-${Date.now()}.pdf`;
       const { error: uploadError } = await supabase.storage
         .from("resumes")
@@ -198,12 +231,10 @@ const Admin = () => {
 
       if (uploadError) throw uploadError;
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from("resumes")
         .getPublicUrl(fileName);
 
-      // Upsert site setting
       const { error: settingError } = await supabase
         .from("site_settings")
         .upsert({ key: "resume_url", value: publicUrl }, { onConflict: "key" });
@@ -218,6 +249,64 @@ const Admin = () => {
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Error", description: "Please upload an image file", variant: "destructive" });
+      return;
+    }
+
+    setUploadingPhoto(true);
+    try {
+      const fileName = `profile-${Date.now()}.${file.name.split('.').pop()}`;
+      const { error: uploadError } = await supabase.storage
+        .from("profile-photos")
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("profile-photos")
+        .getPublicUrl(fileName);
+
+      const { error: settingError } = await supabase
+        .from("site_settings")
+        .upsert({ key: "profile_photo_url", value: publicUrl }, { onConflict: "key" });
+
+      if (settingError) throw settingError;
+
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "profile_photo_url"] });
+      toast({ title: "Profile photo uploaded successfully" });
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast({ title: "Error", description: "Failed to upload photo", variant: "destructive" });
+    } finally {
+      setUploadingPhoto(false);
+      if (photoInputRef.current) photoInputRef.current.value = "";
+    }
+  };
+
+  const handleBioSave = async () => {
+    setSavingBio(true);
+    try {
+      const { error } = await supabase
+        .from("site_settings")
+        .upsert({ key: "bio", value: bio }, { onConflict: "key" });
+
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "bio"] });
+      toast({ title: "Bio saved successfully" });
+    } catch (error) {
+      console.error("Save error:", error);
+      toast({ title: "Error", description: "Failed to save bio", variant: "destructive" });
+    } finally {
+      setSavingBio(false);
     }
   };
 
@@ -629,9 +718,76 @@ const Admin = () => {
 
             {/* Settings Tab */}
             <TabsContent value="settings">
-              <div className="max-w-2xl">
+              <div className="max-w-2xl space-y-6">
+                {/* Profile Photo */}
                 <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-display font-semibold text-lg mb-4">Resume</h3>
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <Image className="w-5 h-5 text-primary" />
+                    Profile Photo
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Upload your profile photo to display on the About page.
+                  </p>
+                  
+                  {profilePhotoSetting?.value && (
+                    <div className="flex items-center gap-4 mb-4">
+                      <img 
+                        src={profilePhotoSetting.value} 
+                        alt="Profile" 
+                        className="w-20 h-20 rounded-full object-cover border-2 border-primary"
+                      />
+                      <span className="text-sm text-muted-foreground">Current photo</span>
+                    </div>
+                  )}
+
+                  <input
+                    ref={photoInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
+                  <Button
+                    onClick={() => photoInputRef.current?.click()}
+                    disabled={uploadingPhoto}
+                    className="bg-gradient-primary hover:opacity-90"
+                  >
+                    <Upload className="mr-2 w-4 h-4" />
+                    {uploadingPhoto ? "Uploading..." : profilePhotoSetting?.value ? "Replace Photo" : "Upload Photo"}
+                  </Button>
+                </div>
+
+                {/* Bio */}
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <User className="w-5 h-5 text-primary" />
+                    Bio
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Write a short bio to display on the About page.
+                  </p>
+                  
+                  <Textarea
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    placeholder="Write your bio here..."
+                    className="mb-4 min-h-[120px]"
+                  />
+                  <Button
+                    onClick={handleBioSave}
+                    disabled={savingBio}
+                    className="bg-gradient-primary hover:opacity-90"
+                  >
+                    {savingBio ? "Saving..." : "Save Bio"}
+                  </Button>
+                </div>
+
+                {/* Resume */}
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <File className="w-5 h-5 text-primary" />
+                    Resume
+                  </h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Upload your resume (PDF) to enable the download button on the About page.
                   </p>
