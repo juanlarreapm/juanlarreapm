@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Briefcase, Wrench, GitBranch, Lightbulb } from "lucide-react";
+import { Download, Briefcase, Wrench, GitBranch, Lightbulb, LayoutList, FileText, Figma, BarChart3, PieChart, Search, Database, StickyNote, LayoutGrid, TrendingUp, BarChart2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 const experiences = [
   { company: "PartsTech", role: "Senior Product Manager", period: "2022 - Present", highlights: ["Led EstimateXpress 0-to-1 launch", "500+ shops onboarded", "10% cart size increase with Jobs feature"] },
@@ -11,7 +11,21 @@ const experiences = [
   { company: "Merchants Preferred", role: "Associate PM", period: "2015 - 2017", highlights: ["Payment solutions", "Early PM experience"] },
 ];
 
-const tools = ["Jira", "Confluence", "Figma", "Amplitude", "Mixpanel", "Looker", "SQL", "Notion", "Miro", "Google Analytics", "Tableau"];
+const tools: { name: string; icon: LucideIcon }[] = [
+  { name: "Jira", icon: LayoutList },
+  { name: "Confluence", icon: FileText },
+  { name: "Figma", icon: Figma },
+  { name: "Amplitude", icon: BarChart3 },
+  { name: "Mixpanel", icon: PieChart },
+  { name: "Looker", icon: Search },
+  { name: "SQL", icon: Database },
+  { name: "Notion", icon: StickyNote },
+  { name: "Miro", icon: LayoutGrid },
+  { name: "Google Analytics", icon: TrendingUp },
+  { name: "Tableau", icon: BarChart2 },
+];
+
+
 
 const methodologies = ["Scrum", "Agile", "Kanban", "Design Thinking", "Lean Startup", "OKRs", "A/B Testing", "Jobs-to-be-Done"];
 
@@ -52,7 +66,15 @@ const About = () => {
                   <Wrench className="w-5 h-5 text-primary" />Tools
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {tools.map((tool) => <span key={tool} className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm">{tool}</span>)}
+                  {tools.map((tool) => {
+                    const Icon = tool.icon;
+                    return (
+                      <span key={tool.name} className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm flex items-center gap-1.5">
+                        <Icon className="w-3.5 h-3.5" />
+                        {tool.name}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
               <div className="p-6 rounded-xl bg-card border border-border">
