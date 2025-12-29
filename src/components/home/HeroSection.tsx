@@ -71,12 +71,12 @@ export function HeroSection() {
               <div className="text-sm text-muted-foreground">Years in PM</div>
             </div>
             <div className="text-center">
-              <div className="font-display text-3xl font-bold text-gradient">500+</div>
-              <div className="text-sm text-muted-foreground">Shops Onboarded</div>
+              <div className="font-display text-3xl font-bold text-gradient">5+</div>
+              <div className="text-sm text-muted-foreground">Industries</div>
             </div>
             <div className="text-center">
-              <div className="font-display text-3xl font-bold text-gradient">51%</div>
-              <div className="text-sm text-muted-foreground">Conversion Lift</div>
+              <div className="font-display text-3xl font-bold text-gradient">B2B & B2C</div>
+              <div className="text-sm text-muted-foreground">Experience</div>
             </div>
           </div>
         </div>

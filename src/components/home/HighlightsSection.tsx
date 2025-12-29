@@ -4,12 +4,12 @@ const highlights = [
   {
     icon: Rocket,
     title: "0-to-1 Product Launches",
-    description: "Led EstimateXpress from concept to market, onboarding 500+ shops in Year 1",
+    description: "Led products from concept to market across multiple industries and company stages",
   },
   {
     icon: TrendingUp,
     title: "Growth & Optimization",
-    description: "Drove 51% conversion increase through funnel optimization at INWEGO",
+    description: "Data-driven approach to funnel optimization and user engagement improvements",
   },
   {
     icon: Brain,
@@ -18,8 +18,8 @@ const highlights = [
   },
   {
     icon: Users,
-    title: "Cross-Functional Leadership",
-    description: "Experience leading teams across engineering, design, and stakeholders",
+    title: "B2B & B2C Experience",
+    description: "Versatile PM experience across enterprise and consumer-facing products",
   },
 ];
 
