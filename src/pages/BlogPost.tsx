@@ -5,6 +5,98 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Clock, Calendar, ArrowLeft, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useMemo } from "react";
+
+// Parse content and render with inline images
+function RenderContent({ content }: { content: string }) {
+  const elements = useMemo(() => {
+    const lines = content.split("\n");
+    const result: React.ReactNode[] = [];
+    
+    lines.forEach((line, lineIndex) => {
+      // Check for image markdown: ![alt](url)
+      const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+      let lastIndex = 0;
+      const parts: React.ReactNode[] = [];
+      let match;
+      
+      while ((match = imageRegex.exec(line)) !== null) {
+        // Add text before the image
+        if (match.index > lastIndex) {
+          parts.push(line.substring(lastIndex, match.index));
+        }
+        
+        // Add the image
+        const alt = match[1];
+        const src = match[2];
+        parts.push(
+          <img
+            key={`img-${lineIndex}-${match.index}`}
+            src={src}
+            alt={alt || "Blog image"}
+            className="rounded-lg my-4 w-full max-w-2xl mx-auto"
+            loading="lazy"
+          />
+        );
+        
+        lastIndex = match.index + match[0].length;
+      }
+      
+      // Add remaining text after last image
+      if (lastIndex < line.length) {
+        parts.push(line.substring(lastIndex));
+      }
+      
+      // If line had images, render parts individually
+      if (parts.length > 0) {
+        // Check if line is ONLY an image (no other text)
+        const trimmedLine = line.trim();
+        const isOnlyImage = /^!\[([^\]]*)\]\(([^)]+)\)$/.test(trimmedLine);
+        
+        if (isOnlyImage) {
+          // Render image without paragraph wrapper
+          result.push(
+            <div key={lineIndex} className="my-6">
+              {parts}
+            </div>
+          );
+        } else if (parts.some(p => typeof p !== "string")) {
+          // Mixed content with images
+          result.push(
+            <div key={lineIndex} className="mb-4">
+              {parts.map((part, i) => 
+                typeof part === "string" ? (
+                  <span key={i} className="text-muted-foreground leading-relaxed">{part}</span>
+                ) : part
+              )}
+            </div>
+          );
+        } else {
+          // Text only
+          const text = parts.join("");
+          if (text.trim()) {
+            result.push(
+              <p key={lineIndex} className="mb-4 text-muted-foreground leading-relaxed">
+                {text}
+              </p>
+            );
+          }
+        }
+      } else if (line.trim()) {
+        // Regular text line
+        result.push(
+          <p key={lineIndex} className="mb-4 text-muted-foreground leading-relaxed">
+            {line}
+          </p>
+        );
+      }
+    });
+    
+    return result;
+  }, [content]);
+  
+  return <>{elements}</>;
+}
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -109,13 +201,9 @@ const BlogPost = () => {
             </div>
           )}
 
-          {/* Content */}
+          {/* Content with inline image support */}
           <div className="prose-dark max-w-none">
-            {post.content.split("\n").map((paragraph, i) => (
-              <p key={i} className="mb-4 text-muted-foreground leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
+            <RenderContent content={post.content} />
           </div>
 
           {/* Footer */}
