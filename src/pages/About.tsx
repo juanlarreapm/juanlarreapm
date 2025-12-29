@@ -54,7 +54,7 @@ const About = () => {
     },
   });
 
-  // Resume URL query
+  // Site settings queries
   const { data: resumeSetting } = useQuery({
     queryKey: ["site_settings", "resume_url"],
     queryFn: async () => {
@@ -68,6 +68,32 @@ const About = () => {
     },
   });
 
+  const { data: profilePhotoSetting } = useQuery({
+    queryKey: ["site_settings", "profile_photo_url"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "profile_photo_url")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: bioSetting } = useQuery({
+    queryKey: ["site_settings", "bio"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "bio")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const isLoading = experiencesLoading || toolsLoading || methodologiesLoading || skillsLoading;
 
   return (
@@ -75,19 +101,32 @@ const About = () => {
       <section className="py-24">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
-            <h1 className="font-display text-4xl md:text-5xl font-bold mb-6">About <span className="text-gradient">Me</span></h1>
-            <p className="text-xl text-muted-foreground mb-8">Senior Product Manager with 8+ years of experience building impactful products across B2B SaaS, e-commerce, and travel industries.</p>
-            {resumeSetting?.value ? (
-              <Button asChild className="bg-gradient-primary hover:opacity-90">
-                <a href={resumeSetting.value} target="_blank" rel="noopener noreferrer" download>
-                  <Download className="mr-2 w-4 h-4" />Download Resume
-                </a>
-              </Button>
-            ) : (
-              <Button disabled className="bg-gradient-primary opacity-50 cursor-not-allowed">
-                <Download className="mr-2 w-4 h-4" />Resume Coming Soon
-              </Button>
-            )}
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
+              {profilePhotoSetting?.value && (
+                <img 
+                  src={profilePhotoSetting.value} 
+                  alt="Profile" 
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-primary shadow-lg"
+                />
+              )}
+              <div className="text-center md:text-left">
+                <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">About <span className="text-gradient">Me</span></h1>
+                <p className="text-xl text-muted-foreground mb-6">
+                  {bioSetting?.value || "Senior Product Manager with 8+ years of experience building impactful products across B2B SaaS, e-commerce, and travel industries."}
+                </p>
+                {resumeSetting?.value ? (
+                  <Button asChild className="bg-gradient-primary hover:opacity-90">
+                    <a href={resumeSetting.value} target="_blank" rel="noopener noreferrer" download>
+                      <Download className="mr-2 w-4 h-4" />Download Resume
+                    </a>
+                  </Button>
+                ) : (
+                  <Button disabled className="bg-gradient-primary opacity-50 cursor-not-allowed">
+                    <Download className="mr-2 w-4 h-4" />Resume Coming Soon
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="max-w-4xl mx-auto mt-20">
