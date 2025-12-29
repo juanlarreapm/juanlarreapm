@@ -35,7 +35,7 @@ const tools: { name: string; icon: LucideIcon }[] = [
 
 
 
-const methodologies = ["Scrum", "Agile", "Kanban", "Design Thinking", "Lean Startup", "OKRs", "A/B Testing", "Jobs-to-be-Done"];
+const methodologies = ["Scrum", "Design Thinking", "Lean Startup", "OKRs", "A/B Testing", "Jobs-to-be-Done"];
 
 const skills = ["Product Strategy", "Roadmap Planning", "User Story Writing", "Customer Interviewing", "User Research", "Stakeholder Management", "Data Analysis", "Cross-functional Leadership", "0-to-1 Launches", "Growth Optimization"];
 
