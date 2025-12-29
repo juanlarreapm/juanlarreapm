@@ -11,6 +11,7 @@ const navLinks = [
 
 const socialLinks = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/juanlarreapm/", icon: Linkedin },
+  { name: "GitHub", href: "https://github.com/juanlarreapm", icon: Github },
   { name: "Email", href: "mailto:contact@juanlarrea.dev", icon: Mail },
 ];
 
