@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, Briefcase, Wrench, GitBranch, Lightbulb, LayoutList, FileText, Figma, BarChart3, PieChart, Search, Database, StickyNote, LayoutGrid, TrendingUp, BarChart2 } from "lucide-react";
+import { Download, Briefcase, Wrench, GitBranch, Lightbulb, LayoutList, FileText, Figma, Database, StickyNote, LayoutGrid, Video, ClipboardList, Cloud, Compass, Calculator, MessageSquare, TestTube2, Mic, MessageCircle, Flag, GitMerge, MousePointer, Snowflake } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const experiences = [
@@ -15,14 +15,22 @@ const tools: { name: string; icon: LucideIcon }[] = [
   { name: "Jira", icon: LayoutList },
   { name: "Confluence", icon: FileText },
   { name: "Figma", icon: Figma },
-  { name: "Amplitude", icon: BarChart3 },
-  { name: "Mixpanel", icon: PieChart },
-  { name: "Looker", icon: Search },
   { name: "SQL", icon: Database },
   { name: "Notion", icon: StickyNote },
   { name: "Miro", icon: LayoutGrid },
-  { name: "Google Analytics", icon: TrendingUp },
-  { name: "Tableau", icon: BarChart2 },
+  { name: "Fullstory", icon: Video },
+  { name: "Productboard", icon: ClipboardList },
+  { name: "Salesforce", icon: Cloud },
+  { name: "Userpilot", icon: Compass },
+  { name: "Sigma", icon: Calculator },
+  { name: "Dovetail", icon: MessageSquare },
+  { name: "Useberry", icon: TestTube2 },
+  { name: "Gong", icon: Mic },
+  { name: "Canny", icon: MessageCircle },
+  { name: "LaunchDarkly", icon: Flag },
+  { name: "Segment", icon: GitMerge },
+  { name: "Pendo", icon: MousePointer },
+  { name: "Snowflake", icon: Snowflake },
 ];
 
 
