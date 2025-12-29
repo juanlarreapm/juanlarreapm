@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, Briefcase, GraduationCap, Award } from "lucide-react";
+import { Download, Briefcase, Wrench, GitBranch, Lightbulb } from "lucide-react";
 
 const experiences = [
   { company: "PartsTech", role: "Senior Product Manager", period: "2022 - Present", highlights: ["Led EstimateXpress 0-to-1 launch", "500+ shops onboarded", "10% cart size increase with Jobs feature"] },
@@ -11,7 +11,11 @@ const experiences = [
   { company: "Merchants Preferred", role: "Associate PM", period: "2015 - 2017", highlights: ["Payment solutions", "Early PM experience"] },
 ];
 
-const skills = ["Product Strategy", "0-to-1 Launches", "Growth & Optimization", "A/B Testing", "User Research", "Roadmap Planning", "Cross-functional Leadership", "Data Analysis", "Agile/Scrum", "SQL", "AI/ML Exploration"];
+const tools = ["Jira", "Confluence", "Figma", "Amplitude", "Mixpanel", "Looker", "SQL", "Notion", "Miro", "Google Analytics", "Tableau"];
+
+const methodologies = ["Scrum", "Agile", "Kanban", "Design Thinking", "Lean Startup", "OKRs", "A/B Testing", "Jobs-to-be-Done"];
+
+const skills = ["Product Strategy", "Roadmap Planning", "User Story Writing", "Customer Interviewing", "User Research", "Stakeholder Management", "Data Analysis", "Cross-functional Leadership", "0-to-1 Launches", "Growth Optimization"];
 
 const About = () => {
   return (
@@ -41,8 +45,33 @@ const About = () => {
           </div>
 
           <div className="max-w-4xl mx-auto mt-20">
-            <h2 className="font-display text-2xl font-bold mb-8 flex items-center gap-3"><Award className="w-6 h-6 text-primary" />Skills</h2>
-            <div className="flex flex-wrap gap-3">{skills.map((skill) => <span key={skill} className="px-4 py-2 rounded-lg bg-secondary text-foreground text-sm">{skill}</span>)}</div>
+            <h2 className="font-display text-2xl font-bold mb-8">My Toolkit</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 rounded-xl bg-card border border-border">
+                <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                  <Wrench className="w-5 h-5 text-primary" />Tools
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {tools.map((tool) => <span key={tool} className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm">{tool}</span>)}
+                </div>
+              </div>
+              <div className="p-6 rounded-xl bg-card border border-border">
+                <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                  <GitBranch className="w-5 h-5 text-primary" />Methodologies
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {methodologies.map((method) => <span key={method} className="px-3 py-1.5 rounded-lg bg-secondary text-foreground text-sm">{method}</span>)}
+                </div>
+              </div>
+              <div className="p-6 rounded-xl bg-card border border-border">
+                <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5 text-primary" />Skills
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {skills.map((skill) => <span key={skill} className="px-3 py-1.5 rounded-lg bg-accent/10 text-accent-foreground text-sm">{skill}</span>)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
