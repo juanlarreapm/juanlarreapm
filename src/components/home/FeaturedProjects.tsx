@@ -1,26 +1,26 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-
 export function FeaturedProjects() {
-  const { data: projects, isLoading } = useQuery({
+  const {
+    data: projects,
+    isLoading
+  } = useQuery({
     queryKey: ["featured-projects"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("is_featured", true)
-        .order("display_order", { ascending: true })
-        .limit(3);
+      const {
+        data,
+        error
+      } = await supabase.from("projects").select("*").eq("is_featured", true).order("display_order", {
+        ascending: true
+      }).limit(3);
       if (error) throw error;
       return data;
-    },
+    }
   });
-
-  return (
-    <section className="py-24">
+  return <section className="py-24">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
           <div>
@@ -34,30 +34,20 @@ export function FeaturedProjects() {
           <Button asChild variant="ghost" className="text-primary hover:text-primary/80">
             <Link to="/projects">
               View all projects
-              <ArrowRight className="ml-2 w-4 h-4" />
+              
             </Link>
           </Button>
         </div>
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="p-6 rounded-xl bg-card border border-border animate-pulse">
+        {isLoading ? <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map(i => <div key={i} className="p-6 rounded-xl bg-card border border-border animate-pulse">
                 <div className="h-4 bg-muted rounded w-1/4 mb-2" />
                 <div className="h-6 bg-muted rounded w-3/4 mb-4" />
                 <div className="h-4 bg-muted rounded w-full mb-4" />
                 <div className="h-4 bg-muted rounded w-2/3" />
-              </div>
-            ))}
-          </div>
-        ) : projects && projects.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
-              <Link
-                key={project.id}
-                to="/projects"
-                className="group block"
-              >
+              </div>)}
+          </div> : projects && projects.length > 0 ? <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {projects.map(project => <Link key={project.id} to="/projects" className="group block">
                 <article className="h-full p-6 rounded-xl bg-card border border-border card-hover overflow-hidden relative">
                   {/* Gradient accent */}
                   <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient || 'from-primary to-accent'}`} />
@@ -77,24 +67,17 @@ export function FeaturedProjects() {
 
                   {/* Metrics */}
                   <ul className="space-y-2 mb-6">
-                    {project.metrics?.map((metric) => (
-                      <li key={metric} className="text-sm text-foreground flex items-center gap-2">
+                    {project.metrics?.map(metric => <li key={metric} className="text-sm text-foreground flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                         {metric}
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2">
-                    {project.tags?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-1 text-xs rounded-md bg-secondary text-muted-foreground"
-                      >
+                    {project.tags?.map(tag => <span key={tag} className="px-2 py-1 text-xs rounded-md bg-secondary text-muted-foreground">
                         {tag}
-                      </span>
-                    ))}
+                      </span>)}
                   </div>
 
                   {/* Hover arrow */}
@@ -102,15 +85,10 @@ export function FeaturedProjects() {
                     <ExternalLink className="w-5 h-5 text-primary" />
                   </div>
                 </article>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 rounded-xl bg-card border border-border">
+              </Link>)}
+          </div> : <div className="text-center py-16 rounded-xl bg-card border border-border">
             <p className="text-muted-foreground">No featured projects yet.</p>
-          </div>
-        )}
+          </div>}
       </div>
-    </section>
-  );
+    </section>;
 }
