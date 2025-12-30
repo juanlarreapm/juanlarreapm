@@ -42,9 +42,22 @@ const Contact = () => {
     }
 
     setLoading(true);
+    
+    // Save to database
     const { error } = await supabase.from("contact_submissions").insert([{ name: result.data.name, email: result.data.email, message: result.data.message }]);
+    
+    if (error) { 
+      setLoading(false);
+      toast({ title: "Error", description: "Failed to send message.", variant: "destructive" }); 
+      return; 
+    }
+    
+    // Send email notification (don't wait for it, fire and forget)
+    supabase.functions.invoke("notify-contact", {
+      body: { name: result.data.name, email: result.data.email, message: result.data.message }
+    }).catch(err => console.error("Email notification failed:", err));
+    
     setLoading(false);
-    if (error) { toast({ title: "Error", description: "Failed to send message.", variant: "destructive" }); return; }
     toast({ title: "Message sent!", description: "Thanks for reaching out. I'll get back to you soon." });
     (e.target as HTMLFormElement).reset();
   };
