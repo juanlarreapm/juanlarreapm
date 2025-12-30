@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to site owner
     const notificationResponse = await resend.emails.send({
       from: "Contact Form <onboarding@resend.dev>",
-      to: ["contact@juanlarrea.dev"], // Your email address
+      to: ["juanlarreapm@gmail.com"],
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
