@@ -6,7 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { useAdminRole } from "@/hooks/useAdminRole";
@@ -23,6 +29,13 @@ const Admin = () => {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [bio, setBio] = useState("");
   const [savingBio, setSavingBio] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<{
+    id: string;
+    name: string;
+    email: string;
+    message: string;
+    created_at: string;
+  } | null>(null);
 
   // Blog posts query
   const { data: posts, isLoading: postsLoading } = useQuery({
@@ -101,6 +114,20 @@ const Admin = () => {
         .from("toolkit_skills")
         .select("*")
         .order("display_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
+  // Contact submissions query
+  const { data: contactMessages, isLoading: messagesLoading } = useQuery({
+    queryKey: ["contact_submissions"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("contact_submissions")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -210,6 +237,20 @@ const Admin = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-posts"] });
       toast({ title: "Post updated" });
+    },
+  });
+
+  const deleteContactMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("contact_submissions").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["contact_submissions"] });
+      toast({ title: "Message deleted" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to delete message", variant: "destructive" });
     },
   });
 
@@ -366,6 +407,15 @@ const Admin = () => {
                   <TabsTrigger value="toolkit" className="flex items-center gap-2">
                     <Wrench className="w-4 h-4" />
                     Toolkit
+                  </TabsTrigger>
+                  <TabsTrigger value="messages" className="flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    Messages
+                    {contactMessages && contactMessages.length > 0 && (
+                      <span className="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-primary/20 text-primary">
+                        {contactMessages.length}
+                      </span>
+                    )}
                   </TabsTrigger>
                   <TabsTrigger value="settings" className="flex items-center gap-2">
                     <Settings className="w-4 h-4" />
@@ -714,6 +764,113 @@ const Admin = () => {
                   </div>
                 </div>
               </div>
+            </TabsContent>
+
+            {/* Messages Tab */}
+            <TabsContent value="messages">
+              {messagesLoading ? (
+                <div className="space-y-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="p-6 rounded-xl bg-card border border-border animate-pulse">
+                      <div className="h-6 bg-muted rounded w-1/3 mb-3" />
+                      <div className="h-4 bg-muted rounded w-1/2 mb-2" />
+                      <div className="h-4 bg-muted rounded w-2/3" />
+                    </div>
+                  ))}
+                </div>
+              ) : contactMessages && contactMessages.length > 0 ? (
+                <div className="space-y-4">
+                  {contactMessages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className="p-6 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-start md:justify-between gap-4"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="font-display font-semibold text-lg">{msg.name}</h3>
+                          <span className="text-sm text-muted-foreground">
+                            {format(new Date(msg.created_at), "MMM d, yyyy 'at' h:mm a")}
+                          </span>
+                        </div>
+                        <a href={`mailto:${msg.email}`} className="text-primary hover:underline text-sm mb-2 block">
+                          {msg.email}
+                        </a>
+                        <p className="text-sm text-muted-foreground line-clamp-2">{msg.message}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedMessage(msg)}
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          View
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => deleteContactMutation.mutate(msg.id)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 rounded-xl bg-card border border-border">
+                  <Mail className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">No messages yet</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Contact form submissions will appear here
+                  </p>
+                </div>
+              )}
+
+              {/* Message Detail Dialog */}
+              <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
+                <DialogContent className="max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Message from {selectedMessage?.name}</DialogTitle>
+                  </DialogHeader>
+                  {selectedMessage && (
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Email</p>
+                        <a href={`mailto:${selectedMessage.email}`} className="text-primary hover:underline">
+                          {selectedMessage.email}
+                        </a>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Received</p>
+                        <p>{format(new Date(selectedMessage.created_at), "MMMM d, yyyy 'at' h:mm a")}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Message</p>
+                        <p className="whitespace-pre-wrap">{selectedMessage.message}</p>
+                      </div>
+                      <div className="flex gap-2 pt-2">
+                        <Button asChild className="flex-1 bg-gradient-primary hover:opacity-90">
+                          <a href={`mailto:${selectedMessage.email}`}>
+                            <Mail className="w-4 h-4 mr-2" />
+                            Reply via Email
+                          </a>
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          onClick={() => {
+                            deleteContactMutation.mutate(selectedMessage.id);
+                            setSelectedMessage(null);
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
             </TabsContent>
 
             {/* Settings Tab */}
