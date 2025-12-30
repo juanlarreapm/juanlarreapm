@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, ChevronDown } from "lucide-react";
+import { Sparkles, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 export function HeroSection() {
   const scrollToHighlights = () => {
-    document.getElementById("highlights")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("highlights")?.scrollIntoView({
+      behavior: "smooth"
+    });
   };
-
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern">
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern">
       {/* Background glow effects */}
       <div className="absolute inset-0 bg-gradient-glow opacity-50" />
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
@@ -42,22 +41,13 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-400">
-            <Button 
-              asChild 
-              size="lg" 
-              className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold px-8 hover-glow"
-            >
+            <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold px-8 hover-glow">
               <Link to="/projects">
                 View My Work
-                <ArrowRight className="ml-2 w-4 h-4" />
+                
               </Link>
             </Button>
-            <Button 
-              asChild 
-              variant="outline" 
-              size="lg"
-              className="border-border hover:bg-secondary"
-            >
+            <Button asChild variant="outline" size="lg" className="border-border hover:bg-secondary">
               <Link to="/blog">
                 Read My Blog
               </Link>
@@ -82,6 +72,5 @@ export function HeroSection() {
         </div>
 
       </div>
-    </section>
-  );
+    </section>;
 }
