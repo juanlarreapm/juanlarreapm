@@ -69,7 +69,10 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © {currentYear} Juan Larrea. All rights reserved.
           </p>
-          
+          <p className="text-sm text-muted-foreground flex items-center gap-1">
+            Made with <span className="heart-pulse text-destructive cursor-pointer">❤️</span> and lots of ☕
+            <span className="ml-2 text-xs opacity-50 hidden sm:inline">(psst... try the classic code)</span>
+          </p>
         </div>
       </div>
     </footer>;
