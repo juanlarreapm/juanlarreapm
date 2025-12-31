@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 interface PageTransitionProps {
@@ -7,39 +7,34 @@ interface PageTransitionProps {
 
 export function PageTransition({ children }: PageTransitionProps) {
   const location = useLocation();
-  const [isVisible, setIsVisible] = useState(false);
-  const [displayChildren, setDisplayChildren] = useState(children);
+  const [isVisible, setIsVisible] = useState(true);
+  const isFirstMount = useRef(true);
 
   useEffect(() => {
-    // Scroll to top on route change
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+
+    // Scroll to top instantly on route change
+    window.scrollTo({ top: 0 });
     
-    // Start exit animation
+    // Quick fade out then fade in
     setIsVisible(false);
-    
-    // After exit animation, update children and start enter animation
     const timeout = setTimeout(() => {
-      setDisplayChildren(children);
       setIsVisible(true);
-    }, 150);
+    }, 100);
 
     return () => clearTimeout(timeout);
-  }, [location.pathname, children]);
-
-  // Initial mount
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  }, [location.pathname]);
 
   return (
     <div
-      className={`transition-all duration-300 ease-out ${
-        isVisible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-4"
+      className={`transition-opacity duration-200 ease-out ${
+        isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
-      {displayChildren}
+      {children}
     </div>
   );
 }
