@@ -39,8 +39,8 @@ export function EasterEgg({ isActive, onClose }: EasterEggProps) {
       }));
       setConfetti(pieces);
       
-      // Show modal after a short delay
-      setTimeout(() => setShowModal(true), 300);
+      // Show modal after confetti has mostly fallen (2.5 seconds)
+      setTimeout(() => setShowModal(true), 2500);
 
       // Clean up confetti after animation
       const cleanup = setTimeout(() => {
