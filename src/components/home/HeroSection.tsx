@@ -8,10 +8,11 @@ export function HeroSection() {
     });
   };
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern">
-      {/* Background glow effects */}
+      {/* Background glow effects with floating animation */}
       <div className="absolute inset-0 bg-gradient-glow opacity-50" />
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-glow-pulse" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-glow-pulse delay-200" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl animate-float-rotate" />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
@@ -41,13 +42,12 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-400">
-            <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold px-8 hover-glow">
+            <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold px-8 hover-glow btn-ripple group">
               <Link to="/projects">
-                View My Work
-                
+                <span className="group-hover:text-shimmer">View My Work</span>
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-border hover:bg-secondary">
+            <Button asChild variant="outline" size="lg" className="border-border hover:bg-secondary btn-ripple">
               <Link to="/blog">
                 Read My Blog
               </Link>

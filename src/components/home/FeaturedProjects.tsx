@@ -46,7 +46,7 @@ export function FeaturedProjects() {
                 <div className="h-4 bg-muted rounded w-full mb-4" />
                 <div className="h-4 bg-muted rounded w-2/3" />
               </div>)}
-          </div> : projects && projects.length > 0 ? <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          </div> : projects && projects.length > 0 ? <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 stagger-children">
             {projects.map(project => <Link key={project.id} to="/projects" className="group block">
                 <article className="h-full p-6 rounded-xl bg-card border border-border card-hover overflow-hidden relative">
                   {/* Gradient accent */}

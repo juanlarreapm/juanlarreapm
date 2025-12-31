@@ -29,7 +29,7 @@ export function Navbar() {
           {/* Logo */}
           <Link 
             to="/" 
-            className="font-display font-bold text-xl text-gradient hover:opacity-80 transition-opacity"
+            className="font-display font-bold text-xl text-gradient logo-spin"
           >
             JL
           </Link>
@@ -60,7 +60,7 @@ export function Navbar() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors magnetic-hover icon-bounce"
                 aria-label={link.name}
               >
                 <link.icon className="w-5 h-5" />
@@ -82,7 +82,7 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-border animate-fade-in">
+          <div className="md:hidden py-4 border-t border-border animate-slide-down">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link
