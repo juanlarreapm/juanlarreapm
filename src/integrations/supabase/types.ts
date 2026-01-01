@@ -210,42 +210,78 @@ export type Database = {
       }
       projects: {
         Row: {
+          approach: string | null
           company: string
+          cover_image: string | null
           created_at: string
           description: string
           display_order: number
+          duration: string | null
           gradient: string | null
           id: string
+          industry: string | null
           is_featured: boolean
           metrics: string[]
+          outcome: string | null
+          problem: string | null
+          published: boolean | null
+          role: string | null
+          slug: string | null
+          solution: string | null
           tags: string[]
+          team_composition: string[] | null
           title: string
+          tools_used: string[] | null
           updated_at: string
         }
         Insert: {
+          approach?: string | null
           company: string
+          cover_image?: string | null
           created_at?: string
           description: string
           display_order?: number
+          duration?: string | null
           gradient?: string | null
           id?: string
+          industry?: string | null
           is_featured?: boolean
           metrics?: string[]
+          outcome?: string | null
+          problem?: string | null
+          published?: boolean | null
+          role?: string | null
+          slug?: string | null
+          solution?: string | null
           tags?: string[]
+          team_composition?: string[] | null
           title: string
+          tools_used?: string[] | null
           updated_at?: string
         }
         Update: {
+          approach?: string | null
           company?: string
+          cover_image?: string | null
           created_at?: string
           description?: string
           display_order?: number
+          duration?: string | null
           gradient?: string | null
           id?: string
+          industry?: string | null
           is_featured?: boolean
           metrics?: string[]
+          outcome?: string | null
+          problem?: string | null
+          published?: boolean | null
+          role?: string | null
+          slug?: string | null
+          solution?: string | null
           tags?: string[]
+          team_composition?: string[] | null
           title?: string
+          tools_used?: string[] | null
           updated_at?: string
         }
         Relationships: []
