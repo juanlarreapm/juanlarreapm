@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -182,6 +182,38 @@ const Admin = () => {
     },
     enabled: !!user && isAdmin,
   });
+
+  const { data: blogVisibilitySetting } = useQuery({
+    queryKey: ["site_settings", "blog_visible"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "blog_visible")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
+  const toggleBlogVisibility = async () => {
+    const currentValue = blogVisibilitySetting?.value === "true";
+    const newValue = !currentValue;
+    
+    try {
+      const { error } = await supabase
+        .from("site_settings")
+        .upsert({ key: "blog_visible", value: newValue.toString() }, { onConflict: "key" });
+
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "blog_visible"] });
+      toast({ title: newValue ? "Blog is now visible" : "Blog is now hidden" });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
 
   // Delete mutations
   const deletePostMutation = useMutation({
@@ -1016,6 +1048,37 @@ const Admin = () => {
                     <Upload className="mr-2 w-4 h-4" />
                     {uploading ? "Uploading..." : resumeSetting?.value ? "Replace Resume" : "Upload Resume"}
                   </Button>
+                </div>
+
+                {/* Blog Visibility */}
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    Blog Visibility
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Show or hide the Blog tab from the navigation menu.
+                  </p>
+                  
+                  <div className="flex items-center gap-4">
+                    <Button
+                      variant={blogVisibilitySetting?.value === "true" ? "default" : "outline"}
+                      onClick={toggleBlogVisibility}
+                      className={blogVisibilitySetting?.value === "true" ? "bg-gradient-primary hover:opacity-90" : ""}
+                    >
+                      {blogVisibilitySetting?.value === "true" ? (
+                        <>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Blog Visible
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff className="w-4 h-4 mr-2" />
+                          Blog Hidden
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
 
                 {/* Change Password */}

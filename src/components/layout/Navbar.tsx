@@ -3,15 +3,18 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Linkedin, Mail, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
-const navLinks = [
+const baseNavLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Case Studies", href: "/case-studies" },
   { name: "Toolkit", href: "/toolkit" },
-  // { name: "Blog", href: "/blog" }, // Hidden for now
   { name: "Contact", href: "/contact" },
 ];
+
+const blogLink = { name: "Blog", href: "/blog" };
 
 const socialLinks = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/juanlarreapm/", icon: Linkedin },
@@ -22,6 +25,27 @@ const socialLinks = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+
+  const { data: blogVisibilitySetting } = useQuery({
+    queryKey: ["site_settings", "blog_visible"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "blog_visible")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+  });
+
+  const isBlogVisible = blogVisibilitySetting?.value === "true";
+  
+  // Build nav links dynamically based on blog visibility
+  const navLinks = isBlogVisible 
+    ? [...baseNavLinks.slice(0, 4), blogLink, baseNavLinks[4]] // Insert Blog before Contact
+    : baseNavLinks;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
