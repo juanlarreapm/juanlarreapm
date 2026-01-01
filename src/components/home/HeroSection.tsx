@@ -40,16 +40,11 @@ export function HeroSection() {
             From 0-to-1 launches to growth optimization. Currently exploring the frontiers of AI/ML and building prototypes along the way.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-400">
+          {/* CTA Button */}
+          <div className="flex items-center justify-center animate-fade-in-up delay-400">
             <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold px-8 hover-glow btn-ripple group">
               <Link to="/projects">
                 <span className="group-hover:text-shimmer">View My Work</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="border-border hover:bg-secondary btn-ripple">
-              <Link to="/blog">
-                Read My Blog
               </Link>
             </Button>
           </div>
