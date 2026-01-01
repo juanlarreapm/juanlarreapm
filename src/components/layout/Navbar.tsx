@@ -10,8 +10,8 @@ const baseNavLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Case Studies", href: "/case-studies" },
-  { name: "Lab", href: "/lab" },
   { name: "Toolkit", href: "/toolkit" },
+  { name: "Lab", href: "/lab" },
   { name: "Contact", href: "/contact" },
 ];
 
