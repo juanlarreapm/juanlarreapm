@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, Briefcase, Wrench, GitBranch, Lightbulb } from "lucide-react";
+import { Download, Briefcase, Wrench, GitBranch, Lightbulb, ExternalLink } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getIcon } from "@/lib/iconMap";
@@ -149,7 +149,22 @@ const About = () => {
                       <h3 className="font-display font-semibold text-lg">{exp.role}</h3>
                       <span className="text-sm text-muted-foreground">{exp.period}</span>
                     </div>
-                    <p className="text-primary font-medium mb-3">{exp.company}</p>
+                    {exp.company_url ? (
+                      <a 
+                        href={exp.company_url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary font-medium mb-2 inline-flex items-center gap-1.5 hover:underline"
+                      >
+                        {exp.company}
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    ) : (
+                      <p className="text-primary font-medium mb-2">{exp.company}</p>
+                    )}
+                    {exp.description && (
+                      <p className="text-sm text-muted-foreground mb-3 italic">{exp.description}</p>
+                    )}
                     <ul className="space-y-1">
                       {exp.highlights?.map((h, j) => (
                         <li key={j} className="text-sm text-muted-foreground flex items-center gap-2">
