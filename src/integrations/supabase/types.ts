@@ -217,14 +217,17 @@ export type Database = {
           description: string
           display_order: number
           duration: string | null
+          execution_collaboration: string | null
           gradient: string | null
           id: string
+          impact_results: string | null
           industry: string | null
           is_featured: boolean
           metrics: string[]
           outcome: string | null
           problem: string | null
           published: boolean | null
+          reflections: string | null
           role: string | null
           slug: string | null
           solution: string | null
@@ -242,14 +245,17 @@ export type Database = {
           description: string
           display_order?: number
           duration?: string | null
+          execution_collaboration?: string | null
           gradient?: string | null
           id?: string
+          impact_results?: string | null
           industry?: string | null
           is_featured?: boolean
           metrics?: string[]
           outcome?: string | null
           problem?: string | null
           published?: boolean | null
+          reflections?: string | null
           role?: string | null
           slug?: string | null
           solution?: string | null
@@ -267,14 +273,17 @@ export type Database = {
           description?: string
           display_order?: number
           duration?: string | null
+          execution_collaboration?: string | null
           gradient?: string | null
           id?: string
+          impact_results?: string | null
           industry?: string | null
           is_featured?: boolean
           metrics?: string[]
           outcome?: string | null
           problem?: string | null
           published?: boolean | null
+          reflections?: string | null
           role?: string | null
           slug?: string | null
           solution?: string | null
