@@ -8,6 +8,7 @@ import { EasterEgg } from "./components/EasterEgg";
 import { useKonamiCode } from "./hooks/useKonamiCode";
 import Index from "./pages/Index";
 import About from "./pages/About";
+import Toolkit from "./pages/Toolkit";
 import Projects from "./pages/Projects";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -32,6 +33,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
+          <Route path="/toolkit" element={<Toolkit />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
