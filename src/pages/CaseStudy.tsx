@@ -144,40 +144,20 @@ const CaseStudy = () => {
       {/* Content Sections */}
       <section className="pb-24">
         <div className="container mx-auto px-6 max-w-4xl space-y-16">
-          {/* The Challenge */}
+          {/* Problem & Context */}
           {caseStudy.problem && (
             <div className="space-y-4">
-              <h2 className="font-display text-2xl font-bold text-primary">The Challenge</h2>
+              <h2 className="font-display text-2xl font-bold text-primary">Problem & Context</h2>
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.problem}</p>
               </div>
             </div>
           )}
 
-          {/* My Approach */}
-          {caseStudy.approach && (
-            <div className="space-y-4">
-              <h2 className="font-display text-2xl font-bold text-primary">My Approach</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.approach}</p>
-              </div>
-            </div>
-          )}
-
-          {/* The Solution */}
-          {caseStudy.solution && (
-            <div className="space-y-4">
-              <h2 className="font-display text-2xl font-bold text-primary">The Solution</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.solution}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Key Metrics */}
+          {/* Goals & Success Metrics */}
           {caseStudy.metrics && caseStudy.metrics.length > 0 && (
             <div className="space-y-6">
-              <h2 className="font-display text-2xl font-bold text-primary">Key Metrics</h2>
+              <h2 className="font-display text-2xl font-bold text-primary">Goals & Success Metrics</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {caseStudy.metrics.map((metric: string, index: number) => (
                   <div 
@@ -194,54 +174,79 @@ const CaseStudy = () => {
             </div>
           )}
 
-          {/* Outcome */}
+          {/* Research & Insights */}
+          {caseStudy.approach && (
+            <div className="space-y-4">
+              <h2 className="font-display text-2xl font-bold text-primary">Research & Insights</h2>
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.approach}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Solution Exploration and Tradeoffs */}
+          {caseStudy.solution && (
+            <div className="space-y-4">
+              <h2 className="font-display text-2xl font-bold text-primary">Solution Exploration and Tradeoffs</h2>
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.solution}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Final Solution */}
           {caseStudy.outcome && (
             <div className="space-y-4">
-              <h2 className="font-display text-2xl font-bold text-primary">Outcome</h2>
+              <h2 className="font-display text-2xl font-bold text-primary">Final Solution</h2>
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.outcome}</p>
               </div>
             </div>
           )}
 
-          {/* Team & Tools */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {caseStudy.team_composition && caseStudy.team_composition.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="font-display text-xl font-semibold flex items-center gap-2">
-                  <Users className="w-5 h-5 text-primary" />
-                  Team Composition
-                </h3>
-                <ul className="space-y-2">
-                  {caseStudy.team_composition.map((member: string, index: number) => (
-                    <li key={index} className="flex items-center gap-2 text-muted-foreground">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                      {member}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          {/* Execution and Collaboration */}
+          {(caseStudy.team_composition?.length > 0 || caseStudy.tools_used?.length > 0) && (
+            <div className="space-y-6">
+              <h2 className="font-display text-2xl font-bold text-primary">Execution and Collaboration</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {caseStudy.team_composition && caseStudy.team_composition.length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="font-display text-xl font-semibold flex items-center gap-2">
+                      <Users className="w-5 h-5 text-primary" />
+                      Team Composition
+                    </h3>
+                    <ul className="space-y-2">
+                      {caseStudy.team_composition.map((member: string, index: number) => (
+                        <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                          {member}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-            {caseStudy.tools_used && caseStudy.tools_used.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="font-display text-xl font-semibold flex items-center gap-2">
-                  <Wrench className="w-5 h-5 text-primary" />
-                  Tools Used
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {caseStudy.tools_used.map((tool: string, index: number) => (
-                    <span 
-                      key={index} 
-                      className="px-3 py-1 text-sm rounded-md bg-secondary text-muted-foreground"
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
+                {caseStudy.tools_used && caseStudy.tools_used.length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="font-display text-xl font-semibold flex items-center gap-2">
+                      <Wrench className="w-5 h-5 text-primary" />
+                      Tools Used
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {caseStudy.tools_used.map((tool: string, index: number) => (
+                        <span 
+                          key={index} 
+                          className="px-3 py-1 text-sm rounded-md bg-secondary text-muted-foreground"
+                        >
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 
