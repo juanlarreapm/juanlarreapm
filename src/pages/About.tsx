@@ -73,7 +73,7 @@ const About = () => {
               <div className="text-center md:text-left">
                 <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">About <span className="text-gradient">Me</span></h1>
                 <p className="text-xl text-muted-foreground mb-6">
-                  {bioSetting?.value || "Senior Product Manager with 8+ years of experience building impactful products across B2B SaaS, e-commerce, and travel industries."}
+                  {bioSetting?.value || "Senior Product Manager with 8+ years of experience building impactful products across B2B SaaS, e-commerce, and fintech industries."}
                 </p>
                 {resumeSetting?.value ? (
                   <Button asChild className="bg-gradient-primary hover:opacity-90">
