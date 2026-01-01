@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 interface PageTransitionProps {
@@ -7,7 +7,7 @@ interface PageTransitionProps {
 
 export function PageTransition({ children }: PageTransitionProps) {
   const location = useLocation();
-  const [isVisible, setIsVisible] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
   const isFirstMount = useRef(true);
 
   useEffect(() => {
@@ -16,23 +16,22 @@ export function PageTransition({ children }: PageTransitionProps) {
       return;
     }
 
-    // Scroll to top instantly on route change
-    window.scrollTo({ top: 0 });
+    // Scroll to top on route change
+    window.scrollTo({ top: 0, behavior: "instant" });
     
-    // Quick fade out then fade in
-    setIsVisible(false);
-    const timeout = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
-
-    return () => clearTimeout(timeout);
+    // Trigger animation by removing and re-adding class
+    const container = containerRef.current;
+    if (container) {
+      container.style.animation = "none";
+      container.offsetHeight; // Force reflow
+      container.style.animation = "";
+    }
   }, [location.pathname]);
 
   return (
     <div
-      className={`transition-opacity duration-200 ease-out ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
+      ref={containerRef}
+      className="animate-fade-in"
     >
       {children}
     </div>
