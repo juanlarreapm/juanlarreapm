@@ -37,6 +37,9 @@ const CaseStudyEditor = () => {
   const [approach, setApproach] = useState("");
   const [solution, setSolution] = useState("");
   const [outcome, setOutcome] = useState("");
+  const [executionCollaboration, setExecutionCollaboration] = useState("");
+  const [impactResults, setImpactResults] = useState("");
+  const [reflections, setReflections] = useState("");
 
   // Arrays
   const [metrics, setMetrics] = useState<string[]>([""]);
@@ -79,6 +82,9 @@ const CaseStudyEditor = () => {
       setApproach(caseStudy.approach || "");
       setSolution(caseStudy.solution || "");
       setOutcome(caseStudy.outcome || "");
+      setExecutionCollaboration(caseStudy.execution_collaboration || "");
+      setImpactResults(caseStudy.impact_results || "");
+      setReflections(caseStudy.reflections || "");
       setMetrics(caseStudy.metrics?.length ? caseStudy.metrics : [""]);
       setTags(caseStudy.tags?.length ? caseStudy.tags : [""]);
       setTeamComposition(caseStudy.team_composition?.length ? caseStudy.team_composition : [""]);
@@ -159,6 +165,9 @@ const CaseStudyEditor = () => {
         approach: approach || null,
         solution: solution || null,
         outcome: outcome || null,
+        execution_collaboration: executionCollaboration || null,
+        impact_results: impactResults || null,
+        reflections: reflections || null,
         metrics: filteredMetrics,
         tags: filteredTags,
         team_composition: filteredTeam,
@@ -375,60 +384,93 @@ const CaseStudyEditor = () => {
               <h2 className="font-display text-xl font-semibold">Content</h2>
 
               <div>
-                <Label htmlFor="problem">The Challenge / Problem</Label>
+                <Label htmlFor="problem">Problem & Context</Label>
                 <Textarea
                   id="problem"
                   value={problem}
                   onChange={(e) => setProblem(e.target.value)}
-                  placeholder="What was the problem you were solving?"
+                  placeholder="What was the problem and its context?"
                   rows={4}
                 />
               </div>
 
               <div>
-                <Label htmlFor="approach">My Approach</Label>
+                <Label htmlFor="approach">Research & Insights</Label>
                 <Textarea
                   id="approach"
                   value={approach}
                   onChange={(e) => setApproach(e.target.value)}
-                  placeholder="How did you approach solving this problem?"
+                  placeholder="What research did you conduct and what insights did you discover?"
                   rows={4}
                 />
               </div>
 
               <div>
-                <Label htmlFor="solution">The Solution</Label>
+                <Label htmlFor="solution">Solution Exploration and Tradeoffs</Label>
                 <Textarea
                   id="solution"
                   value={solution}
                   onChange={(e) => setSolution(e.target.value)}
-                  placeholder="What did you build or implement?"
+                  placeholder="What solutions did you explore and what tradeoffs did you consider?"
                   rows={4}
                 />
               </div>
 
               <div>
-                <Label htmlFor="outcome">Outcome</Label>
+                <Label htmlFor="outcome">Final Solution</Label>
                 <Textarea
                   id="outcome"
                   value={outcome}
                   onChange={(e) => setOutcome(e.target.value)}
-                  placeholder="What was the impact and what did you learn?"
+                  placeholder="What was the final solution you implemented?"
+                  rows={4}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="executionCollaboration">Execution and Collaboration</Label>
+                <Textarea
+                  id="executionCollaboration"
+                  value={executionCollaboration}
+                  onChange={(e) => setExecutionCollaboration(e.target.value)}
+                  placeholder="How did you execute and collaborate with stakeholders?"
+                  rows={4}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="impactResults">Impact and Results</Label>
+                <Textarea
+                  id="impactResults"
+                  value={impactResults}
+                  onChange={(e) => setImpactResults(e.target.value)}
+                  placeholder="What was the impact and measurable results?"
+                  rows={4}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="reflections">What I'd Do Differently</Label>
+                <Textarea
+                  id="reflections"
+                  value={reflections}
+                  onChange={(e) => setReflections(e.target.value)}
+                  placeholder="Looking back, what would you change or improve?"
                   rows={4}
                 />
               </div>
             </div>
 
-            {/* Metrics */}
+            {/* Goals & Success Metrics */}
             <div className="space-y-4 p-6 rounded-xl bg-card border border-border">
-              <h2 className="font-display text-xl font-semibold">Key Metrics</h2>
+              <h2 className="font-display text-xl font-semibold">Goals & Success Metrics</h2>
               <div className="space-y-2">
                 {metrics.map((metric, index) => (
                   <div key={index} className="flex gap-2">
                     <Input
                       value={metric}
                       onChange={(e) => metricsHelpers.update(index, e.target.value)}
-                      placeholder="e.g., 50% increase in conversion rate"
+                      placeholder="e.g., Reduce checkout abandonment by 20%"
                     />
                     {metrics.length > 1 && (
                       <Button
@@ -444,7 +486,7 @@ const CaseStudyEditor = () => {
                 ))}
                 <Button variant="outline" size="sm" onClick={metricsHelpers.add}>
                   <Plus className="mr-2 w-4 h-4" />
-                  Add Metric
+                  Add Goal/Metric
                 </Button>
               </div>
             </div>

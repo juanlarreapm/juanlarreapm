@@ -205,9 +205,16 @@ const CaseStudy = () => {
           )}
 
           {/* Execution and Collaboration */}
-          {(caseStudy.team_composition?.length > 0 || caseStudy.tools_used?.length > 0) && (
+          {(caseStudy.execution_collaboration || caseStudy.team_composition?.length > 0 || caseStudy.tools_used?.length > 0) && (
             <div className="space-y-6">
               <h2 className="font-display text-2xl font-bold text-primary">Execution and Collaboration</h2>
+              
+              {caseStudy.execution_collaboration && (
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.execution_collaboration}</p>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {caseStudy.team_composition && caseStudy.team_composition.length > 0 && (
                   <div className="space-y-4">
@@ -244,6 +251,26 @@ const CaseStudy = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Impact and Results */}
+          {caseStudy.impact_results && (
+            <div className="space-y-4">
+              <h2 className="font-display text-2xl font-bold text-primary">Impact and Results</h2>
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.impact_results}</p>
+              </div>
+            </div>
+          )}
+
+          {/* What I'd Do Differently */}
+          {caseStudy.reflections && (
+            <div className="space-y-4">
+              <h2 className="font-display text-2xl font-bold text-primary">What I'd Do Differently</h2>
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.reflections}</p>
               </div>
             </div>
           )}
