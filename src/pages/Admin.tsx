@@ -429,9 +429,9 @@ const Admin = () => {
                     <Briefcase className="w-4 h-4" />
                     Experiences
                   </TabsTrigger>
-                  <TabsTrigger value="projects" className="flex items-center gap-2">
+                  <TabsTrigger value="case-studies" className="flex items-center gap-2">
                     <FolderKanban className="w-4 h-4" />
-                    Projects
+                    Case Studies
                   </TabsTrigger>
                   <TabsTrigger value="toolkit" className="flex items-center gap-2">
                     <Wrench className="w-4 h-4" />
@@ -601,13 +601,13 @@ const Admin = () => {
               )}
             </TabsContent>
 
-            {/* Projects Tab */}
-            <TabsContent value="projects">
+            {/* Case Studies Tab */}
+            <TabsContent value="case-studies">
               <div className="flex justify-end mb-6">
                 <Button asChild className="bg-gradient-primary hover:opacity-90">
-                  <Link to="/admin/projects/new">
+                  <Link to="/admin/case-studies/new">
                     <Plus className="mr-2 w-4 h-4" />
-                    Add Project
+                    Add Case Study
                   </Link>
                 </Button>
               </div>
@@ -636,12 +636,20 @@ const Admin = () => {
                               Featured
                             </span>
                           )}
+                          {!project.published && (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-yellow-500/20 text-yellow-400">
+                              Draft
+                            </span>
+                          )}
                         </div>
                         <p className="text-primary">{project.company}</p>
+                        {project.industry && (
+                          <p className="text-sm text-muted-foreground">{project.industry}</p>
+                        )}
                       </div>
                       <div className="flex items-center gap-2">
                         <Button variant="ghost" size="icon" asChild>
-                          <Link to={`/admin/projects/${project.id}`}>
+                          <Link to={`/admin/case-studies/${project.id}`}>
                             <Edit className="w-4 h-4" />
                           </Link>
                         </Button>
@@ -659,11 +667,11 @@ const Admin = () => {
                 </div>
               ) : (
                 <div className="text-center py-16 rounded-xl bg-card border border-border">
-                  <p className="text-muted-foreground mb-4">No projects yet</p>
+                  <p className="text-muted-foreground mb-4">No case studies yet</p>
                   <Button asChild className="bg-gradient-primary hover:opacity-90">
-                    <Link to="/admin/projects/new">
+                    <Link to="/admin/case-studies/new">
                       <Plus className="mr-2 w-4 h-4" />
-                      Add your first project
+                      Add your first case study
                     </Link>
                   </Button>
                 </div>
