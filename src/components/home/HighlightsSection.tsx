@@ -9,7 +9,7 @@ const highlights = [
   {
     icon: TrendingUp,
     title: "Growth & Optimization",
-    description: "Data-driven approach to funnel optimization and user engagement improvements",
+    description: "Data-informed approach to funnel optimization and user engagement improvements",
   },
   {
     icon: Brain,
