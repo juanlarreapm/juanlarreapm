@@ -10,6 +10,7 @@ const baseNavLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Case Studies", href: "/case-studies" },
+  { name: "Lab", href: "/lab" },
   { name: "Toolkit", href: "/toolkit" },
   { name: "Contact", href: "/contact" },
 ];
@@ -43,8 +44,9 @@ export function Navbar() {
   const isBlogVisible = blogVisibilitySetting?.value === "true";
   
   // Build nav links dynamically based on blog visibility
+  // Insert Blog before Contact (which is now at index 5)
   const navLinks = isBlogVisible 
-    ? [...baseNavLinks.slice(0, 4), blogLink, baseNavLinks[4]] // Insert Blog before Contact
+    ? [...baseNavLinks.slice(0, 5), blogLink, baseNavLinks[5]]
     : baseNavLinks;
 
   return (

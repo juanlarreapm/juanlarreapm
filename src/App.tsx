@@ -11,6 +11,8 @@ import About from "./pages/About";
 import Toolkit from "./pages/Toolkit";
 import CaseStudies from "./pages/CaseStudies";
 import CaseStudy from "./pages/CaseStudy";
+import Lab from "./pages/Lab";
+import LabProject from "./pages/LabProject";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
@@ -19,6 +21,7 @@ import Admin from "./pages/Admin";
 import PostEditor from "./pages/PostEditor";
 import ExperienceEditor from "./pages/ExperienceEditor";
 import CaseStudyEditor from "./pages/CaseStudyEditor";
+import LabEditor from "./pages/LabEditor";
 import ToolkitItemEditor from "./pages/ToolkitItemEditor";
 import NotFound from "./pages/NotFound";
 
@@ -39,6 +42,8 @@ function AppContent() {
           <Route path="/case-studies/:slug" element={<CaseStudy />} />
           {/* Redirect old /projects route to /case-studies */}
           <Route path="/projects" element={<Navigate to="/case-studies" replace />} />
+          <Route path="/lab" element={<Lab />} />
+          <Route path="/lab/:slug" element={<LabProject />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
@@ -47,6 +52,7 @@ function AppContent() {
           <Route path="/admin/posts/:id" element={<PostEditor />} />
           <Route path="/admin/experiences/:id" element={<ExperienceEditor />} />
           <Route path="/admin/case-studies/:id" element={<CaseStudyEditor />} />
+          <Route path="/admin/lab/:id" element={<LabEditor />} />
           <Route path="/admin/toolkit/:type/:id" element={<ToolkitItemEditor />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

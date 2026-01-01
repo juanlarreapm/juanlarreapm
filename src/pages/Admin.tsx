@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key, BookOpen } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key, BookOpen, FlaskConical } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -77,6 +77,20 @@ const Admin = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("projects")
+        .select("*")
+        .order("display_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
+  // Lab projects query
+  const { data: labProjects, isLoading: labProjectsLoading } = useQuery({
+    queryKey: ["admin-lab-projects"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("lab_projects")
         .select("*")
         .order("display_order", { ascending: true });
       if (error) throw error;
@@ -260,6 +274,18 @@ const Admin = () => {
     onSuccess: (_, { table }) => {
       queryClient.invalidateQueries({ queryKey: [table] });
       toast({ title: "Item deleted" });
+    },
+  });
+
+  const deleteLabProjectMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("lab_projects").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-lab-projects"] });
+      queryClient.invalidateQueries({ queryKey: ["lab-projects"] });
+      toast({ title: "Lab project deleted" });
     },
   });
 
@@ -464,6 +490,10 @@ const Admin = () => {
                   <TabsTrigger value="case-studies" className="flex items-center gap-2">
                     <FolderKanban className="w-4 h-4" />
                     Case Studies
+                  </TabsTrigger>
+                  <TabsTrigger value="lab" className="flex items-center gap-2">
+                    <FlaskConical className="w-4 h-4" />
+                    Lab
                   </TabsTrigger>
                   <TabsTrigger value="toolkit" className="flex items-center gap-2">
                     <Wrench className="w-4 h-4" />
@@ -710,7 +740,89 @@ const Admin = () => {
               )}
             </TabsContent>
 
-            {/* Toolkit Tab */}
+            {/* Lab Tab */}
+            <TabsContent value="lab">
+              <div className="flex justify-end mb-6">
+                <Button asChild className="bg-gradient-primary hover:opacity-90">
+                  <Link to="/admin/lab/new">
+                    <Plus className="mr-2 w-4 h-4" />
+                    Add Lab Project
+                  </Link>
+                </Button>
+              </div>
+
+              {labProjectsLoading ? (
+                <div className="space-y-4">
+                  {[1, 2].map((i) => (
+                    <div key={i} className="p-6 rounded-xl bg-card border border-border animate-pulse">
+                      <div className="h-6 bg-muted rounded w-1/2 mb-3" />
+                      <div className="h-4 bg-muted rounded w-1/4" />
+                    </div>
+                  ))}
+                </div>
+              ) : labProjects && labProjects.length > 0 ? (
+                <div className="space-y-4">
+                  {labProjects.map((project) => (
+                    <div
+                      key={project.id}
+                      className="p-6 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-1">
+                          <h3 className="font-display font-semibold text-lg">{project.title}</h3>
+                          <span className={`px-2 py-0.5 text-xs rounded-full ${
+                            project.status === 'active' ? 'bg-green-500/20 text-green-400' :
+                            project.status === 'in progress' ? 'bg-yellow-500/20 text-yellow-400' :
+                            'bg-muted text-muted-foreground'
+                          }`}>
+                            {project.status}
+                          </span>
+                          {project.is_featured && (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-primary/20 text-primary">
+                              Featured
+                            </span>
+                          )}
+                          {!project.published && (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-yellow-500/20 text-yellow-400">
+                              Draft
+                            </span>
+                          )}
+                        </div>
+                        {project.tagline && (
+                          <p className="text-sm text-muted-foreground">{project.tagline}</p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="icon" asChild>
+                          <Link to={`/admin/lab/${project.id}`}>
+                            <Edit className="w-4 h-4" />
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => deleteLabProjectMutation.mutate(project.id)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 rounded-xl bg-card border border-border">
+                  <p className="text-muted-foreground mb-4">No lab projects yet</p>
+                  <Button asChild className="bg-gradient-primary hover:opacity-90">
+                    <Link to="/admin/lab/new">
+                      <Plus className="mr-2 w-4 h-4" />
+                      Add your first lab project
+                    </Link>
+                  </Button>
+                </div>
+              )}
+            </TabsContent>
+
             <TabsContent value="toolkit">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Tools */}
