@@ -6,7 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -36,6 +38,9 @@ const Admin = () => {
     message: string;
     created_at: string;
   } | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
 
   // Blog posts query
   const { data: posts, isLoading: postsLoading } = useQuery({
@@ -354,6 +359,30 @@ const Admin = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/auth");
+  };
+
+  const handlePasswordChange = async () => {
+    if (newPassword !== confirmPassword) {
+      toast({ title: "Error", description: "Passwords don't match", variant: "destructive" });
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast({ title: "Error", description: "Password must be at least 6 characters", variant: "destructive" });
+      return;
+    }
+
+    setChangingPassword(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      toast({ title: "Password updated!", description: "Your password has been changed successfully." });
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } finally {
+      setChangingPassword(false);
+    }
   };
 
   if (loading) {
@@ -979,6 +1008,49 @@ const Admin = () => {
                     <Upload className="mr-2 w-4 h-4" />
                     {uploading ? "Uploading..." : resumeSetting?.value ? "Replace Resume" : "Upload Resume"}
                   </Button>
+                </div>
+
+                {/* Change Password */}
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <Key className="w-5 h-5 text-primary" />
+                    Change Password
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Update your account password.
+                  </p>
+                  
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="newPassword">New Password</Label>
+                      <Input
+                        id="newPassword"
+                        type="password"
+                        placeholder="••••••••"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        minLength={6}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword">Confirm Password</Label>
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="••••••••"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        minLength={6}
+                      />
+                    </div>
+                    <Button
+                      onClick={handlePasswordChange}
+                      disabled={changingPassword || !newPassword || !confirmPassword}
+                      className="bg-gradient-primary hover:opacity-90"
+                    >
+                      {changingPassword ? "Updating..." : "Update Password"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </TabsContent>
