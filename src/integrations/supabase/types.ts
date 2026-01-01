@@ -145,7 +145,9 @@ export type Database = {
       experiences: {
         Row: {
           company: string
+          company_url: string | null
           created_at: string
+          description: string | null
           display_order: number
           highlights: string[]
           id: string
@@ -155,7 +157,9 @@ export type Database = {
         }
         Insert: {
           company: string
+          company_url?: string | null
           created_at?: string
+          description?: string | null
           display_order?: number
           highlights?: string[]
           id?: string
@@ -165,7 +169,9 @@ export type Database = {
         }
         Update: {
           company?: string
+          company_url?: string | null
           created_at?: string
+          description?: string | null
           display_order?: number
           highlights?: string[]
           id?: string

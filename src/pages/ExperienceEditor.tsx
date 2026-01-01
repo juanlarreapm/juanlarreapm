@@ -21,6 +21,8 @@ const ExperienceEditor = () => {
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [period, setPeriod] = useState("");
+  const [description, setDescription] = useState("");
+  const [companyUrl, setCompanyUrl] = useState("");
   const [highlights, setHighlights] = useState<string[]>([""]);
   const [displayOrder, setDisplayOrder] = useState(0);
 
@@ -44,6 +46,8 @@ const ExperienceEditor = () => {
       setCompany(experience.company);
       setRole(experience.role);
       setPeriod(experience.period);
+      setDescription(experience.description || "");
+      setCompanyUrl(experience.company_url || "");
       setHighlights(experience.highlights?.length ? experience.highlights : [""]);
       setDisplayOrder(experience.display_order);
     }
@@ -56,6 +60,8 @@ const ExperienceEditor = () => {
         company,
         role,
         period,
+        description: description.trim() || null,
+        company_url: companyUrl.trim() || null,
         highlights: filteredHighlights,
         display_order: displayOrder,
       };
@@ -146,6 +152,27 @@ const ExperienceEditor = () => {
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
                 placeholder="e.g., 2021 - Present"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="companyUrl">Company Website (optional)</Label>
+              <Input
+                id="companyUrl"
+                value={companyUrl}
+                onChange={(e) => setCompanyUrl(e.target.value)}
+                placeholder="https://company.com"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="description">Description (optional)</Label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Brief 1-2 sentence description of the company or your role"
+                className="w-full min-h-[80px] px-3 py-2 rounded-md border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
               />
             </div>
 
