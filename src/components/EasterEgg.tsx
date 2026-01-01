@@ -111,8 +111,7 @@ export function EasterEgg({ isActive, onClose }: EasterEggProps) {
 
               <div className="bg-secondary/50 rounded-xl p-4 mb-6 border border-border">
                 <p className="text-foreground italic">
-                  "I once debugged a production issue at 3 AM while on vacation in Bali. 
-                  The fix? A missing semicolon. Worth it for the sunrise view though! 🌅"
+                  "I'm hopelessly addicted to running. I'm not particularly fast, but aggressively consistent. I've run everything from 5Ks to marathons, which means I enjoy both short suffering and long, existential suffering. In 2026, I'm chasing a sub 20 min 5K, mostly to prove that mileage addiction eventually turns into speed (right?) 🏃‍♂️"
                 </p>
               </div>
 
