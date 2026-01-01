@@ -1,9 +1,8 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, Briefcase, Wrench, GitBranch, Lightbulb, ExternalLink } from "lucide-react";
+import { Download, Briefcase, ExternalLink } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getIcon } from "@/lib/iconMap";
 
 const About = () => {
   const { data: experiences, isLoading: experiencesLoading } = useQuery({
@@ -11,42 +10,6 @@ const About = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("experiences")
-        .select("*")
-        .order("display_order", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const { data: tools, isLoading: toolsLoading } = useQuery({
-    queryKey: ["toolkit_tools"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("toolkit_tools")
-        .select("*")
-        .order("display_order", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const { data: methodologies, isLoading: methodologiesLoading } = useQuery({
-    queryKey: ["toolkit_methodologies"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("toolkit_methodologies")
-        .select("*")
-        .order("display_order", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const { data: skills, isLoading: skillsLoading } = useQuery({
-    queryKey: ["toolkit_skills"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("toolkit_skills")
         .select("*")
         .order("display_order", { ascending: true });
       if (error) throw error;
@@ -93,8 +56,6 @@ const About = () => {
       return data;
     },
   });
-
-  const isLoading = experiencesLoading || toolsLoading || methodologiesLoading || skillsLoading;
 
   return (
     <Layout>
@@ -182,74 +143,6 @@ const About = () => {
             )}
           </div>
 
-          <div className="max-w-4xl mx-auto mt-20">
-            <h2 className="font-display text-2xl font-bold mb-8">My Toolkit</h2>
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="p-6 rounded-xl bg-card border border-border animate-pulse">
-                    <div className="h-6 bg-muted rounded w-1/2 mb-4" />
-                    <div className="flex flex-wrap gap-2">
-                      {[1, 2, 3, 4].map((j) => (
-                        <div key={j} className="h-8 bg-muted rounded w-20" />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                    <Wrench className="w-5 h-5 text-primary" />Tools
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {tools?.map((tool) => {
-                      const Icon = getIcon(tool.icon_name);
-                      return (
-                        <span key={tool.id} className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm flex items-center gap-1.5">
-                          <Icon className="w-3.5 h-3.5" />
-                          {tool.name}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                    <GitBranch className="w-5 h-5 text-primary" />Methodologies
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {methodologies?.map((method) => {
-                      const Icon = getIcon(method.icon_name);
-                      return (
-                        <span key={method.id} className="px-3 py-1.5 rounded-lg bg-secondary text-foreground text-sm flex items-center gap-1.5">
-                          <Icon className="w-3.5 h-3.5" />
-                          {method.name}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="p-6 rounded-xl bg-card border border-border">
-                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                    <Lightbulb className="w-5 h-5 text-primary" />Skills
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {skills?.map((skill) => {
-                      const Icon = getIcon(skill.icon_name);
-                      return (
-                        <span key={skill.id} className="px-3 py-1.5 rounded-lg bg-accent/10 text-accent-foreground text-sm flex items-center gap-1.5">
-                          <Icon className="w-3.5 h-3.5" />
-                          {skill.name}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </section>
     </Layout>
