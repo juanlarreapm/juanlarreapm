@@ -1,4 +1,4 @@
-import { Rocket, TrendingUp, Brain, Users } from "lucide-react";
+import { Rocket, TrendingUp, Hammer, Users } from "lucide-react";
 
 const highlights = [
   {
@@ -17,7 +17,7 @@ const highlights = [
     description: "Versatile PM experience across enterprise and consumer-facing products",
   },
   {
-    icon: Brain,
+    icon: Hammer,
     title: "Hands-On Execution",
     description:
       "I have a strong bias for action, building prototypes, shipping scrappy MVPs, and learning in production instead of PowerPoint",
