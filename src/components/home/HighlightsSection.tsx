@@ -18,7 +18,7 @@ const highlights = [
   },
   {
     icon: Brain,
-    title: "AI/ML Exploration",
+    title: "AI/ML Exploratio",
     description: "Building prototypes and diving deep into machine learning applications",
   },
 ];
@@ -38,19 +38,14 @@ export function HighlightsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
           {highlights.map((item, index) => (
-            <div
-              key={item.title}
-              className="group p-6 rounded-xl bg-card border border-border card-hover"
-            >
+            <div key={item.title} className="group p-6 rounded-xl bg-card border border-border card-hover">
               <div className="w-12 h-12 rounded-lg bg-gradient-primary flex items-center justify-center mb-4 group-hover:animate-pulse-glow transition-all icon-bounce">
                 <item.icon className="w-6 h-6 text-primary-foreground" />
               </div>
               <h3 className="font-display font-semibold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">
                 {item.title}
               </h3>
-              <p className="text-sm text-muted-foreground">
-                {item.description}
-              </p>
+              <p className="text-sm text-muted-foreground">{item.description}</p>
             </div>
           ))}
         </div>
