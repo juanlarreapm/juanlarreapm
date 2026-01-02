@@ -36,9 +36,7 @@ export function HeroSection() {
           </p>
 
           {/* Description */}
-          <p className="text-lg text-muted-foreground/80 max-w-xl mx-auto mb-10 animate-fade-in-up delay-300">
-            From 0-to-1 launches to growth optimization. Currently exploring the frontiers of AI/ML and building prototypes along the way.
-          </p>
+          <p className="text-lg text-muted-foreground/80 max-w-xl mx-auto mb-10 animate-fade-in-up delay-300">From 0-to-1 launches to growth optimization, I love building cool things with cool people. </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-400">
