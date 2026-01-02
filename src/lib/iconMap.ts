@@ -52,6 +52,7 @@ import {
   Briefcase,
   Award,
   BookOpen,
+  Calendar,
   type LucideIcon,
 } from "lucide-react";
 
