@@ -89,10 +89,12 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">© {currentYear} Juan Larrea. All rights reserved.</p>
-          <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with <span className="heart-pulse text-destructive cursor-pointer">❤️</span> and lots of ☕
-            <span className="ml-2 text-xs opacity-50 hidden sm:inline">(psst... try the classic code)</span>
-          </p>
+          <div className="text-sm text-muted-foreground text-center md:text-right">
+            <p className="flex items-center justify-center md:justify-end gap-1">
+              Made with <span className="heart-pulse text-destructive cursor-pointer">❤️</span> and lots of ☕
+            </p>
+            <span className="text-xs opacity-50 hidden sm:inline">(psst... try the classic code)</span>
+          </div>
         </div>
       </div>
     </footer>
