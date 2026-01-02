@@ -126,10 +126,10 @@ const About = () => {
                     {exp.description && (
                       <p className="text-sm text-muted-foreground mb-3 italic">{exp.description}</p>
                     )}
-                    <ul className="space-y-1">
+                    <ul className="space-y-2">
                       {exp.highlights?.map((h, j) => (
-                        <li key={j} className="text-sm text-muted-foreground flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />{h}
+                        <li key={j} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />{h}
                         </li>
                       ))}
                     </ul>
