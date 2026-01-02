@@ -42,14 +42,14 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-400">
-            <Button asChild variant="outline" size="lg" className="border-border hover:bg-secondary btn-ripple">
+            <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold px-8 hover-glow btn-ripple group">
               <Link to="/about">
-                My Experience
+                <span className="group-hover:text-shimmer">My Experience</span>
               </Link>
             </Button>
-            <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold px-8 hover-glow btn-ripple group">
+            <Button asChild variant="outline" size="lg" className="border-border hover:bg-secondary btn-ripple">
               <Link to="/projects">
-                <span className="group-hover:text-shimmer">View My Work</span>
+                View My Work
               </Link>
             </Button>
           </div>
