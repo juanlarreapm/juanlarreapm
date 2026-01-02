@@ -18,8 +18,9 @@ const highlights = [
   },
   {
     icon: Brain,
-    title: "AI/ML Exploratio",
-    description: "Building prototypes and diving deep into machine learning applications",
+    title: "Hands-On Execution",
+    description:
+      "I have a strong bias for action, building prototypes, shipping scrappy MVPs, and learning in production instead of PowerPoint",
   },
 ];
 
