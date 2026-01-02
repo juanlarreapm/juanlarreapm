@@ -111,6 +111,7 @@ export const iconMap: Record<string, LucideIcon> = {
   Briefcase,
   Award,
   BookOpen,
+  Calendar,
 };
 
 // List of available icon names for dropdowns
