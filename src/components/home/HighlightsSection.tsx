@@ -12,14 +12,14 @@ const highlights = [
     description: "Data-informed approach to funnel optimization and user engagement improvements",
   },
   {
-    icon: Brain,
-    title: "AI/ML Exploration",
-    description: "Building prototypes and diving deep into machine learning applications",
-  },
-  {
     icon: Users,
     title: "B2B & B2C Experience",
     description: "Versatile PM experience across enterprise and consumer-facing products",
+  },
+  {
+    icon: Brain,
+    title: "AI/ML Exploration",
+    description: "Building prototypes and diving deep into machine learning applications",
   },
 ];
 
