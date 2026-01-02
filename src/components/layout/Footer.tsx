@@ -17,7 +17,7 @@ const blogLink = { name: "Blog", href: "/blog" };
 const socialLinks = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/juanlarreapm/", icon: Linkedin },
   { name: "GitHub", href: "https://github.com/juanlarreapm", icon: Github },
-  { name: "Email", href: "mailto:contact@juanlarrea.dev", icon: Mail },
+  { name: "Email", href: "mailto:juanlarreapm@gmail.com", icon: Mail },
 ];
 
 export function Footer() {
@@ -26,11 +26,7 @@ export function Footer() {
   const { data: blogVisibilitySetting } = useQuery({
     queryKey: ["site_settings", "blog_visible"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("site_settings")
-        .select("*")
-        .eq("key", "blog_visible")
-        .maybeSingle();
+      const { data, error } = await supabase.from("site_settings").select("*").eq("key", "blog_visible").maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -38,10 +34,8 @@ export function Footer() {
   });
 
   const isBlogVisible = blogVisibilitySetting?.value === "true";
-  
-  const navLinks = isBlogVisible 
-    ? [...baseNavLinks.slice(0, 5), blogLink, baseNavLinks[5]]
-    : baseNavLinks;
+
+  const navLinks = isBlogVisible ? [...baseNavLinks.slice(0, 5), blogLink, baseNavLinks[5]] : baseNavLinks;
 
   return (
     <footer className="border-t border-border bg-card/50">
@@ -53,7 +47,7 @@ export function Footer() {
               Juan Larrea
             </Link>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">
-              Senior Product Manager passionate about building impactful products and exploring the frontiers of AI/ML.
+              Senior Product Manager passionate about building cool things with cool people.
             </p>
           </div>
 
@@ -61,10 +55,10 @@ export function Footer() {
           <div>
             <h4 className="font-display font-semibold text-foreground mb-4">Navigation</h4>
             <nav className="flex flex-col gap-2">
-              {navLinks.map(link => (
-                <Link 
-                  key={link.name} 
-                  to={link.href} 
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   {link.name}
@@ -77,13 +71,13 @@ export function Footer() {
           <div>
             <h4 className="font-display font-semibold text-foreground mb-4">Connect</h4>
             <div className="flex gap-4">
-              {socialLinks.map(link => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-all hover-glow" 
+              {socialLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-all hover-glow"
                   aria-label={link.name}
                 >
                   <link.icon className="w-5 h-5" />
@@ -94,9 +88,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            © {currentYear} Juan Larrea. All rights reserved.
-          </p>
+          <p className="text-sm text-muted-foreground">© {currentYear} Juan Larrea. All rights reserved.</p>
           <p className="text-sm text-muted-foreground flex items-center gap-1">
             Made with <span className="heart-pulse text-destructive cursor-pointer">❤️</span> and lots of ☕
             <span className="ml-2 text-xs opacity-50 hidden sm:inline">(psst... try the classic code)</span>

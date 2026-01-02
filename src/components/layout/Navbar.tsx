@@ -20,7 +20,7 @@ const blogLink = { name: "Blog", href: "/blog" };
 const socialLinks = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/juanlarreapm/", icon: Linkedin },
   { name: "GitHub", href: "https://github.com/juanlarreapm", icon: Github },
-  { name: "Email", href: "mailto:contact@juanlarrea.dev", icon: Mail },
+  { name: "Email", href: "mailto:juanlarreapm@gmail.com", icon: Mail },
 ];
 
 export function Navbar() {
@@ -30,11 +30,7 @@ export function Navbar() {
   const { data: blogVisibilitySetting } = useQuery({
     queryKey: ["site_settings", "blog_visible"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("site_settings")
-        .select("*")
-        .eq("key", "blog_visible")
-        .maybeSingle();
+      const { data, error } = await supabase.from("site_settings").select("*").eq("key", "blog_visible").maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -42,22 +38,17 @@ export function Navbar() {
   });
 
   const isBlogVisible = blogVisibilitySetting?.value === "true";
-  
+
   // Build nav links dynamically based on blog visibility
   // Insert Blog before Contact (which is now at index 5)
-  const navLinks = isBlogVisible 
-    ? [...baseNavLinks.slice(0, 5), blogLink, baseNavLinks[5]]
-    : baseNavLinks;
+  const navLinks = isBlogVisible ? [...baseNavLinks.slice(0, 5), blogLink, baseNavLinks[5]] : baseNavLinks;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link 
-            to="/" 
-            className="font-display font-bold text-xl text-gradient logo-spin"
-          >
+          <Link to="/" className="font-display font-bold text-xl text-gradient logo-spin">
             JL
           </Link>
 
@@ -69,9 +60,7 @@ export function Navbar() {
                 to={link.href}
                 className={cn(
                   "text-sm font-medium transition-colors link-underline",
-                  location.pathname === link.href
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                  location.pathname === link.href ? "text-primary" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {link.name}
@@ -118,9 +107,7 @@ export function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className={cn(
                     "text-sm font-medium transition-colors px-2 py-2",
-                    location.pathname === link.href
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
+                    location.pathname === link.href ? "text-primary" : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {link.name}
