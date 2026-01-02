@@ -19,8 +19,7 @@ const highlights = [
   {
     icon: Hammer,
     title: "Hands-On Execution",
-    description:
-      "I have a strong bias for action, building prototypes, shipping scrappy MVPs, and learning in production instead of PowerPoint",
+    description: "Strong bias for action, building prototypes, shipping scrappy MVPs, and learning in production",
   },
 ];
 
