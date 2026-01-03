@@ -518,7 +518,7 @@ const Admin = () => {
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             {/* Mobile dropdown navigation */}
-            <div className="md:hidden mb-6">
+            <div className="lg:hidden mb-6">
               <Select value={activeTab} onValueChange={setActiveTab}>
                 <SelectTrigger className="w-full bg-card">
                   <div className="flex items-center gap-2">
@@ -589,7 +589,7 @@ const Admin = () => {
             </div>
 
             {/* Desktop tabs navigation */}
-            <TabsList className="mb-6 hidden md:flex">
+            <TabsList className="mb-6 hidden lg:flex">
               <TabsTrigger value="posts" className="flex items-center gap-2">
                 <FileText className="w-4 h-4" />
                 Blog Posts
