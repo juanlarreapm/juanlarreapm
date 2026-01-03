@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key, BookOpen, FlaskConical, BarChart3 } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key, BookOpen, FlaskConical, BarChart3, Menu } from "lucide-react";
 import { AnalyticsTab } from "@/components/admin/AnalyticsTab";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { useAdminRole } from "@/hooks/useAdminRole";
@@ -29,6 +36,7 @@ const Admin = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [activeTab, setActiveTab] = useState("posts");
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [bio, setBio] = useState("");
   const [savingBio, setSavingBio] = useState(false);
@@ -508,53 +516,118 @@ const Admin = () => {
             </Button>
           </div>
 
-          <Tabs defaultValue="posts" className="w-full">
-            <TabsList className="mb-6 flex-wrap h-auto gap-1 p-1 overflow-x-auto max-w-full">
-              <TabsTrigger value="posts" className="flex items-center gap-2 text-xs sm:text-sm">
-                <FileText className="w-4 h-4 shrink-0" />
-                <span className="hidden sm:inline">Blog Posts</span>
-                <span className="sm:hidden">Posts</span>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            {/* Mobile dropdown navigation */}
+            <div className="md:hidden mb-6">
+              <Select value={activeTab} onValueChange={setActiveTab}>
+                <SelectTrigger className="w-full bg-card">
+                  <div className="flex items-center gap-2">
+                    <Menu className="w-4 h-4" />
+                    <SelectValue placeholder="Select section" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="posts">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4" />
+                      Blog Posts
+                    </div>
+                  </SelectItem>
+                  {isAdmin && (
+                    <>
+                      <SelectItem value="experiences">
+                        <div className="flex items-center gap-2">
+                          <Briefcase className="w-4 h-4" />
+                          Experiences
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="case-studies">
+                        <div className="flex items-center gap-2">
+                          <FolderKanban className="w-4 h-4" />
+                          Case Studies
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="lab">
+                        <div className="flex items-center gap-2">
+                          <FlaskConical className="w-4 h-4" />
+                          Lab
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="toolkit">
+                        <div className="flex items-center gap-2">
+                          <Wrench className="w-4 h-4" />
+                          Toolkit
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="messages">
+                        <div className="flex items-center gap-2">
+                          <Mail className="w-4 h-4" />
+                          Messages
+                          {contactMessages && contactMessages.length > 0 && (
+                            <span className="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-primary/20 text-primary">
+                              {contactMessages.length}
+                            </span>
+                          )}
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="settings">
+                        <div className="flex items-center gap-2">
+                          <Settings className="w-4 h-4" />
+                          Settings
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="analytics">
+                        <div className="flex items-center gap-2">
+                          <BarChart3 className="w-4 h-4" />
+                          Analytics
+                        </div>
+                      </SelectItem>
+                    </>
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Desktop tabs navigation */}
+            <TabsList className="mb-6 hidden md:flex">
+              <TabsTrigger value="posts" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                Blog Posts
               </TabsTrigger>
               {isAdmin && (
                 <>
-                  <TabsTrigger value="experiences" className="flex items-center gap-2 text-xs sm:text-sm">
-                    <Briefcase className="w-4 h-4 shrink-0" />
-                    <span className="hidden sm:inline">Experiences</span>
-                    <span className="sm:hidden">Exp</span>
+                  <TabsTrigger value="experiences" className="flex items-center gap-2">
+                    <Briefcase className="w-4 h-4" />
+                    Experiences
                   </TabsTrigger>
-                  <TabsTrigger value="case-studies" className="flex items-center gap-2 text-xs sm:text-sm">
-                    <FolderKanban className="w-4 h-4 shrink-0" />
-                    <span className="hidden sm:inline">Case Studies</span>
-                    <span className="sm:hidden">Cases</span>
+                  <TabsTrigger value="case-studies" className="flex items-center gap-2">
+                    <FolderKanban className="w-4 h-4" />
+                    Case Studies
                   </TabsTrigger>
-                  <TabsTrigger value="lab" className="flex items-center gap-2 text-xs sm:text-sm">
-                    <FlaskConical className="w-4 h-4 shrink-0" />
+                  <TabsTrigger value="lab" className="flex items-center gap-2">
+                    <FlaskConical className="w-4 h-4" />
                     Lab
                   </TabsTrigger>
-                  <TabsTrigger value="toolkit" className="flex items-center gap-2 text-xs sm:text-sm">
-                    <Wrench className="w-4 h-4 shrink-0" />
-                    <span className="hidden sm:inline">Toolkit</span>
-                    <span className="sm:hidden">Tools</span>
+                  <TabsTrigger value="toolkit" className="flex items-center gap-2">
+                    <Wrench className="w-4 h-4" />
+                    Toolkit
                   </TabsTrigger>
-                  <TabsTrigger value="messages" className="flex items-center gap-2 text-xs sm:text-sm">
-                    <Mail className="w-4 h-4 shrink-0" />
-                    <span className="hidden sm:inline">Messages</span>
-                    <span className="sm:hidden">Msgs</span>
+                  <TabsTrigger value="messages" className="flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    Messages
                     {contactMessages && contactMessages.length > 0 && (
                       <span className="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-primary/20 text-primary">
                         {contactMessages.length}
                       </span>
                     )}
                   </TabsTrigger>
-                  <TabsTrigger value="settings" className="flex items-center gap-2 text-xs sm:text-sm">
-                    <Settings className="w-4 h-4 shrink-0" />
-                    <span className="hidden sm:inline">Settings</span>
-                    <span className="sm:hidden">Set</span>
+                  <TabsTrigger value="settings" className="flex items-center gap-2">
+                    <Settings className="w-4 h-4" />
+                    Settings
                   </TabsTrigger>
-                  <TabsTrigger value="analytics" className="flex items-center gap-2 text-xs sm:text-sm">
-                    <BarChart3 className="w-4 h-4 shrink-0" />
-                    <span className="hidden sm:inline">Analytics</span>
-                    <span className="sm:hidden">Stats</span>
+                  <TabsTrigger value="analytics" className="flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4" />
+                    Analytics
                   </TabsTrigger>
                 </>
               )}
