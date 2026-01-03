@@ -1,7 +1,25 @@
 import { Link } from "react-router-dom";
 import { Sparkles, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+
 export function HeroSection() {
+  const { data: openToOpportunitiesSetting } = useQuery({
+    queryKey: ["site_settings", "open_to_opportunities"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "open_to_opportunities")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const showBadge = openToOpportunitiesSetting?.value === "true";
+
   const scrollToHighlights = () => {
     document.getElementById("highlights")?.scrollIntoView({
       behavior: "smooth"
@@ -17,12 +35,14 @@ export function HeroSection() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border mb-8 animate-fade-in">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm text-muted-foreground">
-              Open to new PM opportunities
-            </span>
-          </div>
+          {showBadge && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border mb-8 animate-fade-in">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm text-muted-foreground">
+                Open to new PM opportunities
+              </span>
+            </div>
+          )}
 
           {/* Main heading */}
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-in-up">
