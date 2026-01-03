@@ -211,6 +211,20 @@ const Admin = () => {
     enabled: !!user && isAdmin,
   });
 
+  const { data: openToOpportunitiesSetting } = useQuery({
+    queryKey: ["site_settings", "open_to_opportunities"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "open_to_opportunities")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
   const toggleBlogVisibility = async () => {
     const currentValue = blogVisibilitySetting?.value === "true";
     const newValue = !currentValue;
@@ -224,6 +238,24 @@ const Admin = () => {
 
       queryClient.invalidateQueries({ queryKey: ["site_settings", "blog_visible"] });
       toast({ title: newValue ? "Blog is now visible" : "Blog is now hidden" });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const toggleOpenToOpportunities = async () => {
+    const currentValue = openToOpportunitiesSetting?.value === "true";
+    const newValue = !currentValue;
+    
+    try {
+      const { error } = await supabase
+        .from("site_settings")
+        .upsert({ key: "open_to_opportunities", value: newValue.toString() }, { onConflict: "key" });
+
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "open_to_opportunities"] });
+      toast({ title: newValue ? "Open to Opportunities badge is now visible" : "Open to Opportunities badge is now hidden" });
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     }
@@ -1160,6 +1192,37 @@ const Admin = () => {
                     <Upload className="mr-2 w-4 h-4" />
                     {uploading ? "Uploading..." : resumeSetting?.value ? "Replace Resume" : "Upload Resume"}
                   </Button>
+                </div>
+
+                {/* Open to Opportunities */}
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <Briefcase className="w-5 h-5 text-primary" />
+                    Open to Opportunities
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Show or hide the "Open to new PM opportunities" badge on the homepage.
+                  </p>
+                  
+                  <div className="flex items-center gap-4">
+                    <Button
+                      variant={openToOpportunitiesSetting?.value === "true" ? "default" : "outline"}
+                      onClick={toggleOpenToOpportunities}
+                      className={openToOpportunitiesSetting?.value === "true" ? "bg-gradient-primary hover:opacity-90" : ""}
+                    >
+                      {openToOpportunitiesSetting?.value === "true" ? (
+                        <>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Badge Visible
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff className="w-4 h-4 mr-2" />
+                          Badge Hidden
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
 
                 {/* Blog Visibility */}
