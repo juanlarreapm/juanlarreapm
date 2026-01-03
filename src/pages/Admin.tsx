@@ -509,45 +509,52 @@ const Admin = () => {
           </div>
 
           <Tabs defaultValue="posts" className="w-full">
-            <TabsList className="mb-6">
-              <TabsTrigger value="posts" className="flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                Blog Posts
+            <TabsList className="mb-6 flex-wrap h-auto gap-1 p-1 overflow-x-auto max-w-full">
+              <TabsTrigger value="posts" className="flex items-center gap-2 text-xs sm:text-sm">
+                <FileText className="w-4 h-4 shrink-0" />
+                <span className="hidden sm:inline">Blog Posts</span>
+                <span className="sm:hidden">Posts</span>
               </TabsTrigger>
               {isAdmin && (
                 <>
-                  <TabsTrigger value="experiences" className="flex items-center gap-2">
-                    <Briefcase className="w-4 h-4" />
-                    Experiences
+                  <TabsTrigger value="experiences" className="flex items-center gap-2 text-xs sm:text-sm">
+                    <Briefcase className="w-4 h-4 shrink-0" />
+                    <span className="hidden sm:inline">Experiences</span>
+                    <span className="sm:hidden">Exp</span>
                   </TabsTrigger>
-                  <TabsTrigger value="case-studies" className="flex items-center gap-2">
-                    <FolderKanban className="w-4 h-4" />
-                    Case Studies
+                  <TabsTrigger value="case-studies" className="flex items-center gap-2 text-xs sm:text-sm">
+                    <FolderKanban className="w-4 h-4 shrink-0" />
+                    <span className="hidden sm:inline">Case Studies</span>
+                    <span className="sm:hidden">Cases</span>
                   </TabsTrigger>
-                  <TabsTrigger value="lab" className="flex items-center gap-2">
-                    <FlaskConical className="w-4 h-4" />
+                  <TabsTrigger value="lab" className="flex items-center gap-2 text-xs sm:text-sm">
+                    <FlaskConical className="w-4 h-4 shrink-0" />
                     Lab
                   </TabsTrigger>
-                  <TabsTrigger value="toolkit" className="flex items-center gap-2">
-                    <Wrench className="w-4 h-4" />
-                    Toolkit
+                  <TabsTrigger value="toolkit" className="flex items-center gap-2 text-xs sm:text-sm">
+                    <Wrench className="w-4 h-4 shrink-0" />
+                    <span className="hidden sm:inline">Toolkit</span>
+                    <span className="sm:hidden">Tools</span>
                   </TabsTrigger>
-                  <TabsTrigger value="messages" className="flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    Messages
+                  <TabsTrigger value="messages" className="flex items-center gap-2 text-xs sm:text-sm">
+                    <Mail className="w-4 h-4 shrink-0" />
+                    <span className="hidden sm:inline">Messages</span>
+                    <span className="sm:hidden">Msgs</span>
                     {contactMessages && contactMessages.length > 0 && (
                       <span className="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-primary/20 text-primary">
                         {contactMessages.length}
                       </span>
                     )}
                   </TabsTrigger>
-                  <TabsTrigger value="settings" className="flex items-center gap-2">
-                    <Settings className="w-4 h-4" />
-                    Settings
+                  <TabsTrigger value="settings" className="flex items-center gap-2 text-xs sm:text-sm">
+                    <Settings className="w-4 h-4 shrink-0" />
+                    <span className="hidden sm:inline">Settings</span>
+                    <span className="sm:hidden">Set</span>
                   </TabsTrigger>
-                  <TabsTrigger value="analytics" className="flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
-                    Analytics
+                  <TabsTrigger value="analytics" className="flex items-center gap-2 text-xs sm:text-sm">
+                    <BarChart3 className="w-4 h-4 shrink-0" />
+                    <span className="hidden sm:inline">Analytics</span>
+                    <span className="sm:hidden">Stats</span>
                   </TabsTrigger>
                 </>
               )}
