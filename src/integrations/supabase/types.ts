@@ -22,6 +22,7 @@ export type Database = {
           metadata: Json | null
           page_path: string | null
           session_id: string | null
+          visitor_id: string | null
         }
         Insert: {
           created_at?: string
@@ -30,6 +31,7 @@ export type Database = {
           metadata?: Json | null
           page_path?: string | null
           session_id?: string | null
+          visitor_id?: string | null
         }
         Update: {
           created_at?: string
@@ -38,6 +40,7 @@ export type Database = {
           metadata?: Json | null
           page_path?: string | null
           session_id?: string | null
+          visitor_id?: string | null
         }
         Relationships: []
       }
