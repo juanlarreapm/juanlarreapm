@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { usePageTracking } from "@/hooks/usePageTracking";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
+  usePageTracking();
   return (
     <div className="min-h-screen flex flex-col noise-overlay">
       <Navbar />
