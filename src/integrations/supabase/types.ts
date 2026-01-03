@@ -41,6 +41,51 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_snapshots: {
+        Row: {
+          avg_pages_per_visit: number
+          avg_session_duration_seconds: number
+          bounce_rate: number
+          countries: Json
+          created_at: string
+          devices: Json
+          id: string
+          snapshot_date: string
+          top_pages: Json
+          total_pageviews: number
+          total_visitors: number
+          traffic_sources: Json
+        }
+        Insert: {
+          avg_pages_per_visit?: number
+          avg_session_duration_seconds?: number
+          bounce_rate?: number
+          countries?: Json
+          created_at?: string
+          devices?: Json
+          id?: string
+          snapshot_date?: string
+          top_pages?: Json
+          total_pageviews?: number
+          total_visitors?: number
+          traffic_sources?: Json
+        }
+        Update: {
+          avg_pages_per_visit?: number
+          avg_session_duration_seconds?: number
+          bounce_rate?: number
+          countries?: Json
+          created_at?: string
+          devices?: Json
+          id?: string
+          snapshot_date?: string
+          top_pages?: Json
+          total_pageviews?: number
+          total_visitors?: number
+          traffic_sources?: Json
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
