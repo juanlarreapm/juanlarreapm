@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key, BookOpen, FlaskConical } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, Briefcase, FolderKanban, Wrench, FileText, Settings, Upload, File, User, Image, Mail, Key, BookOpen, FlaskConical, BarChart3 } from "lucide-react";
+import { AnalyticsTab } from "@/components/admin/AnalyticsTab";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -543,6 +544,10 @@ const Admin = () => {
                   <TabsTrigger value="settings" className="flex items-center gap-2">
                     <Settings className="w-4 h-4" />
                     Settings
+                  </TabsTrigger>
+                  <TabsTrigger value="analytics" className="flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4" />
+                    Analytics
                   </TabsTrigger>
                 </>
               )}
@@ -1300,6 +1305,13 @@ const Admin = () => {
                 </div>
               </div>
             </TabsContent>
+
+            {/* Analytics Tab */}
+            {isAdmin && (
+              <TabsContent value="analytics">
+                <AnalyticsTab />
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </section>

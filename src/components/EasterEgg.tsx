@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ConfettiPiece {
   id: number;
@@ -38,6 +39,32 @@ export function EasterEgg({ isActive, onClose }: EasterEggProps) {
         duration: 2 + Math.random() * 2,
       }));
       setConfetti(pieces);
+      
+      // Log the Easter egg discovery
+      const logDiscovery = async () => {
+        // Get or create anonymous session ID
+        let sessionId = localStorage.getItem("analytics_session_id");
+        if (!sessionId) {
+          sessionId = crypto.randomUUID();
+          localStorage.setItem("analytics_session_id", sessionId);
+        }
+
+        // Check if this session already discovered the easter egg
+        const discoveredKey = `easter_egg_discovered_${sessionId}`;
+        if (!localStorage.getItem(discoveredKey)) {
+          try {
+            await supabase.from("analytics_events").insert({
+              event_type: "easter_egg_discovery",
+              page_path: window.location.pathname,
+              session_id: sessionId,
+            });
+            localStorage.setItem(discoveredKey, "true");
+          } catch (error) {
+            console.error("Failed to log easter egg discovery:", error);
+          }
+        }
+      };
+      logDiscovery();
       
       // Show modal after confetti has mostly fallen (2.5 seconds)
       setTimeout(() => setShowModal(true), 2500);
