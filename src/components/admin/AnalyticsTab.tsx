@@ -2,12 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Eye, FileText, Clock, Sparkles, Monitor, Smartphone, Globe, TrendingUp, ArrowUpRight, RefreshCw } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Users, Eye, FileText, Clock, Sparkles, Monitor, Smartphone, Globe, TrendingUp, ArrowUpRight, RefreshCw, CalendarIcon } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
-import { format, subDays, parseISO } from "date-fns";
+import { format, subDays, parseISO, startOfDay, endOfDay } from "date-fns";
 import { toast } from "sonner";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { DateRange } from "react-day-picker";
 
 interface TopPage {
   path: string;
@@ -44,6 +48,8 @@ interface AnalyticsSnapshot {
   created_at: string;
 }
 
+type DatePreset = "7d" | "30d" | "90d" | "custom";
+
 function formatDuration(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
@@ -52,6 +58,28 @@ function formatDuration(seconds: number): string {
 
 export function AnalyticsTab() {
   const [isSyncing, setIsSyncing] = useState(false);
+  const [datePreset, setDatePreset] = useState<DatePreset>("7d");
+  const [customRange, setCustomRange] = useState<DateRange | undefined>();
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  // Calculate date range based on preset or custom selection
+  const getDateRange = () => {
+    const now = new Date();
+    if (datePreset === "custom" && customRange?.from) {
+      return {
+        from: startOfDay(customRange.from),
+        to: customRange.to ? endOfDay(customRange.to) : endOfDay(customRange.from),
+      };
+    }
+    
+    const days = datePreset === "7d" ? 7 : datePreset === "30d" ? 30 : 90;
+    return {
+      from: startOfDay(subDays(now, days)),
+      to: endOfDay(now),
+    };
+  };
+
+  const dateRange = getDateRange();
 
   // Fetch the latest analytics snapshot
   const { data: snapshot, refetch: refetchSnapshot } = useQuery({
@@ -66,7 +94,6 @@ export function AnalyticsTab() {
       
       if (error) throw error;
       
-      // Type assertion for JSONB fields
       if (data) {
         return {
           ...data,
@@ -80,50 +107,78 @@ export function AnalyticsTab() {
     },
   });
 
-  // Fetch historical snapshots for chart
-  const { data: historicalData } = useQuery({
-    queryKey: ["analytics-history"],
+  // Fetch page view events for the selected date range
+  const { data: pageViewStats } = useQuery({
+    queryKey: ["page-view-stats", dateRange.from.toISOString(), dateRange.to.toISOString()],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("analytics_snapshots")
-        .select("snapshot_date, total_visitors, total_pageviews")
-        .order("snapshot_date", { ascending: true })
-        .limit(7);
+        .from("analytics_events")
+        .select("*")
+        .eq("event_type", "page_view")
+        .gte("created_at", dateRange.from.toISOString())
+        .lte("created_at", dateRange.to.toISOString());
       
       if (error) throw error;
-      return data || [];
+      
+      // Aggregate stats
+      const sessions = new Set<string>();
+      const pageViews: Record<string, number> = {};
+      const dailyData: Record<string, { views: number; sessions: Set<string> }> = {};
+      
+      data?.forEach(event => {
+        if (event.session_id) sessions.add(event.session_id);
+        if (event.page_path) {
+          pageViews[event.page_path] = (pageViews[event.page_path] || 0) + 1;
+        }
+        
+        const dateKey = format(parseISO(event.created_at), "yyyy-MM-dd");
+        if (!dailyData[dateKey]) {
+          dailyData[dateKey] = { views: 0, sessions: new Set() };
+        }
+        dailyData[dateKey].views++;
+        if (event.session_id) dailyData[dateKey].sessions.add(event.session_id);
+      });
+
+      const topPages = Object.entries(pageViews)
+        .map(([path, views]) => ({ path, views }))
+        .sort((a, b) => b.views - a.views)
+        .slice(0, 10);
+
+      const chartData = Object.entries(dailyData)
+        .map(([date, stats]) => ({
+          date: format(parseISO(date), "MMM d"),
+          views: stats.views,
+          visitors: stats.sessions.size,
+          rawDate: date,
+        }))
+        .sort((a, b) => a.rawDate.localeCompare(b.rawDate));
+
+      return {
+        totalPageviews: data?.length || 0,
+        totalVisitors: sessions.size,
+        avgPagesPerVisit: sessions.size > 0 ? (data?.length || 0) / sessions.size : 0,
+        topPages,
+        chartData,
+      };
     },
   });
 
-  // Fetch Easter egg discoveries count
+  // Fetch Easter egg discoveries count for date range
   const { data: easterEggCount } = useQuery({
-    queryKey: ["easter-egg-discoveries"],
+    queryKey: ["easter-egg-discoveries", dateRange.from.toISOString(), dateRange.to.toISOString()],
     queryFn: async () => {
-      const { count, error } = await supabase
-        .from("analytics_events")
-        .select("*", { count: "exact", head: true })
-        .eq("event_type", "easter_egg_discovery");
-      if (error) throw error;
-      return count || 0;
-    },
-  });
-
-  // Fetch recent Easter egg discoveries for last 7 days
-  const { data: recentEasterEggs } = useQuery({
-    queryKey: ["easter-egg-discoveries-recent"],
-    queryFn: async () => {
-      const sevenDaysAgo = subDays(new Date(), 7).toISOString();
       const { count, error } = await supabase
         .from("analytics_events")
         .select("*", { count: "exact", head: true })
         .eq("event_type", "easter_egg_discovery")
-        .gte("created_at", sevenDaysAgo);
+        .gte("created_at", dateRange.from.toISOString())
+        .lte("created_at", dateRange.to.toISOString());
       if (error) throw error;
       return count || 0;
     },
   });
 
-  // Content stats
+  // Content stats (not date-filtered)
   const { data: contentStats } = useQuery({
     queryKey: ["content-stats"],
     queryFn: async () => {
@@ -140,13 +195,15 @@ export function AnalyticsTab() {
     },
   });
 
-  // Contact submissions count
+  // Contact submissions count for date range
   const { data: contactCount } = useQuery({
-    queryKey: ["contact-count"],
+    queryKey: ["contact-count", dateRange.from.toISOString(), dateRange.to.toISOString()],
     queryFn: async () => {
       const { count, error } = await supabase
         .from("contact_submissions")
-        .select("*", { count: "exact", head: true });
+        .select("*", { count: "exact", head: true })
+        .gte("created_at", dateRange.from.toISOString())
+        .lte("created_at", dateRange.to.toISOString());
       if (error) throw error;
       return count || 0;
     },
@@ -155,10 +212,8 @@ export function AnalyticsTab() {
   const handleManualSync = async () => {
     setIsSyncing(true);
     try {
-      const { data, error } = await supabase.functions.invoke("sync-analytics");
-      
+      const { error } = await supabase.functions.invoke("sync-analytics");
       if (error) throw error;
-      
       toast.success("Analytics synced successfully!");
       refetchSnapshot();
     } catch (error: any) {
@@ -169,58 +224,125 @@ export function AnalyticsTab() {
     }
   };
 
-  const chartConfig = {
-    views: {
-      label: "Pageviews",
-      color: "hsl(var(--primary))",
-    },
-    visitors: {
-      label: "Visitors",
-      color: "hsl(var(--accent))",
-    },
+  const handlePresetChange = (preset: DatePreset) => {
+    setDatePreset(preset);
+    if (preset !== "custom") {
+      setCustomRange(undefined);
+    }
   };
 
-  // Format dates for chart display
-  const chartData = historicalData?.map((item) => ({
-    date: format(parseISO(item.snapshot_date), "MMM d"),
-    views: item.total_pageviews,
-    visitors: item.total_visitors,
-  })) || [];
+  const handleCustomRangeSelect = (range: DateRange | undefined) => {
+    setCustomRange(range);
+    if (range?.from && range?.to) {
+      setIsCalendarOpen(false);
+    }
+  };
 
-  // Default values if no snapshot exists
-  const totalVisitors = snapshot?.total_visitors || 0;
-  const totalPageviews = snapshot?.total_pageviews || 0;
-  const avgPagesPerVisit = snapshot?.avg_pages_per_visit || 0;
+  const chartConfig = {
+    views: { label: "Pageviews", color: "hsl(var(--primary))" },
+    visitors: { label: "Visitors", color: "hsl(var(--accent))" },
+  };
+
+  // Use live data from page views if available
+  const totalVisitors = pageViewStats?.totalVisitors || snapshot?.total_visitors || 0;
+  const totalPageviews = pageViewStats?.totalPageviews || snapshot?.total_pageviews || 0;
+  const avgPagesPerVisit = pageViewStats?.avgPagesPerVisit || snapshot?.avg_pages_per_visit || 0;
   const avgSessionDuration = snapshot?.avg_session_duration_seconds || 0;
   const bounceRate = snapshot?.bounce_rate || 0;
-  const topPages = snapshot?.top_pages || [];
+  const topPages = pageViewStats?.topPages || snapshot?.top_pages || [];
   const trafficSources = snapshot?.traffic_sources || [];
   const devices = snapshot?.devices || [];
   const countries = snapshot?.countries || [];
+  const chartData = pageViewStats?.chartData || [];
 
   const lastSyncDate = snapshot?.created_at 
     ? format(parseISO(snapshot.created_at), "MMM d, yyyy 'at' h:mm a")
     : "Never";
 
+  const dateRangeLabel = datePreset === "custom" && customRange?.from
+    ? `${format(customRange.from, "MMM d")}${customRange.to ? ` - ${format(customRange.to, "MMM d")}` : ""}`
+    : datePreset === "7d" ? "Last 7 days" : datePreset === "30d" ? "Last 30 days" : "Last 90 days";
+
   return (
     <div className="space-y-6">
-      {/* Sync Controls */}
-      <div className="flex items-center justify-between">
+      {/* Header with Date Range Picker */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-semibold">Analytics Dashboard</h2>
           <p className="text-sm text-muted-foreground">
             Auto-synced daily at midnight UTC
           </p>
         </div>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleManualSync}
-          disabled={isSyncing}
-        >
-          <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? "animate-spin" : ""}`} />
-          {isSyncing ? "Syncing..." : "Sync Now"}
-        </Button>
+        
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Preset Buttons */}
+          <div className="flex items-center gap-1 bg-muted/50 rounded-lg p-1">
+            <Button
+              variant={datePreset === "7d" ? "secondary" : "ghost"}
+              size="sm"
+              onClick={() => handlePresetChange("7d")}
+              className="h-7 text-xs"
+            >
+              7D
+            </Button>
+            <Button
+              variant={datePreset === "30d" ? "secondary" : "ghost"}
+              size="sm"
+              onClick={() => handlePresetChange("30d")}
+              className="h-7 text-xs"
+            >
+              30D
+            </Button>
+            <Button
+              variant={datePreset === "90d" ? "secondary" : "ghost"}
+              size="sm"
+              onClick={() => handlePresetChange("90d")}
+              className="h-7 text-xs"
+            >
+              90D
+            </Button>
+            
+            {/* Custom Date Range Picker */}
+            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={datePreset === "custom" ? "secondary" : "ghost"}
+                  size="sm"
+                  onClick={() => setDatePreset("custom")}
+                  className={cn("h-7 text-xs gap-1", datePreset === "custom" && "min-w-[120px]")}
+                >
+                  <CalendarIcon className="h-3 w-3" />
+                  {datePreset === "custom" && customRange?.from ? (
+                    <span className="truncate">{dateRangeLabel}</span>
+                  ) : (
+                    "Custom"
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="end">
+                <Calendar
+                  mode="range"
+                  selected={customRange}
+                  onSelect={handleCustomRangeSelect}
+                  numberOfMonths={2}
+                  disabled={(date) => date > new Date()}
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleManualSync}
+            disabled={isSyncing}
+            className="h-7"
+          >
+            <RefreshCw className={cn("h-3 w-3 mr-1", isSyncing && "animate-spin")} />
+            {isSyncing ? "Syncing..." : "Sync"}
+          </Button>
+        </div>
       </div>
 
       {/* Overview Cards */}
@@ -234,7 +356,7 @@ export function AnalyticsTab() {
             <div className="text-2xl font-bold">{totalVisitors}</div>
             <p className="text-xs text-muted-foreground flex items-center gap-1">
               <TrendingUp className="h-3 w-3 text-green-500" />
-              Last 7 days
+              {dateRangeLabel}
             </p>
           </CardContent>
         </Card>
@@ -283,7 +405,6 @@ export function AnalyticsTab() {
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Pageviews Chart */}
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="text-lg font-semibold">Traffic Overview</CardTitle>
@@ -296,22 +417,8 @@ export function AnalyticsTab() {
                     <XAxis dataKey="date" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
                     <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Line
-                      type="monotone"
-                      dataKey="views"
-                      stroke="hsl(var(--primary))"
-                      strokeWidth={2}
-                      dot={{ fill: "hsl(var(--primary))", strokeWidth: 0, r: 3 }}
-                      name="Pageviews"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="visitors"
-                      stroke="hsl(var(--accent))"
-                      strokeWidth={2}
-                      dot={{ fill: "hsl(var(--accent))", strokeWidth: 0, r: 3 }}
-                      name="Visitors"
-                    />
+                    <Line type="monotone" dataKey="views" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ fill: "hsl(var(--primary))", strokeWidth: 0, r: 3 }} name="Pageviews" />
+                    <Line type="monotone" dataKey="visitors" stroke="hsl(var(--accent))" strokeWidth={2} dot={{ fill: "hsl(var(--accent))", strokeWidth: 0, r: 3 }} name="Visitors" />
                   </LineChart>
                 </ChartContainer>
                 <div className="flex items-center justify-center gap-6 mt-4">
@@ -327,13 +434,12 @@ export function AnalyticsTab() {
               </>
             ) : (
               <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                No data yet. Click "Sync Now" to fetch analytics.
+                No data for selected period.
               </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Top Pages */}
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="text-lg font-semibold">Top Pages</CardTitle>
@@ -349,10 +455,7 @@ export function AnalyticsTab() {
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-primary rounded-full" 
-                          style={{ width: `${(page.views / (topPages[0]?.views || 1)) * 100}%` }}
-                        />
+                        <div className="h-full bg-primary rounded-full" style={{ width: `${(page.views / (topPages[0]?.views || 1)) * 100}%` }} />
                       </div>
                       <span className="text-sm text-muted-foreground w-12 text-right">{page.views}</span>
                     </div>
@@ -361,7 +464,7 @@ export function AnalyticsTab() {
               </div>
             ) : (
               <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                No page data yet.
+                No page data for selected period.
               </div>
             )}
           </CardContent>
@@ -370,7 +473,6 @@ export function AnalyticsTab() {
 
       {/* Quick Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Traffic Sources */}
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -394,7 +496,6 @@ export function AnalyticsTab() {
           </CardContent>
         </Card>
 
-        {/* Device Breakdown */}
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -421,7 +522,6 @@ export function AnalyticsTab() {
           </CardContent>
         </Card>
 
-        {/* Top Countries */}
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -445,7 +545,6 @@ export function AnalyticsTab() {
           </CardContent>
         </Card>
 
-        {/* Easter Egg Counter */}
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -456,7 +555,7 @@ export function AnalyticsTab() {
           <CardContent>
             <div className="text-2xl font-bold">{easterEggCount || 0}</div>
             <p className="text-xs text-muted-foreground">
-              {recentEasterEggs || 0} in the last 7 days
+              {dateRangeLabel}
             </p>
           </CardContent>
         </Card>
@@ -471,7 +570,7 @@ export function AnalyticsTab() {
           <div className="flex items-center gap-4">
             <div className="text-3xl font-bold">{contactCount || 0}</div>
             <div className="text-sm text-muted-foreground">
-              Total contact form submissions received
+              Submissions in {dateRangeLabel.toLowerCase()}
             </div>
           </div>
         </CardContent>
