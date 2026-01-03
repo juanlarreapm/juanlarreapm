@@ -2,3 +2,6 @@ project_id = "lslonhjsdkahzynpfgjb"
 
 [functions.notify-contact]
 verify_jwt = false
+
+[functions.sync-analytics]
+verify_jwt = false
