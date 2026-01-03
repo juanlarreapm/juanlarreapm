@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Users, Eye, FileText, Clock, Sparkles, Monitor, Smartphone, Globe, TrendingUp, ArrowUpRight, RefreshCw, CalendarIcon } from "lucide-react";
+import { Users, Eye, Clock, Sparkles, Monitor, Smartphone, Globe, TrendingUp, ArrowUpRight, RefreshCw, CalendarIcon, UserPlus } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { format, subDays, parseISO, startOfDay, endOfDay } from "date-fns";
@@ -178,20 +178,44 @@ export function AnalyticsTab() {
     },
   });
 
-  // Content stats (not date-filtered)
-  const { data: contentStats } = useQuery({
-    queryKey: ["content-stats"],
+  // New vs Returning visitors for date range
+  const { data: visitorStats } = useQuery({
+    queryKey: ["visitor-stats", dateRange.from.toISOString(), dateRange.to.toISOString()],
     queryFn: async () => {
-      const [posts, projects, labProjects] = await Promise.all([
-        supabase.from("blog_posts").select("id", { count: "exact", head: true }).eq("published", true),
-        supabase.from("projects").select("id", { count: "exact", head: true }).eq("published", true),
-        supabase.from("lab_projects").select("id", { count: "exact", head: true }).eq("published", true),
-      ]);
-      return {
-        posts: posts.count || 0,
-        projects: projects.count || 0,
-        labProjects: labProjects.count || 0,
-      };
+      // Get all unique visitor_ids in the date range
+      const { data: currentVisitors, error: currentError } = await supabase
+        .from("analytics_events")
+        .select("visitor_id")
+        .eq("event_type", "page_view")
+        .not("visitor_id", "is", null)
+        .gte("created_at", dateRange.from.toISOString())
+        .lte("created_at", dateRange.to.toISOString());
+      
+      if (currentError) throw currentError;
+      
+      // Get unique visitor IDs from the current period
+      const uniqueVisitorIds = [...new Set(currentVisitors?.map(v => v.visitor_id).filter(Boolean))];
+      
+      if (uniqueVisitorIds.length === 0) {
+        return { newVisitors: 0, returningVisitors: 0 };
+      }
+      
+      // Check which visitors existed before the date range
+      const { data: previousVisitors, error: prevError } = await supabase
+        .from("analytics_events")
+        .select("visitor_id")
+        .eq("event_type", "page_view")
+        .not("visitor_id", "is", null)
+        .lt("created_at", dateRange.from.toISOString())
+        .in("visitor_id", uniqueVisitorIds);
+      
+      if (prevError) throw prevError;
+      
+      const returningVisitorIds = new Set(previousVisitors?.map(v => v.visitor_id).filter(Boolean));
+      const returningCount = uniqueVisitorIds.filter(id => returningVisitorIds.has(id)).length;
+      const newCount = uniqueVisitorIds.length - returningCount;
+      
+      return { newVisitors: newCount, returningVisitors: returningCount };
     },
   });
 
@@ -389,15 +413,17 @@ export function AnalyticsTab() {
 
         <Card className="bg-card border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Published Content</CardTitle>
-            <FileText className="h-4 w-4 text-primary" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">New vs Returning</CardTitle>
+            <UserPlus className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {(contentStats?.posts || 0) + (contentStats?.projects || 0) + (contentStats?.labProjects || 0)}
+              {visitorStats && (visitorStats.newVisitors + visitorStats.returningVisitors) > 0
+                ? `${Math.round((visitorStats.newVisitors / (visitorStats.newVisitors + visitorStats.returningVisitors)) * 100)}%`
+                : "0%"} new
             </div>
             <p className="text-xs text-muted-foreground">
-              {contentStats?.posts || 0} posts, {contentStats?.projects || 0} case studies, {contentStats?.labProjects || 0} lab
+              {visitorStats?.newVisitors || 0} new, {visitorStats?.returningVisitors || 0} returning
             </p>
           </CardContent>
         </Card>

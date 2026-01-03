@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
-// Get or create a session ID for anonymous tracking
+// Get or create a session ID for anonymous tracking (per browser session)
 function getSessionId(): string {
   const key = "analytics_session_id";
   let sessionId = sessionStorage.getItem(key);
@@ -13,6 +13,19 @@ function getSessionId(): string {
   }
   
   return sessionId;
+}
+
+// Get or create a visitor ID for persistent tracking (survives browser restarts)
+function getVisitorId(): string {
+  const key = "analytics_visitor_id";
+  let visitorId = localStorage.getItem(key);
+  
+  if (!visitorId) {
+    visitorId = crypto.randomUUID();
+    localStorage.setItem(key, visitorId);
+  }
+  
+  return visitorId;
 }
 
 export function usePageTracking() {
@@ -32,11 +45,13 @@ export function usePageTracking() {
     const trackPageView = async () => {
       try {
         const sessionId = getSessionId();
+        const visitorId = getVisitorId();
         
         await supabase.from("analytics_events").insert({
           event_type: "page_view",
           page_path: currentPath,
           session_id: sessionId,
+          visitor_id: visitorId,
           metadata: {
             referrer: document.referrer || null,
             userAgent: navigator.userAgent,
