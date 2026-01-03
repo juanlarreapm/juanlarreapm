@@ -10,7 +10,11 @@ import { format } from "date-fns";
 const LabProject = () => {
   const { slug } = useParams();
 
-  const { data: project, isLoading, error } = useQuery({
+  const {
+    data: project,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["lab-project", slug],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -57,19 +61,19 @@ const LabProject = () => {
   // Extract video embed URL (supports YouTube and Loom)
   const getEmbedUrl = (url: string) => {
     if (!url) return null;
-    
+
     // YouTube
     const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\s]+)/);
     if (youtubeMatch) {
       return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
     }
-    
+
     // Loom
     const loomMatch = url.match(/loom\.com\/share\/([^?]+)/);
     if (loomMatch) {
       return `https://www.loom.com/embed/${loomMatch[1]}`;
     }
-    
+
     return url;
   };
 
@@ -121,24 +125,16 @@ const LabProject = () => {
 
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <Badge className={`${getStatusColor(project.status)} border`}>
-                {project.status}
-              </Badge>
+              <Badge className={`${getStatusColor(project.status)} border`}>{project.status}</Badge>
               <span className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Calendar className="w-4 h-4" />
                 {format(new Date(project.created_at), "MMMM yyyy")}
               </span>
             </div>
-            
-            <h1 className="font-display text-4xl md:text-5xl font-bold">
-              {project.title}
-            </h1>
-            
-            {project.tagline && (
-              <p className="text-xl text-muted-foreground max-w-2xl">
-                {project.tagline}
-              </p>
-            )}
+
+            <h1 className="font-display text-4xl md:text-5xl font-bold">{project.title}</h1>
+
+            {project.tagline && <p className="text-xl text-muted-foreground max-w-2xl">{project.tagline}</p>}
 
             {/* Action buttons */}
             <div className="flex flex-wrap gap-3 pt-4">
@@ -146,7 +142,7 @@ const LabProject = () => {
                 <Button asChild className="bg-gradient-primary">
                   <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="mr-2 w-4 h-4" />
-                    View Demo
+                    Try It Out
                   </a>
                 </Button>
               )}
@@ -195,11 +191,7 @@ const LabProject = () => {
           {/* Cover image (show if no video) */}
           {!embedUrl && project.cover_image && (
             <div className="mb-8 rounded-xl overflow-hidden border border-border">
-              <img
-                src={project.cover_image}
-                alt={project.title}
-                className="w-full object-cover"
-              />
+              <img src={project.cover_image} alt={project.title} className="w-full object-cover" />
             </div>
           )}
 
@@ -237,33 +229,29 @@ const LabProject = () => {
             <h2 className="font-display text-2xl font-bold mb-8">More from the Lab</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {otherProjects.map((proj) => (
-                <Link 
-                  key={proj.id} 
+                <Link
+                  key={proj.id}
                   to={`/lab/${proj.slug}`}
                   className="group rounded-xl bg-card border border-border card-hover overflow-hidden"
                 >
                   {proj.cover_image ? (
                     <div className="h-32 overflow-hidden">
-                      <img 
-                        src={proj.cover_image} 
+                      <img
+                        src={proj.cover_image}
                         alt={proj.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   ) : (
                     <div className="h-32 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                      <span className="text-2xl font-display font-bold text-primary/40">
-                        {proj.title.charAt(0)}
-                      </span>
+                      <span className="text-2xl font-display font-bold text-primary/40">{proj.title.charAt(0)}</span>
                     </div>
                   )}
                   <div className="p-4">
                     <h3 className="font-display font-semibold group-hover:text-primary transition-colors">
                       {proj.title}
                     </h3>
-                    {proj.tagline && (
-                      <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{proj.tagline}</p>
-                    )}
+                    {proj.tagline && <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{proj.tagline}</p>}
                   </div>
                 </Link>
               ))}
