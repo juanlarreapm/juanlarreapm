@@ -538,6 +538,7 @@ const Admin = () => {
     setDeleteConfirm(null);
   };
 
+  if (loading) {
     return (
       <Layout>
         <section className="py-24">
