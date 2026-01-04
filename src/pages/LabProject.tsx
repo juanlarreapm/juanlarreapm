@@ -198,7 +198,7 @@ const LabProject = () => {
           {/* Description */}
           {project.description && (
             <div 
-              className="prose prose-lg dark:prose-invert max-w-none mb-12 [&_img]:rounded-xl [&_img]:border [&_img]:border-border"
+              className="prose prose-lg dark:prose-invert max-w-none mb-12 [&_img]:rounded-xl [&_img]:border [&_img]:border-border [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
               dangerouslySetInnerHTML={{ __html: project.description }}
             />
           )}
