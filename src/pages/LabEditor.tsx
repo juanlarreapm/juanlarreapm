@@ -210,7 +210,7 @@ const LabEditor = () => {
       queryClient.invalidateQueries({ queryKey: ["lab-projects"] });
       queryClient.invalidateQueries({ queryKey: ["featured-lab-projects"] });
       toast({ title: isNew ? "Lab project created" : "Lab project updated" });
-      navigate("/admin");
+      navigate("/admin?tab=lab");
     },
     onError: (error: any) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -247,7 +247,7 @@ const LabEditor = () => {
     <Layout>
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-3xl">
-          <Button variant="ghost" onClick={() => navigate("/admin")} className="mb-6">
+          <Button variant="ghost" onClick={() => navigate("/admin?tab=lab")} className="mb-6">
             <ArrowLeft className="mr-2 w-4 h-4" />
             Back to Admin
           </Button>
