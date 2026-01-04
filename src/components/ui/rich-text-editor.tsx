@@ -140,6 +140,10 @@ export function RichTextEditor({
           height: 0;
           pointer-events: none;
         }
+        .ProseMirror p:empty,
+        .ProseMirror p:has(br:only-child) {
+          min-height: 1.5em;
+        }
         .ProseMirror img {
           max-width: 100%;
           height: auto;
