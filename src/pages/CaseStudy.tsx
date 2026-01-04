@@ -141,6 +141,21 @@ const CaseStudy = () => {
         </div>
       </section>
 
+      {/* Cover Image */}
+      {caseStudy.cover_image && (
+        <section className="pb-12">
+          <div className="container mx-auto px-6 max-w-4xl">
+            <div className="rounded-xl overflow-hidden border border-border">
+              <img 
+                src={caseStudy.cover_image} 
+                alt={caseStudy.title} 
+                className="w-full object-cover"
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Content Sections */}
       <section className="pb-24">
         <div className="container mx-auto px-6 max-w-4xl space-y-16">
