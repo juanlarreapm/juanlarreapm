@@ -9,7 +9,8 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { ArrowLeft, Save, Upload, Image, X, Loader2, ImagePlus } from "lucide-react";
+import { ArrowLeft, Save, Upload, Image, X, Loader2 } from "lucide-react";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import type { User } from "@supabase/supabase-js";
 
 const PostEditor = () => {
@@ -18,8 +19,6 @@ const PostEditor = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const coverInputRef = useRef<HTMLInputElement>(null);
-  const inlineInputRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLTextAreaElement>(null);
   
   const [user, setUser] = useState<User | null>(null);
   const [title, setTitle] = useState("");
@@ -30,7 +29,6 @@ const PostEditor = () => {
   const [published, setPublished] = useState(false);
   const [readingTime, setReadingTime] = useState(5);
   const [uploading, setUploading] = useState(false);
-  const [uploadingInline, setUploadingInline] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -143,49 +141,6 @@ const PostEditor = () => {
       setUploading(false);
       if (coverInputRef.current) {
         coverInputRef.current.value = "";
-      }
-    }
-  };
-
-  const handleInlineImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploadingInline(true);
-
-    try {
-      const publicUrl = await uploadImage(file, "inline");
-      if (publicUrl) {
-        // Insert markdown image at cursor position
-        const textarea = contentRef.current;
-        if (textarea) {
-          const start = textarea.selectionStart;
-          const end = textarea.selectionEnd;
-          const imageMarkdown = `\n![Image](${publicUrl})\n`;
-          const newContent = content.substring(0, start) + imageMarkdown + content.substring(end);
-          setContent(newContent);
-          setReadingTime(calculateReadingTime(newContent));
-          
-          // Set cursor position after the inserted image
-          setTimeout(() => {
-            textarea.focus();
-            const newPosition = start + imageMarkdown.length;
-            textarea.setSelectionRange(newPosition, newPosition);
-          }, 0);
-        } else {
-          // Fallback: append to end
-          const imageMarkdown = `\n![Image](${publicUrl})\n`;
-          setContent(content + imageMarkdown);
-        }
-        
-        toast({ title: "Image inserted!", description: "Image has been added to your content." });
-      }
-    } catch (error: any) {
-      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
-    } finally {
-      setUploadingInline(false);
-      if (inlineInputRef.current) {
-        inlineInputRef.current.value = "";
       }
     }
   };
@@ -344,52 +299,19 @@ const PostEditor = () => {
               />
             </div>
 
-            {/* Content with toolbar */}
+            {/* Content */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="content">Content</Label>
-                <div className="flex items-center gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => inlineInputRef.current?.click()}
-                    disabled={uploadingInline}
-                  >
-                    {uploadingInline ? (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    ) : (
-                      <ImagePlus className="w-4 h-4 mr-2" />
-                    )}
-                    Insert Image
-                  </Button>
-                </div>
-              </div>
-              <Textarea
-                ref={contentRef}
-                id="content"
-                value={content}
-                onChange={(e) => handleContentChange(e.target.value)}
-                placeholder="Write your post content here...
-
-Use ![Alt text](image-url) for inline images."
-                rows={15}
-                className="font-mono text-sm"
-                required
+              <Label>Content</Label>
+              <RichTextEditor
+                content={content}
+                onChange={handleContentChange}
+                placeholder="Write your post content here..."
+                storageBucket="blog-images"
+                className="min-h-[300px]"
               />
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>
-                  Tip: Use <code className="px-1 py-0.5 bg-muted rounded">![description](url)</code> for images
-                </span>
-                <span>Estimated reading time: {readingTime} min</span>
-              </div>
-              <input
-                ref={inlineInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/gif,image/webp"
-                onChange={handleInlineImageUpload}
-                className="hidden"
-              />
+              <p className="text-xs text-muted-foreground text-right">
+                Estimated reading time: {readingTime} min
+              </p>
             </div>
 
             <div className="flex items-center justify-between p-4 rounded-lg bg-secondary">
@@ -409,7 +331,7 @@ Use ![Alt text](image-url) for inline images."
             <div className="flex gap-4">
               <Button
                 onClick={() => saveMutation.mutate()}
-                disabled={saveMutation.isPending || !title || !slug || !content || uploading || uploadingInline}
+                disabled={saveMutation.isPending || !title || !slug || !content || uploading}
                 className="flex-1 bg-gradient-primary hover:opacity-90"
               >
                 <Save className="mr-2 w-4 h-4" />

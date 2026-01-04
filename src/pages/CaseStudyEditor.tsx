@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Plus, X, Upload, Image } from "lucide-react";
 import { useAdminRole } from "@/hooks/useAdminRole";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 
 const CaseStudyEditor = () => {
   const { id } = useParams();
@@ -383,80 +384,73 @@ const CaseStudyEditor = () => {
             <div className="space-y-6 p-6 rounded-xl bg-card border border-border">
               <h2 className="font-display text-xl font-semibold">Content</h2>
 
-              <div>
-                <Label htmlFor="problem">Problem & Context</Label>
-                <Textarea
-                  id="problem"
-                  value={problem}
-                  onChange={(e) => setProblem(e.target.value)}
+              <div className="space-y-2">
+                <Label>Problem & Context</Label>
+                <RichTextEditor
+                  content={problem}
+                  onChange={setProblem}
                   placeholder="What was the problem and its context?"
-                  rows={4}
+                  storageBucket="case-study-images"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="approach">Research & Insights</Label>
-                <Textarea
-                  id="approach"
-                  value={approach}
-                  onChange={(e) => setApproach(e.target.value)}
+              <div className="space-y-2">
+                <Label>Research & Insights</Label>
+                <RichTextEditor
+                  content={approach}
+                  onChange={setApproach}
                   placeholder="What research did you conduct and what insights did you discover?"
-                  rows={4}
+                  storageBucket="case-study-images"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="solution">Solution Exploration and Tradeoffs</Label>
-                <Textarea
-                  id="solution"
-                  value={solution}
-                  onChange={(e) => setSolution(e.target.value)}
+              <div className="space-y-2">
+                <Label>Solution Exploration and Tradeoffs</Label>
+                <RichTextEditor
+                  content={solution}
+                  onChange={setSolution}
                   placeholder="What solutions did you explore and what tradeoffs did you consider?"
-                  rows={4}
+                  storageBucket="case-study-images"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="outcome">Final Solution</Label>
-                <Textarea
-                  id="outcome"
-                  value={outcome}
-                  onChange={(e) => setOutcome(e.target.value)}
+              <div className="space-y-2">
+                <Label>Final Solution</Label>
+                <RichTextEditor
+                  content={outcome}
+                  onChange={setOutcome}
                   placeholder="What was the final solution you implemented?"
-                  rows={4}
+                  storageBucket="case-study-images"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="executionCollaboration">Execution and Collaboration</Label>
-                <Textarea
-                  id="executionCollaboration"
-                  value={executionCollaboration}
-                  onChange={(e) => setExecutionCollaboration(e.target.value)}
+              <div className="space-y-2">
+                <Label>Execution and Collaboration</Label>
+                <RichTextEditor
+                  content={executionCollaboration}
+                  onChange={setExecutionCollaboration}
                   placeholder="How did you execute and collaborate with stakeholders?"
-                  rows={4}
+                  storageBucket="case-study-images"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="impactResults">Impact and Results</Label>
-                <Textarea
-                  id="impactResults"
-                  value={impactResults}
-                  onChange={(e) => setImpactResults(e.target.value)}
+              <div className="space-y-2">
+                <Label>Impact and Results</Label>
+                <RichTextEditor
+                  content={impactResults}
+                  onChange={setImpactResults}
                   placeholder="What was the impact and measurable results?"
-                  rows={4}
+                  storageBucket="case-study-images"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="reflections">What I'd Do Differently</Label>
-                <Textarea
-                  id="reflections"
-                  value={reflections}
-                  onChange={(e) => setReflections(e.target.value)}
+              <div className="space-y-2">
+                <Label>What I'd Do Differently</Label>
+                <RichTextEditor
+                  content={reflections}
+                  onChange={setReflections}
                   placeholder="Looking back, what would you change or improve?"
-                  rows={4}
+                  storageBucket="case-study-images"
                 />
               </div>
             </div>
