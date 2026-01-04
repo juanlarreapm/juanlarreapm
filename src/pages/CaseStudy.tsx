@@ -148,9 +148,10 @@ const CaseStudy = () => {
           {caseStudy.problem && (
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Problem & Context</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.problem}</p>
-              </div>
+              <div 
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                dangerouslySetInnerHTML={{ __html: caseStudy.problem }}
+              />
             </div>
           )}
 
@@ -178,9 +179,10 @@ const CaseStudy = () => {
           {caseStudy.approach && (
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Research & Insights</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.approach}</p>
-              </div>
+              <div 
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                dangerouslySetInnerHTML={{ __html: caseStudy.approach }}
+              />
             </div>
           )}
 
@@ -188,9 +190,10 @@ const CaseStudy = () => {
           {caseStudy.solution && (
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Solution Exploration and Tradeoffs</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.solution}</p>
-              </div>
+              <div 
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                dangerouslySetInnerHTML={{ __html: caseStudy.solution }}
+              />
             </div>
           )}
 
@@ -198,9 +201,10 @@ const CaseStudy = () => {
           {caseStudy.outcome && (
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Final Solution</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.outcome}</p>
-              </div>
+              <div 
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                dangerouslySetInnerHTML={{ __html: caseStudy.outcome }}
+              />
             </div>
           )}
 
@@ -210,9 +214,10 @@ const CaseStudy = () => {
               <h2 className="font-display text-2xl font-bold text-primary">Execution and Collaboration</h2>
               
               {caseStudy.execution_collaboration && (
-                <div className="prose prose-lg dark:prose-invert max-w-none">
-                  <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.execution_collaboration}</p>
-                </div>
+                <div 
+                  className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                  dangerouslySetInnerHTML={{ __html: caseStudy.execution_collaboration }}
+                />
               )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -259,9 +264,10 @@ const CaseStudy = () => {
           {caseStudy.impact_results && (
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Impact and Results</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.impact_results}</p>
-              </div>
+              <div 
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                dangerouslySetInnerHTML={{ __html: caseStudy.impact_results }}
+              />
             </div>
           )}
 
@@ -269,9 +275,10 @@ const CaseStudy = () => {
           {caseStudy.reflections && (
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">What I'd Do Differently</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-muted-foreground whitespace-pre-wrap">{caseStudy.reflections}</p>
-              </div>
+              <div 
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                dangerouslySetInnerHTML={{ __html: caseStudy.reflections }}
+              />
             </div>
           )}
         </div>
