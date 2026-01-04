@@ -266,6 +266,7 @@ export type Database = {
           github_url: string | null
           id: string
           is_featured: boolean
+          project_date: string | null
           published: boolean
           screenshots: string[]
           slug: string
@@ -285,6 +286,7 @@ export type Database = {
           github_url?: string | null
           id?: string
           is_featured?: boolean
+          project_date?: string | null
           published?: boolean
           screenshots?: string[]
           slug: string
@@ -304,6 +306,7 @@ export type Database = {
           github_url?: string | null
           id?: string
           is_featured?: boolean
+          project_date?: string | null
           published?: boolean
           screenshots?: string[]
           slug?: string

@@ -128,7 +128,7 @@ const LabProject = () => {
               <Badge className={`${getStatusColor(project.status)} border`}>{project.status}</Badge>
               <span className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Calendar className="w-4 h-4" />
-                {format(new Date(project.created_at), "MMMM yyyy")}
+                {format(new Date(project.project_date || project.created_at), "MMMM yyyy")}
               </span>
             </div>
 

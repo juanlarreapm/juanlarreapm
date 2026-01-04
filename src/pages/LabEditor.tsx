@@ -13,11 +13,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Plus, X, Upload, Image } from "lucide-react";
+import { ArrowLeft, Plus, X, Upload, Image, CalendarIcon } from "lucide-react";
 import { useAdminRole } from "@/hooks/useAdminRole";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const LabEditor = () => {
   const { id } = useParams();
@@ -44,6 +52,7 @@ const LabEditor = () => {
   const [displayOrder, setDisplayOrder] = useState(0);
   const [isPublished, setIsPublished] = useState(true);
   const [isFeatured, setIsFeatured] = useState(false);
+  const [projectDate, setProjectDate] = useState<Date | undefined>(new Date());
 
   const [uploadingCover, setUploadingCover] = useState(false);
   const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
@@ -79,6 +88,7 @@ const LabEditor = () => {
       setDisplayOrder(project.display_order || 0);
       setIsPublished(project.published ?? true);
       setIsFeatured(project.is_featured || false);
+      setProjectDate(project.project_date ? new Date(project.project_date) : new Date());
     }
   }, [project]);
 
@@ -185,6 +195,7 @@ const LabEditor = () => {
         display_order: displayOrder,
         published: isPublished,
         is_featured: isFeatured,
+        project_date: projectDate ? format(projectDate, "yyyy-MM-dd") : null,
       };
 
       if (isNew) {
@@ -317,6 +328,36 @@ const LabEditor = () => {
                     value={displayOrder}
                     onChange={(e) => setDisplayOrder(parseInt(e.target.value) || 0)}
                   />
+                </div>
+
+                <div>
+                  <Label>Project Date</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !projectDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {projectDate ? format(projectDate, "MMMM yyyy") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={projectDate}
+                        onSelect={setProjectDate}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Date shown on the project page
+                  </p>
                 </div>
               </div>
             </div>
