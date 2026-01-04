@@ -4,8 +4,8 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import {
   Select,
   SelectContent,
@@ -297,13 +297,15 @@ const LabEditor = () => {
 
                 <div className="md:col-span-2">
                   <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="What does this project do? What problem does it solve?"
-                    rows={4}
+                  <RichTextEditor
+                    content={description}
+                    onChange={setDescription}
+                    placeholder="What does this project do? Paste images inline..."
+                    storageBucket="lab-images"
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Paste images directly into the editor
+                  </p>
                 </div>
 
                 <div>
