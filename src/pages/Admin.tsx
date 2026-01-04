@@ -17,6 +17,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -58,6 +68,14 @@ const Admin = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
+  
+  // Delete confirmation state
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    type: "post" | "experience" | "project" | "lab" | "toolkit" | "message" | null;
+    id: string;
+    name: string;
+    table?: string;
+  } | null>(null);
 
   // Blog posts query
   const { data: posts, isLoading: postsLoading } = useQuery({
@@ -492,7 +510,34 @@ const Admin = () => {
     }
   };
 
-  if (loading) {
+  const handleConfirmDelete = () => {
+    if (!deleteConfirm) return;
+    
+    switch (deleteConfirm.type) {
+      case "post":
+        deletePostMutation.mutate(deleteConfirm.id);
+        break;
+      case "experience":
+        deleteExperienceMutation.mutate(deleteConfirm.id);
+        break;
+      case "project":
+        deleteProjectMutation.mutate(deleteConfirm.id);
+        break;
+      case "lab":
+        deleteLabProjectMutation.mutate(deleteConfirm.id);
+        break;
+      case "toolkit":
+        if (deleteConfirm.table) {
+          deleteToolkitItemMutation.mutate({ table: deleteConfirm.table, id: deleteConfirm.id });
+        }
+        break;
+      case "message":
+        deleteContactMutation.mutate(deleteConfirm.id);
+        break;
+    }
+    setDeleteConfirm(null);
+  };
+
     return (
       <Layout>
         <section className="py-24">
@@ -703,7 +748,7 @@ const Admin = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deletePostMutation.mutate(post.id)}
+                          onClick={() => setDeleteConfirm({ type: "post", id: post.id, name: post.title })}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -766,7 +811,7 @@ const Admin = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteExperienceMutation.mutate(exp.id)}
+                          onClick={() => setDeleteConfirm({ type: "experience", id: exp.id, name: `${exp.role} at ${exp.company}` })}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -843,7 +888,7 @@ const Admin = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteProjectMutation.mutate(project.id)}
+                          onClick={() => setDeleteConfirm({ type: "project", id: project.id, name: project.title })}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -926,7 +971,7 @@ const Admin = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteLabProjectMutation.mutate(project.id)}
+                          onClick={() => setDeleteConfirm({ type: "lab", id: project.id, name: project.title })}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -979,7 +1024,7 @@ const Admin = () => {
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 text-destructive"
-                              onClick={() => deleteToolkitItemMutation.mutate({ table: "toolkit_tools", id: tool.id })}
+                              onClick={() => setDeleteConfirm({ type: "toolkit", id: tool.id, name: tool.name, table: "toolkit_tools" })}
                             >
                               <Trash2 className="w-3 h-3" />
                             </Button>
@@ -1019,7 +1064,7 @@ const Admin = () => {
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 text-destructive"
-                              onClick={() => deleteToolkitItemMutation.mutate({ table: "toolkit_methodologies", id: method.id })}
+                              onClick={() => setDeleteConfirm({ type: "toolkit", id: method.id, name: method.name, table: "toolkit_methodologies" })}
                             >
                               <Trash2 className="w-3 h-3" />
                             </Button>
@@ -1059,7 +1104,7 @@ const Admin = () => {
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 text-destructive"
-                              onClick={() => deleteToolkitItemMutation.mutate({ table: "toolkit_skills", id: skill.id })}
+                              onClick={() => setDeleteConfirm({ type: "toolkit", id: skill.id, name: skill.name, table: "toolkit_skills" })}
                             >
                               <Trash2 className="w-3 h-3" />
                             </Button>
@@ -1115,7 +1160,7 @@ const Admin = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteContactMutation.mutate(msg.id)}
+                          onClick={() => setDeleteConfirm({ type: "message", id: msg.id, name: `message from ${msg.name}` })}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -1403,6 +1448,27 @@ const Admin = () => {
           </Tabs>
         </div>
       </section>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteConfirm} onOpenChange={(open) => !open && setDeleteConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete "{deleteConfirm?.name}". This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };
