@@ -164,7 +164,7 @@ const CaseStudy = () => {
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Problem & Context</h2>
               <div 
-                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
                 dangerouslySetInnerHTML={{ __html: caseStudy.problem }}
               />
             </div>
@@ -195,7 +195,7 @@ const CaseStudy = () => {
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Research & Insights</h2>
               <div 
-                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
                 dangerouslySetInnerHTML={{ __html: caseStudy.approach }}
               />
             </div>
@@ -206,7 +206,7 @@ const CaseStudy = () => {
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Solution Exploration and Tradeoffs</h2>
               <div 
-                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
                 dangerouslySetInnerHTML={{ __html: caseStudy.solution }}
               />
             </div>
@@ -217,7 +217,7 @@ const CaseStudy = () => {
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Final Solution</h2>
               <div 
-                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
                 dangerouslySetInnerHTML={{ __html: caseStudy.outcome }}
               />
             </div>
@@ -230,7 +230,7 @@ const CaseStudy = () => {
               
               {caseStudy.execution_collaboration && (
                 <div 
-                  className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                  className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
                   dangerouslySetInnerHTML={{ __html: caseStudy.execution_collaboration }}
                 />
               )}
@@ -280,7 +280,7 @@ const CaseStudy = () => {
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">Impact and Results</h2>
               <div 
-                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
                 dangerouslySetInnerHTML={{ __html: caseStudy.impact_results }}
               />
             </div>
@@ -291,7 +291,7 @@ const CaseStudy = () => {
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-bold text-primary">What I'd Do Differently</h2>
               <div 
-                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg"
+                className="prose prose-lg dark:prose-invert max-w-none prose-p:text-muted-foreground prose-headings:text-foreground prose-img:rounded-lg [&_p:empty]:min-h-[1.5em] [&_p:has(br:only-child)]:min-h-[1.5em]"
                 dangerouslySetInnerHTML={{ __html: caseStudy.reflections }}
               />
             </div>
