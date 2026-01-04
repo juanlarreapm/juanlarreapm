@@ -223,7 +223,7 @@ const PostEditor = () => {
     },
     onSuccess: () => {
       toast({ title: isNew ? "Post created!" : "Post saved!" });
-      navigate("/admin");
+      navigate("/admin?tab=posts");
     },
     onError: (error: any) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -239,7 +239,7 @@ const PostEditor = () => {
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-3xl">
           <div className="flex items-center gap-4 mb-8">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/admin")}>
+            <Button variant="ghost" size="icon" onClick={() => navigate("/admin?tab=posts")}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <h1 className="font-display text-2xl font-bold">
@@ -415,7 +415,7 @@ Use ![Alt text](image-url) for inline images."
                 <Save className="mr-2 w-4 h-4" />
                 {saveMutation.isPending ? "Saving..." : isNew ? "Create Post" : "Save Changes"}
               </Button>
-              <Button variant="outline" onClick={() => navigate("/admin")}>
+              <Button variant="outline" onClick={() => navigate("/admin?tab=posts")}>
                 Cancel
               </Button>
             </div>

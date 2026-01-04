@@ -80,7 +80,7 @@ const ToolkitItemEditor = () => {
       queryClient.invalidateQueries({ queryKey: [tableName] });
       queryClient.invalidateQueries({ queryKey: ["toolkit"] });
       toast({ title: isNew ? "Item created" : "Item updated" });
-      navigate("/admin");
+      navigate("/admin?tab=toolkit");
     },
     onError: (error) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -112,7 +112,7 @@ const ToolkitItemEditor = () => {
     <Layout>
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-2xl">
-          <Button variant="ghost" onClick={() => navigate("/admin")} className="mb-6">
+          <Button variant="ghost" onClick={() => navigate("/admin?tab=toolkit")} className="mb-6">
             <ArrowLeft className="mr-2 w-4 h-4" />
             Back to Admin
           </Button>
@@ -177,7 +177,7 @@ const ToolkitItemEditor = () => {
               >
                 {saveMutation.isPending ? "Saving..." : `Save ${typeLabel}`}
               </Button>
-              <Button variant="outline" onClick={() => navigate("/admin")}>
+              <Button variant="outline" onClick={() => navigate("/admin?tab=toolkit")}>
                 Cancel
               </Button>
             </div>

@@ -191,7 +191,7 @@ const CaseStudyEditor = () => {
       queryClient.invalidateQueries({ queryKey: ["case-studies"] });
       queryClient.invalidateQueries({ queryKey: ["featured-case-studies"] });
       toast({ title: isNew ? "Case study created" : "Case study updated" });
-      navigate("/admin");
+      navigate("/admin?tab=case-studies");
     },
     onError: (error: any) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -238,7 +238,7 @@ const CaseStudyEditor = () => {
     <Layout>
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-3xl">
-          <Button variant="ghost" onClick={() => navigate("/admin")} className="mb-6">
+          <Button variant="ghost" onClick={() => navigate("/admin?tab=case-studies")} className="mb-6">
             <ArrowLeft className="mr-2 w-4 h-4" />
             Back to Admin
           </Button>
@@ -628,7 +628,7 @@ const CaseStudyEditor = () => {
               >
                 {saveMutation.isPending ? "Saving..." : "Save Case Study"}
               </Button>
-              <Button variant="outline" onClick={() => navigate("/admin")}>
+              <Button variant="outline" onClick={() => navigate("/admin?tab=case-studies")}>
                 Cancel
               </Button>
             </div>

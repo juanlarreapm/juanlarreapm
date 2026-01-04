@@ -77,7 +77,7 @@ const ExperienceEditor = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["experiences"] });
       toast({ title: isNew ? "Experience created" : "Experience updated" });
-      navigate("/admin");
+      navigate("/admin?tab=experiences");
     },
     onError: (error) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -115,7 +115,7 @@ const ExperienceEditor = () => {
     <Layout>
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-2xl">
-          <Button variant="ghost" onClick={() => navigate("/admin")} className="mb-6">
+          <Button variant="ghost" onClick={() => navigate("/admin?tab=experiences")} className="mb-6">
             <ArrowLeft className="mr-2 w-4 h-4" />
             Back to Admin
           </Button>
@@ -223,7 +223,7 @@ const ExperienceEditor = () => {
               >
                 {saveMutation.isPending ? "Saving..." : "Save Experience"}
               </Button>
-              <Button variant="outline" onClick={() => navigate("/admin")}>
+              <Button variant="outline" onClick={() => navigate("/admin?tab=experiences")}>
                 Cancel
               </Button>
             </div>
