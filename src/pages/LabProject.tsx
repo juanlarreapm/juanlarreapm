@@ -197,9 +197,10 @@ const LabProject = () => {
 
           {/* Description */}
           {project.description && (
-            <div className="prose prose-lg dark:prose-invert max-w-none mb-12">
-              <p className="text-muted-foreground whitespace-pre-wrap">{project.description}</p>
-            </div>
+            <div 
+              className="prose prose-lg dark:prose-invert max-w-none mb-12 [&_img]:rounded-xl [&_img]:border [&_img]:border-border"
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            />
           )}
 
           {/* Screenshots gallery */}
