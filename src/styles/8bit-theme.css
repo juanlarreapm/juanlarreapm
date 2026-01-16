@@ -1,0 +1,154 @@
+/* 8-Bit Retro Theme Styles */
+
+/* Scanline overlay effect */
+.scanlines {
+  position: relative;
+}
+
+.scanlines::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* CRT screen glow */
+.crt-glow {
+  box-shadow: 
+    0 0 100px rgba(0, 255, 255, 0.3),
+    0 0 200px rgba(255, 0, 255, 0.2),
+    inset 0 0 50px rgba(0, 255, 255, 0.1);
+}
+
+/* Pixel border using box-shadow technique */
+.pixel-border {
+  box-shadow:
+    /* Top border */
+    0 -4px 0 0 currentColor,
+    /* Bottom border */
+    0 4px 0 0 currentColor,
+    /* Left border */
+    -4px 0 0 0 currentColor,
+    /* Right border */
+    4px 0 0 0 currentColor,
+    /* Corners */
+    -4px -4px 0 0 currentColor,
+    4px -4px 0 0 currentColor,
+    -4px 4px 0 0 currentColor,
+    4px 4px 0 0 currentColor;
+}
+
+.pixel-border-sm {
+  box-shadow:
+    0 -2px 0 0 currentColor,
+    0 2px 0 0 currentColor,
+    -2px 0 0 0 currentColor,
+    2px 0 0 0 currentColor,
+    -2px -2px 0 0 currentColor,
+    2px -2px 0 0 currentColor,
+    -2px 2px 0 0 currentColor,
+    2px 2px 0 0 currentColor;
+}
+
+/* Pixel grid background */
+.pixel-grid {
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Retro button hover */
+.retro-btn {
+  transition: transform 0.1s ease;
+  image-rendering: pixelated;
+}
+
+.retro-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow:
+    2px 2px 0 0 currentColor,
+    4px 4px 0 0 currentColor;
+}
+
+.retro-btn:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+/* Blinking cursor for retro feel */
+.blink {
+  animation: blink-animation 1s steps(2, start) infinite;
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* HP Bar style progress */
+.hp-bar {
+  height: 16px;
+  background: #333;
+  border: 2px solid #fff;
+  position: relative;
+}
+
+.hp-bar::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  height: calc(100% - 4px);
+  background: linear-gradient(180deg, #00ff00 0%, #00aa00 100%);
+  transition: width 0.3s ease;
+}
+
+/* Arcade text shadow */
+.arcade-text {
+  text-shadow: 
+    3px 3px 0 #ff00ff,
+    -1px -1px 0 #00ffff;
+}
+
+/* 8-bit color palette */
+.text-retro-cyan { color: #00ffff; }
+.text-retro-magenta { color: #ff00ff; }
+.text-retro-lime { color: #00ff00; }
+.text-retro-yellow { color: #ffff00; }
+.text-retro-orange { color: #ff8800; }
+
+.bg-retro-cyan { background-color: #00ffff; }
+.bg-retro-magenta { background-color: #ff00ff; }
+.bg-retro-lime { background-color: #00ff00; }
+.bg-retro-yellow { background-color: #ffff00; }
+
+/* Flicker effect for CRT authenticity */
+.crt-flicker {
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.97; }
+  50% { opacity: 1; }
+  100% { opacity: 0.98; }
+}
+
+/* Pixel art style icons */
+.pixel-icon {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
