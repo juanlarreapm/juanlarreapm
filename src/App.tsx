@@ -24,6 +24,8 @@ import CaseStudyEditor from "./pages/CaseStudyEditor";
 import LabEditor from "./pages/LabEditor";
 import ToolkitItemEditor from "./pages/ToolkitItemEditor";
 import NotFound from "./pages/NotFound";
+import Retro8Bit from "./pages/preview/Retro8Bit";
+import Terminal from "./pages/preview/Terminal";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,9 @@ function AppContent() {
           <Route path="/admin/case-studies/:id" element={<CaseStudyEditor />} />
           <Route path="/admin/lab/:id" element={<LabEditor />} />
           <Route path="/admin/toolkit/:type/:id" element={<ToolkitItemEditor />} />
+          {/* Theme Preview Routes */}
+          <Route path="/preview/8bit" element={<Retro8Bit />} />
+          <Route path="/preview/terminal" element={<Terminal />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PageTransition>
