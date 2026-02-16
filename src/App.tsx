@@ -17,6 +17,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Admin from "./pages/Admin";
 import PostEditor from "./pages/PostEditor";
 import ExperienceEditor from "./pages/ExperienceEditor";
@@ -50,6 +51,7 @@ function AppContent() {
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<PostEditor />} />
           <Route path="/admin/experiences/:id" element={<ExperienceEditor />} />
