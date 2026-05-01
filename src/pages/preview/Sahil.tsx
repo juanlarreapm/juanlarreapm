@@ -120,19 +120,6 @@ const Sahil = () => {
         </section>
 
         <div className="max-w-[640px]">
-        {/* Now */}
-        <section className="mb-16">
-          <div className="sh-section-label">now</div>
-          <ul className="sh-body" style={{ paddingLeft: 0, listStyle: "none" }}>
-            <li>— Shipping checkout v3 at PartsTech.</li>
-            <li>— Reading <em>The Minto Pyramid Principle</em> (again).</li>
-            <li>— Writing more, tweeting less.</li>
-            <li>— Open to staff/principal PM conversations.</li>
-          </ul>
-        </section>
-
-        <hr className="sh-rule mb-16" />
-
         {/* Signature */}
         <section className="mb-12">
           <div className="sh-signature">— juan</div>
