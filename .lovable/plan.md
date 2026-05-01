@@ -1,115 +1,99 @@
-## Two new preview routes to compare
+## Third preview: `/preview/sahil`
 
-You'll get two scoped, self-contained preview pages — same pattern as `/preview/editorial`, `/preview/terminal`, `/preview/8bit`. Live site stays untouched.
+A new self-contained preview inspired by **sahillavingia.com**. Live site untouched. Same pattern as the other previews — scoped CSS, real data from the database, one route.
 
-- **`/preview/swiss`** — Swiss / Brutalist Grid
-- **`/preview/quiet`** — Soft Neutral Minimal
+### What sahillavingia.com is doing (the DNA we're borrowing)
 
-Both pull real data from your database (case studies, experiences) so they feel real, not lorem-ipsum.
+- **Personal-letter feel.** Reads like a homepage someone actually writes, not a portfolio template.
+- **Single narrow column**, left-aligned, ~600–680px wide.
+- **Warm off-white background**, near-black ink, **a bright accent color** used on links and one or two highlights.
+- **Mixed typography**: a friendly serif for body + display, occasional handwritten / italic flourishes, no mono.
+- **Inline links everywhere** — the page is conversational. Most navigation happens through underlined inline links, not a nav bar.
+- **Lists over cards.** Work, writing, and projects appear as plain bulleted or dashed lists with year + one-line description.
+- **First-person opening line.** The hero is literally a sentence: "I'm Sahil. I…"
+- **Tiny photo or avatar** near the top — not a hero image.
+- **Almost no UI chrome.** No buttons (links instead), no shadows, no cards, no gradients.
 
----
+### Direction: `/preview/sahil` — Personal Letter
 
-### Direction 1 — Swiss / Brutalist (`/preview/swiss`)
-
-**Vibe**: A printed annual report from a design-forward agency. Loud, confident, typographic.
+**Vibe**: A person introducing themselves on the internet circa 2010, but tasteful. Confident through plainness. Reads like an essay homepage.
 
 **Palette**
-- Background: pure white `#FFFFFF`
-- Ink: true black `#0A0A0A`
-- One accent: electric blue `#1F3DFF` (used sparingly — single links, one underline)
+- Background: warm cream `#FBF7F0`
+- Ink: near-black `#1A1A1A`
+- Muted: `#6B6760`
+- Accent: bright coral-red `#E04E2C` (links, the one highlighted word in the hero) — swappable to terracotta to match brand memory
+- Hairlines: `#E8E1D4`
 
 **Typography**
-- Display: a heavy grotesque (Inter Display 900 or similar) at huge sizes — `clamp(80px, 14vw, 220px)` headlines
-- Body: same grotesque at 14px, tight leading
-- Mono labels: JetBrains Mono 10px UPPERCASE for section markers like `01 / WORK`
+- Body + display: a warm serif — **Fraunces** (already used in the project) or **Source Serif 4**
+- Italic used liberally for emphasis and asides
+- One handwritten accent font (**Caveat** or **Shadows Into Light**) for ONE element only — e.g. the signature, or a margin note like *"← currently"*
+- Sizes: body 18px / 1.7, hero 32–40px (small for a hero — this is the point)
 
 **Layout signals**
-- Hard 12-column grid, visible hairline rules between sections
-- Numbered sections (`§01`, `§02`) with footnote-style annotations in the margin
-- Headline breaks across multiple lines intentionally, with one word in the accent color
-- Asymmetric: huge left-aligned type, then dense small-print metadata column on the right
-- No rounded corners, no shadows, no gradients — ever
+- Single column, max-width 640px, left-aligned (not centered)
+- Small avatar (40–56px round) top-left next to name
+- Hero is a paragraph, not a headline: *"I'm Juan. I'm a senior PM helping B2B SaaS go from zero to one. Currently at PartsTech."*
+- Inline links underlined in coral
+- Sections separated by a single blank line and a small italic label (e.g. *writing*, *work*, *now*)
+- Work / case studies = dashed list: `— 2024  PartsTech — rebuilt checkout, +18% conversion`
+- A `/now` style block: "Currently…" with 3–4 short bullets
+- Footer: one line, plain text
 
 **Hero sketch**
 ```text
-§01 ——————————————————————————————————————————
-                                          NEW YORK / REMOTE
-B2B SAAS                                  AVAILABLE Q3 2026
-PRODUCT                                   ──────────────
-MANAGER                                   8 YRS · 5 INDUSTRIES
-WHO SHIPS.                                12+ LAUNCHES
-                                          $XXM ARR INFLUENCED
-——————————————————————————————————————————
+[avatar]  Juan Larrea
+
+
+I'm Juan. I'm a senior product manager helping
+B2B SaaS companies go from zero to one — then
+grow it. I've shipped twelve products across
+five industries over the last eight years.
+
+Right now I'm at PartsTech rebuilding how
+shops buy parts. Before that, retail, edtech,
+and consumer loyalty. I write occasionally
+about product, taste, and shipping.
+
+If you're hiring a PM who can build the thing,
+sell it internally, and find the metric that
+matters — say hi.
+
+— juan
 ```
-
----
-
-### Direction 2 — Soft Neutral Minimal (`/preview/quiet`)
-
-**Vibe**: A calm, considered personal site. Minimalist but warm. Confident through restraint.
-
-**Palette**
-- Background: off-white `#F7F5F1` (warm paper)
-- Ink: deep slate `#1B2024`
-- Muted text: `#6B7077`
-- Accent: muted sage `#7A8C7E` (only for the one current-status indicator and hover states)
-
-**Typography**
-- Display: a refined sans (Söhne / General Sans / Inter at light weight) at modest sizes — `clamp(40px, 6vw, 72px)`
-- Body: same sans, 16px, generous 1.7 leading
-- No mono, no serifs — single typeface, multiple weights
-
-**Layout signals**
-- Single narrow column, max-width 640px, centered
-- Massive vertical whitespace between sections (200px+)
-- Hairline dividers in `#E4E0DA`
-- No grid lines, no numbering, no decoration
-- Case studies as a quiet list — title, one-line outcome, year. Hover reveals more.
-
-**Hero sketch**
-```text
-
-
-              ● open to new roles
-
-
-              Juan Larrea
-
-              Senior PM. I help B2B SaaS
-              companies go from zero to one,
-              then grow it.
-
-
-
-              Currently shipping at PartsTech →
-
-
-```
-
----
 
 ### What I'll build
 
 | File | Action |
 |---|---|
-| `src/styles/swiss-theme.css` | New — scoped `.swiss-theme` tokens, type, grid utilities |
-| `src/styles/quiet-theme.css` | New — scoped `.quiet-theme` tokens, type |
-| `src/pages/preview/Swiss.tsx` | New — full one-page preview, real data |
-| `src/pages/preview/Quiet.tsx` | New — full one-page preview, real data |
-| `src/App.tsx` | Add two routes: `/preview/swiss`, `/preview/quiet` |
-| `index.html` | Add one font (General Sans or similar) if needed |
+| `src/styles/sahil-theme.css` | New — `.sahil-theme` scoped tokens, serif type, link styling |
+| `src/pages/preview/Sahil.tsx` | New — full one-page preview, real data from DB |
+| `src/App.tsx` | Add route `/preview/sahil` |
+| `index.html` | Add Caveat font (Fraunces already loaded) |
 
-Each preview includes: hero, proof strip / metrics, selected work (real case studies), experience timeline (real experiences), and a closing CTA. Internal links scroll within the page so the preview stays self-contained.
+**Page sections** (all on one screen, scrollable):
+1. **Header strip** — avatar + name, no nav
+2. **Hero paragraph** — the introduction, with one accent word
+3. ***now*** — 3–4 inline bullets of current focus
+4. ***work*** — dashed list of case studies (real data, year + title + one-line outcome, each linkable)
+5. ***writing*** — dashed list of blog posts (real data)
+6. ***elsewhere*** — single-line list: email · linkedin · github
+7. **Signature** — handwritten "— juan" in Caveat
+8. **Footer** — one line, year + tiny note
 
-**Zero changes** to your live site, `index.css`, navbar, footer, or existing pages.
+Preview chrome (top-left "Back to live site", top-right "Sahil Preview · v1") matches the other previews.
 
----
+### Zero changes
+to your live site, `index.css`, navbar, footer, or any existing pages.
 
 ### After you review
 
-1. **Pick a winner** — I migrate that direction into the real site (replace tokens, hero, case studies, navbar, footer, about)
-2. **Iterate on one** — tweak palette, type, copy, layout
-3. **Mix** — e.g. "Swiss type, Quiet palette" — I build a v2 preview combining them
-4. **Reject both** — we delete the preview files and try a different direction
+You'll then have **three** directions to compare:
+- `/preview/swiss` — loud, brutalist, agency-poster
+- `/preview/quiet` — calm, neutral, minimalist product
+- `/preview/sahil` — warm, personal, essayist
 
-Approve and I'll build both previews so you can compare them live.
+Pick a winner (or mix), and I migrate that direction into the real site.
+
+Approve and I'll build it.
