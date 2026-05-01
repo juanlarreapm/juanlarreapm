@@ -1,0 +1,143 @@
+/* Sahil-inspired "Personal Letter" preview theme — scoped to .sahil-theme */
+.sahil-theme {
+  --sh-bg: 36 50% 96%;        /* #FBF7F0 warm cream */
+  --sh-ink: 0 0% 10%;          /* near-black */
+  --sh-muted: 33 6% 40%;       /* warm gray */
+  --sh-accent: 13 75% 53%;     /* coral red #E04E2C */
+  --sh-line: 36 30% 87%;       /* hairline */
+
+  background: hsl(var(--sh-bg));
+  color: hsl(var(--sh-ink));
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 50, "WONK" 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.005em;
+}
+
+.sahil-theme ::selection {
+  background: hsl(var(--sh-accent) / 0.25);
+  color: hsl(var(--sh-ink));
+}
+
+.sahil-theme .sh-body {
+  font-size: 18px;
+  line-height: 1.7;
+  font-weight: 400;
+  color: hsl(var(--sh-ink));
+}
+
+.sahil-theme .sh-hero {
+  font-size: clamp(20px, 2.4vw, 24px);
+  line-height: 1.55;
+  font-weight: 400;
+  color: hsl(var(--sh-ink));
+}
+
+.sahil-theme .sh-name {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.sahil-theme .sh-section-label {
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+  color: hsl(var(--sh-muted));
+  margin-bottom: 0.6rem;
+}
+
+.sahil-theme .sh-muted {
+  color: hsl(var(--sh-muted));
+}
+
+.sahil-theme .sh-accent {
+  color: hsl(var(--sh-accent));
+}
+
+.sahil-theme a.sh-link,
+.sahil-theme .sh-link {
+  color: hsl(var(--sh-accent));
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s ease;
+}
+.sahil-theme a.sh-link:hover {
+  opacity: 0.7;
+}
+
+.sahil-theme .sh-rule {
+  border: 0;
+  border-top: 1px solid hsl(var(--sh-line));
+  margin: 0;
+}
+
+.sahil-theme .sh-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sahil-theme .sh-list li {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  font-size: 17px;
+  line-height: 1.5;
+  align-items: baseline;
+}
+.sahil-theme .sh-list li .yr {
+  color: hsl(var(--sh-muted));
+  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+}
+
+.sahil-theme .sh-signature {
+  font-family: 'Caveat', cursive;
+  font-size: 38px;
+  line-height: 1;
+  color: hsl(var(--sh-ink));
+}
+
+.sahil-theme .sh-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: hsl(var(--sh-line));
+  display: inline-block;
+  border: 1px solid hsl(var(--sh-line));
+}
+
+.sahil-theme .sh-avatar-fallback {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: hsl(var(--sh-accent) / 0.15);
+  color: hsl(var(--sh-accent));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 18px;
+  border: 1px solid hsl(var(--sh-line));
+}
+
+.sahil-theme .sh-chip {
+  font-family: 'Fraunces', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: hsl(var(--sh-muted));
+}
+
+.sahil-theme .sh-fade {
+  animation: sh-fade 0.7s ease-out both;
+}
+@keyframes sh-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

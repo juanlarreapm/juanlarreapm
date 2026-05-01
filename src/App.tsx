@@ -30,6 +30,7 @@ import Terminal from "./pages/preview/Terminal";
 import Editorial from "./pages/preview/Editorial";
 import Swiss from "./pages/preview/Swiss";
 import Quiet from "./pages/preview/Quiet";
+import Sahil from "./pages/preview/Sahil";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,7 @@ function AppContent() {
           <Route path="/preview/editorial" element={<Editorial />} />
           <Route path="/preview/swiss" element={<Swiss />} />
           <Route path="/preview/quiet" element={<Quiet />} />
+          <Route path="/preview/sahil" element={<Sahil />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PageTransition>
