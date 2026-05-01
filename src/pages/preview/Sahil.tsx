@@ -114,6 +114,7 @@ const Sahil = () => {
           </nav>
         </section>
 
+        <div className="max-w-[640px]">
         {/* Now */}
         <section className="mb-16">
           <div className="sh-section-label">now</div>
@@ -177,15 +178,13 @@ const Sahil = () => {
 
         {/* Elsewhere */}
         <section className="mb-16">
-          <div className="sh-section-label">elsewhere</div>
+          <div className="sh-section-label">contact</div>
           <p className="sh-body">
             <a href="mailto:juanlarreapm@gmail.com" className="sh-link">email</a>
             <span className="sh-muted"> · </span>
             <a href="https://www.linkedin.com/in/juanlarreapm/" target="_blank" rel="noopener noreferrer" className="sh-link">linkedin</a>
             <span className="sh-muted"> · </span>
             <a href="https://github.com/juanlarreapm" target="_blank" rel="noopener noreferrer" className="sh-link">github</a>
-            <span className="sh-muted"> · </span>
-            <a href="/case-studies" className="sh-link">case studies</a>
           </p>
         </section>
 
@@ -193,6 +192,8 @@ const Sahil = () => {
         <section className="mb-12">
           <div className="sh-signature">— juan</div>
         </section>
+
+        </div>
 
         <hr className="sh-rule mb-6" />
         <footer className="sh-chip">
