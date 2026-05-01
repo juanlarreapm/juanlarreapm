@@ -1,99 +1,115 @@
-## Preview the Rebrand at `/preview/editorial` Before Committing
+## Two new preview routes to compare
 
-Instead of changing your live site, I'll build the new "warm minimalist + outcome-first" design as a **standalone preview route** — exactly like the existing `/preview/terminal` and `/preview/8bit` routes. You can visit it, click around, share the URL with friends/mentors, and only after you approve will we roll it out to the real site.
+You'll get two scoped, self-contained preview pages — same pattern as `/preview/editorial`, `/preview/terminal`, `/preview/8bit`. Live site stays untouched.
 
----
+- **`/preview/swiss`** — Swiss / Brutalist Grid
+- **`/preview/quiet`** — Soft Neutral Minimal
 
-### What gets built
-
-A new route: **`/preview/editorial`**
-
-It will be a fully styled, scoped preview that includes:
-
-1. **Homepage** — new hero, proof strip, bento case studies, highlights, CTA
-2. **About section** — editorial timeline of experience
-3. **Case studies grid** — numbered bento layout
-4. **New navbar + footer** — thin top bar, minimal footer
-
-All on one scrollable page so you can see the whole new identity in one place. Internal links inside the preview will scroll to sections rather than navigating away (so the preview stays self-contained).
+Both pull real data from your database (case studies, experiences) so they feel real, not lorem-ipsum.
 
 ---
 
-### How it stays isolated from your live site
+### Direction 1 — Swiss / Brutalist (`/preview/swiss`)
 
-Following the pattern of `src/styles/terminal-theme.css` and `src/styles/8bit-theme.css`:
+**Vibe**: A printed annual report from a design-forward agency. Loud, confident, typographic.
 
-- New file: **`src/styles/editorial-theme.css`** — all new color tokens, fonts, and utilities scoped under a `.editorial-theme` wrapper class
-- New file: **`src/pages/preview/Editorial.tsx`** — the full preview page, wrapped in `<div className="editorial-theme">`
-- New route added to `src/App.tsx`: `/preview/editorial`
-- Real data: pulls your actual case studies, experiences, and bio from the database so it feels real
-- **Zero changes** to `src/index.css`, `tailwind.config.ts` (except adding the Fraunces font family), the homepage, navbar, footer, or any existing page
+**Palette**
+- Background: pure white `#FFFFFF`
+- Ink: true black `#0A0A0A`
+- One accent: electric blue `#1F3DFF` (used sparingly — single links, one underline)
 
-Your live site at `/` keeps the current dark look. Nothing breaks.
+**Typography**
+- Display: a heavy grotesque (Inter Display 900 or similar) at huge sizes — `clamp(80px, 14vw, 220px)` headlines
+- Body: same grotesque at 14px, tight leading
+- Mono labels: JetBrains Mono 10px UPPERCASE for section markers like `01 / WORK`
 
-The only shared change is loading the new font (Fraunces) in `index.html` — fonts are inert until used, so this won't affect the live site visually.
+**Layout signals**
+- Hard 12-column grid, visible hairline rules between sections
+- Numbered sections (`§01`, `§02`) with footnote-style annotations in the margin
+- Headline breaks across multiple lines intentionally, with one word in the accent color
+- Asymmetric: huge left-aligned type, then dense small-print metadata column on the right
+- No rounded corners, no shadows, no gradients — ever
 
----
-
-### What you'll see at `/preview/editorial`
-
+**Hero sketch**
 ```text
-┌────────────────────────────────────────────────────────────┐
-│ JUAN LARREA — PRODUCT             ABOUT  WORK  CONTACT  ◍ │
-├────────────────────────────────────────────────────────────┤
-│                                                            │
-│   I take B2B SaaS                       ◍ Currently        │
-│   from 0 to 1 —                           shipping at      │
-│   then to scale.                          PartsTech        │
-│                                                            │
-│   Senior PM. 8 years. 5 industries.                        │
-├────────────────────────────────────────────────────────────┤
-│  08          05            12+           $XXM              │
-│  YEARS       INDUSTRIES    LAUNCHES      ARR INFLUENCED    │
-├────────────────────────────────────────────────────────────┤
-│  SELECTED WORK                              ALL WORK →     │
-│  ┌──────────────────────┐  ┌─────────────┐                │
-│  │ 01 / PartsTech       │  │ 02 / ...    │                │
-│  │ [outcome metric XL]  │  └─────────────┘                │
-│  │                      │  ┌─────────────┐                │
-│  │                      │  │ 03 / ...    │                │
-│  └──────────────────────┘  └─────────────┘                │
-├────────────────────────────────────────────────────────────┤
-│  EXPERIENCE                                                │
-│  2024 — now    PartsTech       Senior PM      [outcome]    │
-│  2022 — 2024   Nordstrom       PM             [outcome]    │
-│  ...                                                       │
-└────────────────────────────────────────────────────────────┘
+§01 ——————————————————————————————————————————
+                                          NEW YORK / REMOTE
+B2B SAAS                                  AVAILABLE Q3 2026
+PRODUCT                                   ──────────────
+MANAGER                                   8 YRS · 5 INDUSTRIES
+WHO SHIPS.                                12+ LAUNCHES
+                                          $XXM ARR INFLUENCED
+——————————————————————————————————————————
 ```
 
-On a warm bone background, in Fraunces serif, with terracotta as the only accent color.
+---
+
+### Direction 2 — Soft Neutral Minimal (`/preview/quiet`)
+
+**Vibe**: A calm, considered personal site. Minimalist but warm. Confident through restraint.
+
+**Palette**
+- Background: off-white `#F7F5F1` (warm paper)
+- Ink: deep slate `#1B2024`
+- Muted text: `#6B7077`
+- Accent: muted sage `#7A8C7E` (only for the one current-status indicator and hover states)
+
+**Typography**
+- Display: a refined sans (Söhne / General Sans / Inter at light weight) at modest sizes — `clamp(40px, 6vw, 72px)`
+- Body: same sans, 16px, generous 1.7 leading
+- No mono, no serifs — single typeface, multiple weights
+
+**Layout signals**
+- Single narrow column, max-width 640px, centered
+- Massive vertical whitespace between sections (200px+)
+- Hairline dividers in `#E4E0DA`
+- No grid lines, no numbering, no decoration
+- Case studies as a quiet list — title, one-line outcome, year. Hover reveals more.
+
+**Hero sketch**
+```text
+
+
+              ● open to new roles
+
+
+              Juan Larrea
+
+              Senior PM. I help B2B SaaS
+              companies go from zero to one,
+              then grow it.
+
+
+
+              Currently shipping at PartsTech →
+
+
+```
+
+---
+
+### What I'll build
+
+| File | Action |
+|---|---|
+| `src/styles/swiss-theme.css` | New — scoped `.swiss-theme` tokens, type, grid utilities |
+| `src/styles/quiet-theme.css` | New — scoped `.quiet-theme` tokens, type |
+| `src/pages/preview/Swiss.tsx` | New — full one-page preview, real data |
+| `src/pages/preview/Quiet.tsx` | New — full one-page preview, real data |
+| `src/App.tsx` | Add two routes: `/preview/swiss`, `/preview/quiet` |
+| `index.html` | Add one font (General Sans or similar) if needed |
+
+Each preview includes: hero, proof strip / metrics, selected work (real case studies), experience timeline (real experiences), and a closing CTA. Internal links scroll within the page so the preview stays self-contained.
+
+**Zero changes** to your live site, `index.css`, navbar, footer, or existing pages.
 
 ---
 
 ### After you review
 
-You'll have three clean options:
-1. **Ship it** — I migrate the design out of `/preview/editorial` into your real site (replacing `index.css` tokens, Hero, FeaturedCaseStudies, Navbar, Footer, About, etc.)
-2. **Iterate** — tell me what to tweak (color, type, layout, copy) and I update the preview route until it's right
-3. **Reject** — we delete the preview files and your live site is unchanged
+1. **Pick a winner** — I migrate that direction into the real site (replace tokens, hero, case studies, navbar, footer, about)
+2. **Iterate on one** — tweak palette, type, copy, layout
+3. **Mix** — e.g. "Swiss type, Quiet palette" — I build a v2 preview combining them
+4. **Reject both** — we delete the preview files and try a different direction
 
----
-
-### Files I'll create / touch
-
-| File | Action |
-|---|---|
-| `src/pages/preview/Editorial.tsx` | **New** — the full preview page |
-| `src/styles/editorial-theme.css` | **New** — scoped tokens, fonts, utilities |
-| `src/App.tsx` | Add one route: `/preview/editorial` |
-| `index.html` | Add Fraunces font link (inert until used) |
-
-That's it. No risk to the current site.
-
----
-
-### One thing to confirm
-
-The proof-strip numbers (years / industries / launches / ARR influenced) — I'll start with placeholders pulled from what's on your site already (8 years, 5 industries) and put `12+` and `$XXM` as obvious placeholders. After you see the preview, you can tell me the real numbers and whether to wire them into the admin panel.
-
-Approve this and I'll build the preview route so you can see the new direction live before any commitment.
+Approve and I'll build both previews so you can compare them live.

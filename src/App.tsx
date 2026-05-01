@@ -28,6 +28,8 @@ import NotFound from "./pages/NotFound";
 import Retro8Bit from "./pages/preview/Retro8Bit";
 import Terminal from "./pages/preview/Terminal";
 import Editorial from "./pages/preview/Editorial";
+import Swiss from "./pages/preview/Swiss";
+import Quiet from "./pages/preview/Quiet";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +65,8 @@ function AppContent() {
           <Route path="/preview/8bit" element={<Retro8Bit />} />
           <Route path="/preview/terminal" element={<Terminal />} />
           <Route path="/preview/editorial" element={<Editorial />} />
+          <Route path="/preview/swiss" element={<Swiss />} />
+          <Route path="/preview/quiet" element={<Quiet />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PageTransition>
