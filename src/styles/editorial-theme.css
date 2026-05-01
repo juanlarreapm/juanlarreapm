@@ -1,0 +1,195 @@
+/* Editorial Theme — Warm Minimalist + Outcome-First
+   Scoped to .editorial-theme so it doesn't affect the live site. */
+
+.editorial-theme {
+  /* Palette */
+  --ed-bg: 36 24% 94%;          /* warm bone */
+  --ed-surface: 36 30% 90%;     /* warm cream */
+  --ed-surface-2: 36 18% 86%;   /* slightly darker cream */
+  --ed-ink: 24 10% 12%;         /* warm near-black */
+  --ed-ink-muted: 24 8% 38%;
+  --ed-ink-faint: 24 6% 58%;
+  --ed-accent: 14 55% 48%;      /* terracotta */
+  --ed-accent-soft: 14 55% 48% / 0.12;
+  --ed-line: 24 12% 80%;
+  --ed-line-strong: 24 14% 68%;
+
+  background-color: hsl(var(--ed-bg));
+  color: hsl(var(--ed-ink));
+  font-family: 'Inter', system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.editorial-theme ::selection {
+  background: hsl(var(--ed-accent) / 0.25);
+  color: hsl(var(--ed-ink));
+}
+
+.editorial-theme .ed-serif {
+  font-family: 'Fraunces', 'Times New Roman', serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.02em;
+}
+
+.editorial-theme .ed-mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.editorial-theme .ed-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: hsl(var(--ed-ink-muted));
+}
+
+.editorial-theme .ed-link {
+  color: hsl(var(--ed-ink));
+  text-decoration: none;
+  border-bottom: 1px solid hsl(var(--ed-line-strong));
+  transition: border-color 200ms ease, color 200ms ease;
+}
+.editorial-theme .ed-link:hover {
+  color: hsl(var(--ed-accent));
+  border-color: hsl(var(--ed-accent));
+}
+
+.editorial-theme .ed-divider {
+  border-top: 1px solid hsl(var(--ed-line));
+}
+
+.editorial-theme .ed-hairline {
+  border: 1px solid hsl(var(--ed-line));
+}
+
+.editorial-theme .ed-card {
+  background-color: hsl(var(--ed-surface));
+  border: 1px solid hsl(var(--ed-line));
+  transition: border-color 250ms ease, transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.editorial-theme .ed-card:hover {
+  border-color: hsl(var(--ed-line-strong));
+}
+
+.editorial-theme .ed-accent {
+  color: hsl(var(--ed-accent));
+}
+.editorial-theme .ed-accent-bg {
+  background-color: hsl(var(--ed-accent));
+  color: hsl(var(--ed-bg));
+}
+
+/* Status dot */
+.editorial-theme .ed-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: hsl(var(--ed-accent));
+  box-shadow: 0 0 0 0 hsl(var(--ed-accent) / 0.6);
+  animation: ed-pulse 2.4s ease-out infinite;
+  display: inline-block;
+}
+@keyframes ed-pulse {
+  0% { box-shadow: 0 0 0 0 hsl(var(--ed-accent) / 0.55); }
+  70% { box-shadow: 0 0 0 10px hsl(var(--ed-accent) / 0); }
+  100% { box-shadow: 0 0 0 0 hsl(var(--ed-accent) / 0); }
+}
+
+/* Subtle entrance */
+@keyframes ed-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.editorial-theme .ed-rise {
+  animation: ed-rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.editorial-theme .ed-delay-1 { animation-delay: 80ms; }
+.editorial-theme .ed-delay-2 { animation-delay: 160ms; }
+.editorial-theme .ed-delay-3 { animation-delay: 240ms; }
+.editorial-theme .ed-delay-4 { animation-delay: 320ms; }
+.editorial-theme .ed-delay-5 { animation-delay: 400ms; }
+
+/* Newspaper rule under section labels */
+.editorial-theme .ed-rule {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.editorial-theme .ed-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: hsl(var(--ed-line));
+}
+
+/* Numbered marker */
+.editorial-theme .ed-num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: hsl(var(--ed-ink-faint));
+}
+
+/* Display sizes */
+.editorial-theme .ed-display {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-variation-settings: "SOFT" 30, "WONK" 1, "opsz" 144;
+}
+
+/* Big metric numbers */
+.editorial-theme .ed-metric {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-variation-settings: "opsz" 144;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* Buttons */
+.editorial-theme .ed-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: hsl(var(--ed-ink));
+  color: hsl(var(--ed-bg));
+  border: 1px solid hsl(var(--ed-ink));
+  transition: background 200ms ease, color 200ms ease;
+  cursor: pointer;
+}
+.editorial-theme .ed-btn:hover {
+  background: hsl(var(--ed-accent));
+  border-color: hsl(var(--ed-accent));
+}
+.editorial-theme .ed-btn-ghost {
+  background: transparent;
+  color: hsl(var(--ed-ink));
+}
+.editorial-theme .ed-btn-ghost:hover {
+  background: hsl(var(--ed-ink));
+  color: hsl(var(--ed-bg));
+}
+
+/* Subtle paper grain */
+.editorial-theme .ed-grain {
+  position: relative;
+}
+.editorial-theme .ed-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}

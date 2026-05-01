@@ -27,6 +27,7 @@ import ToolkitItemEditor from "./pages/ToolkitItemEditor";
 import NotFound from "./pages/NotFound";
 import Retro8Bit from "./pages/preview/Retro8Bit";
 import Terminal from "./pages/preview/Terminal";
+import Editorial from "./pages/preview/Editorial";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ function AppContent() {
           {/* Theme Preview Routes */}
           <Route path="/preview/8bit" element={<Retro8Bit />} />
           <Route path="/preview/terminal" element={<Terminal />} />
+          <Route path="/preview/editorial" element={<Editorial />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PageTransition>
