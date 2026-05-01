@@ -109,7 +109,12 @@ const Sahil = () => {
               <li><a href="#writing" className="sh-link">writing</a></li>
               <li><a href="/lab" className="sh-link">lab</a></li>
               <li><a href="/toolkit" className="sh-link">toolkit</a></li>
-              <li><a href="/contact" className="sh-link">contact</a></li>
+            </ul>
+            <div className="sh-section-label" style={{ marginTop: "1.5rem" }}>contact</div>
+            <ul className="sh-body" style={{ listStyle: "none", padding: 0, margin: 0, lineHeight: 2 }}>
+              <li><a href="mailto:juanlarreapm@gmail.com" className="sh-link">email</a></li>
+              <li><a href="https://www.linkedin.com/in/juanlarreapm/" target="_blank" rel="noopener noreferrer" className="sh-link">linkedin</a></li>
+              <li><a href="https://github.com/juanlarreapm" target="_blank" rel="noopener noreferrer" className="sh-link">github</a></li>
             </ul>
           </nav>
         </section>
@@ -127,66 +132,6 @@ const Sahil = () => {
         </section>
 
         <hr className="sh-rule mb-16" />
-
-        {/* Work */}
-        <section id="work" className="mb-16">
-          <div className="sh-section-label">work</div>
-          <ul className="sh-list">
-            {caseStudies?.map((cs: any) => (
-              <li key={cs.id}>
-                <span className="yr">{cs.start_year || year(cs.created_at)}</span>
-                <span>
-                  <a href={`/case-studies/${cs.slug}`} className="sh-link">
-                    {cs.title}
-                  </a>
-                  {cs.company && <span className="sh-muted"> — {cs.company}</span>}
-                  {cs.metrics?.[0] && (
-                    <span className="sh-muted">, {cs.metrics[0]}</span>
-                  )}
-                </span>
-              </li>
-            ))}
-            {!caseStudies?.length && (
-              <li><span className="yr"></span><span className="sh-muted">Loading…</span></li>
-            )}
-          </ul>
-        </section>
-
-        <hr className="sh-rule mb-16" />
-
-        {/* Writing */}
-        <section id="writing" className="mb-16">
-          <div className="sh-section-label">writing</div>
-          <ul className="sh-list">
-            {posts?.map((p: any) => (
-              <li key={p.id}>
-                <span className="yr">{year(p.created_at)}</span>
-                <span>
-                  <a href={`/blog/${p.slug}`} className="sh-link">
-                    {p.title}
-                  </a>
-                </span>
-              </li>
-            ))}
-            {!posts?.length && (
-              <li><span className="yr"></span><span className="sh-muted">Loading…</span></li>
-            )}
-          </ul>
-        </section>
-
-        <hr className="sh-rule mb-16" />
-
-        {/* Elsewhere */}
-        <section className="mb-16">
-          <div className="sh-section-label">contact</div>
-          <p className="sh-body">
-            <a href="mailto:juanlarreapm@gmail.com" className="sh-link">email</a>
-            <span className="sh-muted"> · </span>
-            <a href="https://www.linkedin.com/in/juanlarreapm/" target="_blank" rel="noopener noreferrer" className="sh-link">linkedin</a>
-            <span className="sh-muted"> · </span>
-            <a href="https://github.com/juanlarreapm" target="_blank" rel="noopener noreferrer" className="sh-link">github</a>
-          </p>
-        </section>
 
         {/* Signature */}
         <section className="mb-12">
