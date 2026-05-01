@@ -23,10 +23,10 @@ const Sahil = () => {
     queryKey: ["sahil-posts"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("posts")
+        .from("blog_posts")
         .select("*")
         .eq("published", true)
-        .order("created_at", { ascending: false })
+        .order("published_at", { ascending: false })
         .limit(6);
       if (error) throw error;
       return data;
