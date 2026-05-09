@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Mail, Linkedin, Github } from "lucide-react";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { useToolkitVisible } from "@/hooks/useToolkitVisible";
+import { useBlogVisible } from "@/hooks/useBlogVisible";
 import "@/styles/sahil-theme.css";
 
 interface SahilLayoutProps {
