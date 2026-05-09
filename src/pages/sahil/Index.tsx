@@ -8,19 +8,6 @@ const yearOf = (d?: string | null) => (d ? new Date(d).getFullYear().toString() 
 
 const SahilIndex = () => {
   const isBlogVisible = useBlogVisible();
-  const { data: caseStudies } = useQuery({
-    queryKey: ["sahil-home-case-studies"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("id, title, slug, company, created_at")
-        .eq("published", true)
-        .order("display_order", { ascending: true })
-        .limit(5);
-      if (error) throw error;
-      return data;
-    },
-  });
 
   const { data: posts } = useQuery({
     queryKey: ["sahil-home-posts"],
