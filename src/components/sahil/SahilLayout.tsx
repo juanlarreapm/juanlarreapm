@@ -33,7 +33,7 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
             >
               <li><Link to="/about" className="sh-link">about</Link></li>
               <li><Link to="/case-studies" className="sh-link">work</Link></li>
-              <li><Link to="/blog" className="sh-link">writing</Link></li>
+              {isBlogVisible && <li><Link to="/blog" className="sh-link">writing</Link></li>}
               <li><Link to="/lab" className="sh-link">lab</Link></li>
               {isToolkitVisible && <li><Link to="/toolkit" className="sh-link">toolkit</Link></li>}
             </ul>
