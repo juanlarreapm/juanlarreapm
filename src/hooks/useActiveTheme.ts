@@ -29,6 +29,7 @@ export function useActiveTheme(): ActiveTheme {
     },
     staleTime: 60_000,
     initialData: readCachedTheme,
+    initialDataUpdatedAt: 0,
   });
   return data === "sahil" ? "sahil" : "b2b";
 }
