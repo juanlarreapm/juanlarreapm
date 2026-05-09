@@ -1,0 +1,1 @@
+UPDATE public.site_settings SET value='Eight years building products across B2B SaaS, retail, edtech, and B2C SaaS. I do my best work when there''s no playbook yet.' WHERE key='bio';
