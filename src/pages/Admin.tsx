@@ -246,6 +246,20 @@ const Admin = () => {
     enabled: !!user && isAdmin,
   });
 
+  const { data: toolkitVisibilitySetting } = useQuery({
+    queryKey: ["site_settings", "toolkit_visible"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "toolkit_visible")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
   const { data: openToOpportunitiesSetting } = useQuery({
     queryKey: ["site_settings", "open_to_opportunities"],
     queryFn: async () => {
