@@ -1482,6 +1482,35 @@ const Admin = () => {
                   </div>
                 </div>
 
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <Wrench className="w-5 h-5 text-primary" />
+                    Toolkit Visibility
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Show or hide the Toolkit section from the navigation menu.
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <Button
+                      variant={toolkitVisibilitySetting?.value !== "false" ? "default" : "outline"}
+                      onClick={toggleToolkitVisibility}
+                      className={toolkitVisibilitySetting?.value !== "false" ? "bg-gradient-primary hover:opacity-90" : ""}
+                    >
+                      {toolkitVisibilitySetting?.value !== "false" ? (
+                        <>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Toolkit Visible
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff className="w-4 h-4 mr-2" />
+                          Toolkit Hidden
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
                 {/* Change Password */}
                 <div className="p-6 rounded-xl bg-card border border-border">
                   <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
