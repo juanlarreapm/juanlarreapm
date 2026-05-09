@@ -62,8 +62,8 @@
   color: hsl(var(--sh-ink));
 }
 .sahil-theme .sh-hero {
-  font-size: clamp(20px, 2.4vw, 24px);
-  line-height: 1.55;
+  font-size: 18px;
+  line-height: 1.6;
   font-weight: 400;
   color: hsl(var(--sh-ink));
 }
