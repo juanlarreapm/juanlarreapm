@@ -140,6 +140,82 @@
 .sahil-theme .sh-list a { color: hsl(var(--sh-ink)); text-decoration: none; }
 .sahil-theme .sh-list a:hover { color: hsl(var(--sh-accent)); }
 
+/* Timeline (used on /about) */
+.sahil-theme .sh-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+.sahil-theme .sh-timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: hsl(var(--sh-line));
+}
+.sahil-theme .sh-timeline-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+.sahil-theme .sh-timeline-item:last-child { margin-bottom: 0; }
+.sahil-theme .sh-timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -1.875rem;
+  top: 8px;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: hsl(var(--sh-accent));
+}
+.sahil-theme .sh-timeline-period {
+  color: hsl(var(--sh-muted));
+  font-style: italic;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.35rem;
+}
+.sahil-theme .sh-timeline-role {
+  font-size: 18px;
+  color: hsl(var(--sh-ink));
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+}
+.sahil-theme .sh-timeline-role a { color: hsl(var(--sh-ink)); text-decoration: none; }
+.sahil-theme .sh-timeline-role a:hover { color: hsl(var(--sh-accent)); }
+.sahil-theme .sh-timeline-role .sh-muted { color: hsl(var(--sh-muted)); }
+.sahil-theme .sh-timeline-desc {
+  font-size: 16px;
+  line-height: 1.65;
+  color: hsl(var(--sh-ink) / 0.88);
+  margin-bottom: 0.75rem;
+}
+.sahil-theme .sh-timeline-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+}
+.sahil-theme .sh-timeline-highlights li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 15px;
+  line-height: 1.55;
+  color: hsl(var(--sh-muted));
+  margin-bottom: 0.25rem;
+}
+.sahil-theme .sh-timeline-highlights li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: hsl(var(--sh-muted));
+}
+@media (max-width: 640px) {
+  .sahil-theme .sh-timeline { padding-left: 1.5rem; }
+  .sahil-theme .sh-timeline-item { margin-bottom: 2rem; }
+  .sahil-theme .sh-timeline-item::before { left: -1.375rem; }
+}
+
 .sahil-theme .sh-signature {
   font-family: 'Caveat', cursive;
   font-size: 38px;

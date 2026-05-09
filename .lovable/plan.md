@@ -1,74 +1,67 @@
-## Goal
+## Sahil /about — revamped layout
 
-Build a full **Sahil**-themed version of every page in the app (public + admin), and add a toggle in admin that flips the live site between the two designs:
+### Problem
+Current row uses a 3-column grid (`64px | 1fr | auto`). The `period` string ("2022 — Present") overflows 64px, and the description in the right column collides with the role/company. There's no room for highlights.
 
-- `b2b` — the current Warm Minimalist editorial design (default).
-- `sahil` — the new dark editorial letter-style design from `/preview/sahil`.
+### New layout: compact timeline
 
-The `/preview/sahil` route stays as a sandbox.
+Drop the `sh-list` table look entirely on About. Replace with a left-rail timeline where each role is a vertical block — period stays out of the way, role/company breathe, description and highlights sit underneath cleanly.
 
-## How the toggle works
+```text
+about
+A few notes on me.
+{bio paragraph}
+{resume link}
 
-- One row in `site_settings`: `key = "active_theme"`, `value = "b2b" | "sahil"`. Default `"b2b"`.
-- New hook `src/hooks/useActiveTheme.ts` reads it via React Query, defaults to `"b2b"` while loading so visitors never see a flash.
-- A new `ThemedRoute` wrapper in `src/App.tsx` picks the right page component per route based on the active theme. Auth pages (`/auth`, `/reset-password`) and `/preview/*` are not themed.
-- In `src/pages/Admin.tsx` Settings tab, add a "Live site design" card with a Switch:
-  - Off → `b2b`. On → `sahil`.
-  - Upserts `site_settings` (same pattern as `open_to_opportunities`), invalidates the `active_theme` query, toasts.
-- Admin gate stays unchanged (`useAdminRole`).
+where I've worked
+│
+●  2022 — Present
+│  Senior Product Manager · PartsTech
+│  Rebuilding how independent shops buy parts. Led the discovery → MVP
+│  for a new buyer experience and shipped it to 8k shops in 6 months.
+│  • Grew weekly active buyers 3.4×
+│  • Cut quote-to-order time from 7m to 90s
+│  • Built the PM rituals from scratch
+│
+●  2020 — 2022
+│  Product Manager · Intellum
+│  ...
+```
 
-## Pages to build (Sahil versions)
+- **Left rail**: 1px hairline (`hsl(var(--sh-line))`) running the full section, with a small filled dot per role aligned to the top of the period.
+- **Period**: small caps / italic, muted, sits on its own line so length never matters.
+- **Role · Company**: own line, role in ink color, company linked to `company_url` if present, otherwise muted.
+- **Description**: full body paragraph, normal `sh-body` line-height.
+- **Highlights**: rendered as a tight bulleted list using a custom marker (small em dash or filled square in muted color), only when `highlights.length > 0`. Each entry stays on one line if short, wraps cleanly if long.
+- **Spacing**: ~2.5rem between roles, no border between rows (the rail handles structure).
 
-All under `src/pages/sahil/`. Each one fetches the same data its b2b twin does — only presentation changes. Shared shell `src/components/sahil/SahilLayout.tsx` provides the dark background, Fraunces typography, top bar (avatar + name left, text nav middle, Mail/LinkedIn/GitHub icons right with hairline divider), footer, and `usePageTracking()`.
+### Responsive behavior
+- ≥ 640px: rail at 16px from left edge of content, content padded `pl-8`.
+- < 640px: rail still present (looks good on mobile too) but reduce padding to `pl-6` and tighten role spacing to ~2rem.
 
-Public:
-- `Index.tsx` — letter hero + compact "selected work" (3 case studies) and "recent writing" (3 posts) row lists.
-- `About.tsx` — narrative bio + experiences as `period — role · company` rows with italic section labels.
-- `CaseStudies.tsx` / `CaseStudy.tsx` — text-row index; detail page with italic-labelled sections (problem / approach / solution / outcome / reflections / metrics) and inline tags.
-- `Lab.tsx` / `LabProject.tsx` — same row treatment using `project_date`; detail shows tagline, inline tech stack, demo/github icon links.
-- `Blog.tsx` / `BlogPost.tsx` — `date · title` list; post body restyled inside Sahil typography (h2/h3/blockquote/code, accent links).
-- `Toolkit.tsx` — three italic sections (skills, tools, methodologies) as comma-separated inline lists, no icon grids.
-- `Contact.tsx` — short letter intro + restyled form (underlined inputs, accent submit, terracotta focus ring).
-- `NotFound.tsx` — minimal "this page wandered off" letter.
+### Hero section (top of page)
+Keep mostly as-is, but tighten:
+- `about` label, `A few notes on me.` heading.
+- Bio paragraph in `sh-hero`.
+- Resume link as inline sentence (already there).
+- No changes to data fetching.
 
-Admin (Sahil dark editorial reskin, same functionality):
-- `src/pages/sahil/admin/Admin.tsx` and matching editor pages: `PostEditor`, `ExperienceEditor`, `CaseStudyEditor`, `LabEditor`, `ToolkitItemEditor`.
-- Shared admin shell `src/components/sahil/SahilAdminLayout.tsx`: dark background, italic section labels for tabs, hairline-bordered tables and forms, terracotta primary buttons, no card chrome.
-- Reuses existing data hooks/mutations as-is — only JSX + classes change.
-- Auth and analytics tabs are restyled, not rewritten.
+### CSS additions to `src/styles/sahil-theme.css`
 
-## CSS additions to `src/styles/sahil-theme.css`
+New scoped classes (no impact on other pages):
 
-- Row list (`yyyy | title`), inline tag pills, post-body typography.
-- Form primitives: underlined inputs, textarea, select, switch, button.
-- Admin primitives: hairline table, tab list, dialog, toast surface — all using existing `--sh-*` tokens.
+- `.sh-timeline` — relative wrapper, `padding-left` for rail clearance, `::before` pseudo-element draws the vertical hairline.
+- `.sh-timeline-item` — relative block, `margin-bottom: 2.5rem`, `::before` draws the dot (8px filled circle in `--sh-accent`, positioned over the rail).
+- `.sh-timeline-period` — muted, italic, 14px, tabular numerics, mb-1.
+- `.sh-timeline-role` — 18px ink, mb-2, with `· company` styled like existing list (link in ink, hover accent).
+- `.sh-timeline-desc` — body paragraph, mb-3.
+- `.sh-timeline-highlights` — `list-style: none`, each `li` prefixed with a muted `—` and 0.5rem indent, 15px, line-height 1.55, muted ink.
 
-## Out of scope
+### Files to edit
+- `src/pages/sahil/About.tsx` — replace the `sh-list` block with a `<div className="sh-timeline">` of `<article className="sh-timeline-item">` blocks rendering period / role · company / description / highlights bullets.
+- `src/styles/sahil-theme.css` — add the timeline classes described above.
 
-- No data migrations, no schema changes beyond the single `site_settings` row.
-- No changes to auth flow or backend logic.
-- The b2b site stays the default and remains fully intact.
-
-## Technical details
-
-- Theme switch helper:
-  ```tsx
-  const Page = theme === "sahil" ? SahilIndex : B2BIndex;
-  ```
-  applied per route. Sahil files import only `sahil-theme.css` so b2b styles never leak in.
-- Migration seeds default: `INSERT INTO site_settings (key, value) VALUES ('active_theme', 'b2b') ON CONFLICT (key) DO NOTHING;`.
-- Toggle write: `supabase.from("site_settings").upsert({ key: "active_theme", value }, { onConflict: "key" })`.
-
-## Files to add
-
-- `src/hooks/useActiveTheme.ts`
-- `src/components/sahil/SahilLayout.tsx`, `SahilAdminLayout.tsx`
-- `src/pages/sahil/Index.tsx`, `About.tsx`, `CaseStudies.tsx`, `CaseStudy.tsx`, `Lab.tsx`, `LabProject.tsx`, `Blog.tsx`, `BlogPost.tsx`, `Toolkit.tsx`, `Contact.tsx`, `NotFound.tsx`
-- `src/pages/sahil/admin/Admin.tsx`, `PostEditor.tsx`, `ExperienceEditor.tsx`, `CaseStudyEditor.tsx`, `LabEditor.tsx`, `ToolkitItemEditor.tsx`
-
-## Files to edit
-
-- `src/App.tsx` — `ThemedRoute` wrapper for every public + admin route.
-- `src/pages/Admin.tsx` (b2b) — add the "Live site design" toggle to Settings.
-- `src/styles/sahil-theme.css` — list rows, forms, admin primitives, post-body styles.
-- New migration to seed `site_settings.active_theme = 'b2b'`.
+### Out of scope
+- No data model changes (`experiences` already has `period`, `role`, `company`, `company_url`, `description`, `highlights`).
+- No changes to other Sahil pages or to the b2b About.
+- No new admin fields.
