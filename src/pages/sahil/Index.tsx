@@ -39,8 +39,8 @@ const SahilIndex = () => {
           , rebuilding how auto shops buy parts.
         </p>
         <p className="sh-hero mb-6">
-          I like to tinker. Most of my best product thinking starts with something I
-          built myself.
+          I like to <Link to="/lab" className="sh-link">tinker</Link>. Most of my best
+          product thinking starts with something I built myself.
         </p>
         <p className="sh-hero">
           {isBlogVisible && (
