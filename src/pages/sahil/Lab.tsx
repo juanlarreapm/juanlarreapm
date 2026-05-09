@@ -30,17 +30,58 @@ const SahilLab = () => {
       </section>
 
       {isLoading ? (
-        <p className="sh-muted">loading…</p>
-      ) : items && items.length > 0 ? (
-        <ul className="sh-list">
-          {items.map((p) => (
-            <li key={p.id}>
-              <span className="yr">{yearOf(p.project_date || p.created_at)}</span>
-              <Link to={`/lab/${p.slug}`}>{p.title}</Link>
-              <span className="meta">{p.tagline || p.status}</span>
-            </li>
+        <div className="sh-cards">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="sh-card-skeleton">
+              <div className="bar" style={{ width: "15%" }} />
+              <div className="bar" style={{ width: "55%", height: 24 }} />
+              <div className="bar" style={{ width: "85%" }} />
+              <div className="bar" style={{ width: "40%" }} />
+            </div>
           ))}
-        </ul>
+        </div>
+      ) : items && items.length > 0 ? (
+        <div className="sh-cards">
+          {items.map((p) => {
+            const stack = p.tech_stack || [];
+            const primary = stack[0];
+            const rest = stack.slice(1, 4);
+            const isActive = (p.status || "").toLowerCase() === "active";
+            return (
+              <Link
+                key={p.id}
+                to={`/lab/${p.slug}`}
+                className={`sh-card ${primary ? "" : "sh-card--no-stat"}`}
+              >
+                <div className="sh-card-text">
+                  <div className="sh-card-eyebrow">
+                    {isActive && <span className="sh-status-dot" />}
+                    {p.status || "project"}
+                  </div>
+                  <h2 className="sh-card-title">
+                    {p.title}
+                    <span className="sh-card-arrow">→</span>
+                  </h2>
+                  {p.tagline && <p className="sh-card-pitch">{p.tagline}</p>}
+                  <div className="sh-card-meta">
+                    {rest.map((t: string, i: number) => (
+                      <span key={t}>
+                        {t}
+                        {i < rest.length - 1 && <span className="sh-card-meta-sep" style={{ marginLeft: "0.75rem" }}>·</span>}
+                      </span>
+                    ))}
+                    <span className="sh-card-period">{yearOf(p.project_date || p.created_at)}</span>
+                  </div>
+                </div>
+                {primary && (
+                  <div className="sh-card-stat">
+                    <span className="sh-card-chip">{primary}</span>
+                  </div>
+                )}
+              </Link>
+            );
+          })}
+        </div>
       ) : (
         <p className="sh-muted">No lab projects yet.</p>
       )}
