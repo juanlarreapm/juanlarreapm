@@ -286,6 +286,8 @@ const Admin = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     }
   };
+
+  const toggleBlogVisibility = async () => {
     const currentValue = blogVisibilitySetting?.value === "true";
     const newValue = !currentValue;
     
