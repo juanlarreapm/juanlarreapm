@@ -58,11 +58,6 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
         </header>
 
         {children}
-
-        <hr className="sh-rule mb-6 mt-20" />
-        <footer className="sh-chip">
-          © {new Date().getFullYear()} · written, designed, and shipped from a small desk.
-        </footer>
       </main>
     </div>
   );
