@@ -82,12 +82,6 @@ const SahilCaseStudies = () => {
                     <span className="sh-card-period">{yearOf(cs.created_at)}</span>
                   </div>
                 </div>
-                {stat && (
-                  <div className="sh-card-stat">
-                    <span className="sh-card-stat-value">{stat.value}</span>
-                    {stat.label && <span className="sh-card-stat-label">{stat.label}</span>}
-                  </div>
-                )}
               </Link>
             );
           })}
