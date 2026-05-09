@@ -319,6 +319,21 @@ const Admin = () => {
     }
   };
 
+  const toggleToolkitVisibility = async () => {
+    const currentValue = toolkitVisibilitySetting?.value !== "false";
+    const newValue = !currentValue;
+    try {
+      const { error } = await supabase
+        .from("site_settings")
+        .upsert({ key: "toolkit_visible", value: newValue.toString() }, { onConflict: "key" });
+      if (error) throw error;
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "toolkit_visible"] });
+      toast({ title: newValue ? "Toolkit is now visible" : "Toolkit is now hidden" });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
+
   const toggleOpenToOpportunities = async () => {
     const currentValue = openToOpportunitiesSetting?.value === "true";
     const newValue = !currentValue;
