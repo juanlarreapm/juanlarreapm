@@ -15,6 +15,7 @@ interface SahilLayoutProps {
 export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
   usePageTracking();
   const isToolkitVisible = useToolkitVisible();
+  const isBlogVisible = useBlogVisible();
   const widthClass = narrow ? "max-w-[720px]" : "max-w-[960px]";
 
   return (
