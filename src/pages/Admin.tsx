@@ -71,7 +71,7 @@ const Admin = () => {
   
   // Delete confirmation state
   const [deleteConfirm, setDeleteConfirm] = useState<{
-    type: "post" | "experience" | "project" | "lab" | "toolkit" | "message" | null;
+    type: "post" | "experience" | "company" | "project" | "lab" | "toolkit" | "message" | null;
     id: string;
     name: string;
     table?: string;
