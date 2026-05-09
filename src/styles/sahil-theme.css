@@ -183,7 +183,9 @@
   line-height: 1.4;
   font-weight: 500;
 }
-.sahil-theme .sh-timeline-company {
+.sahil-theme .sh-timeline-role .sh-timeline-company,
+.sahil-theme a.sh-timeline-company,
+.sahil-theme span.sh-timeline-company {
   font-weight: 400;
   color: hsl(var(--sh-ink));
   text-decoration: none;
