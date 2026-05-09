@@ -858,16 +858,22 @@ const Admin = () => {
 
             {/* Experiences Tab */}
             <TabsContent value="experiences">
-              <div className="flex justify-end mb-6">
-                <Button asChild className="bg-gradient-primary hover:opacity-90">
+              <div className="flex flex-wrap justify-end gap-2 mb-6">
+                <Button asChild variant="outline">
+                  <Link to="/admin/companies/new">
+                    <Plus className="mr-2 w-4 h-4" />
+                    Add Company
+                  </Link>
+                </Button>
+                <Button asChild className="bg-gradient-primary hover:opacity-90" disabled={!companies?.length}>
                   <Link to="/admin/experiences/new">
                     <Plus className="mr-2 w-4 h-4" />
-                    Add Experience
+                    Add Position
                   </Link>
                 </Button>
               </div>
 
-              {experiencesLoading ? (
+              {companiesLoading || experiencesLoading ? (
                 <div className="space-y-4">
                   {[1, 2].map((i) => (
                     <div key={i} className="p-6 rounded-xl bg-card border border-border animate-pulse">
@@ -876,43 +882,94 @@ const Admin = () => {
                     </div>
                   ))}
                 </div>
-              ) : experiences && experiences.length > 0 ? (
-                <div className="space-y-4">
-                  {experiences.map((exp) => (
-                    <div
-                      key={exp.id}
-                      className="p-6 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-                    >
-                      <div className="flex-1">
-                        <h3 className="font-display font-semibold text-lg">{exp.role}</h3>
-                        <p className="text-primary">{exp.company}</p>
-                        <p className="text-sm text-muted-foreground">{exp.period}</p>
+              ) : companies && companies.length > 0 ? (
+                <div className="space-y-6">
+                  {companies.map((c) => {
+                    const positions = (experiences || []).filter((e) => e.company_id === c.id);
+                    return (
+                      <div key={c.id} className="rounded-xl bg-card border border-border overflow-hidden">
+                        <div className="p-5 border-b border-border flex flex-col md:flex-row md:items-center md:justify-between gap-3 bg-muted/30">
+                          <div>
+                            <h3 className="font-display font-semibold text-lg">{c.name}</h3>
+                            {c.url && <p className="text-sm text-muted-foreground">{c.url}</p>}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="outline" size="sm" asChild>
+                              <Link to={`/admin/experiences/new?company=${c.id}`}>
+                                <Plus className="mr-2 w-3.5 h-3.5" />
+                                Add Position
+                              </Link>
+                            </Button>
+                            <Button variant="ghost" size="icon" asChild>
+                              <Link to={`/admin/companies/${c.id}`}>
+                                <Edit className="w-4 h-4" />
+                              </Link>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() =>
+                                setDeleteConfirm({
+                                  type: "company",
+                                  id: c.id,
+                                  name: `${c.name} (and ${positions.length} position${positions.length === 1 ? "" : "s"})`,
+                                })
+                              }
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        {positions.length > 0 ? (
+                          <ul className="divide-y divide-border">
+                            {positions.map((exp) => (
+                              <li
+                                key={exp.id}
+                                className="p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3"
+                              >
+                                <div>
+                                  <p className="font-medium">{exp.role}</p>
+                                  <p className="text-sm text-muted-foreground">{exp.period}</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Button variant="ghost" size="icon" asChild>
+                                    <Link to={`/admin/experiences/${exp.id}`}>
+                                      <Edit className="w-4 h-4" />
+                                    </Link>
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() =>
+                                      setDeleteConfirm({
+                                        type: "experience",
+                                        id: exp.id,
+                                        name: `${exp.role} at ${c.name}`,
+                                      })
+                                    }
+                                    className="text-destructive hover:text-destructive"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <div className="p-5 text-sm text-muted-foreground">No positions yet for this company.</div>
+                        )}
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon" asChild>
-                          <Link to={`/admin/experiences/${exp.id}`}>
-                            <Edit className="w-4 h-4" />
-                          </Link>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setDeleteConfirm({ type: "experience", id: exp.id, name: `${exp.role} at ${exp.company}` })}
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-16 rounded-xl bg-card border border-border">
-                  <p className="text-muted-foreground mb-4">No experiences yet</p>
+                  <p className="text-muted-foreground mb-4">No companies yet</p>
                   <Button asChild className="bg-gradient-primary hover:opacity-90">
-                    <Link to="/admin/experiences/new">
+                    <Link to="/admin/companies/new">
                       <Plus className="mr-2 w-4 h-4" />
-                      Add your first experience
+                      Add your first company
                     </Link>
                   </Button>
                 </div>
