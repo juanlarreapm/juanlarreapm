@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Mail, Linkedin, Github } from "lucide-react";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { useToolkitVisible } from "@/hooks/useToolkitVisible";
@@ -17,6 +17,10 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
   const isToolkitVisible = useToolkitVisible();
   const isBlogVisible = useBlogVisible();
   const widthClass = narrow ? "max-w-[720px]" : "max-w-[960px]";
+  const { pathname } = useLocation();
+  const isActive = (path: string) =>
+    path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(path + "/");
+  const linkCls = (path: string) => `sh-link${isActive(path) ? " is-active" : ""}`;
 
   return (
     <div className="sahil-theme">
@@ -31,11 +35,11 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
               className="sh-body flex flex-wrap gap-x-5 gap-y-2"
               style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 16 }}
             >
-              <li><Link to="/about" className="sh-link">about</Link></li>
-              <li><Link to="/case-studies" className="sh-link">work</Link></li>
-              {isBlogVisible && <li><Link to="/blog" className="sh-link">writing</Link></li>}
-              <li><Link to="/lab" className="sh-link">lab</Link></li>
-              {isToolkitVisible && <li><Link to="/toolkit" className="sh-link">toolkit</Link></li>}
+              <li><Link to="/about" className={linkCls("/about")}>about</Link></li>
+              <li><Link to="/case-studies" className={linkCls("/case-studies")}>work</Link></li>
+              {isBlogVisible && <li><Link to="/blog" className={linkCls("/blog")}>writing</Link></li>}
+              <li><Link to="/lab" className={linkCls("/lab")}>lab</Link></li>
+              {isToolkitVisible && <li><Link to="/toolkit" className={linkCls("/toolkit")}>toolkit</Link></li>}
             </ul>
             <span className="sh-icon-divider" aria-hidden="true" />
             <div className="flex items-center gap-3">

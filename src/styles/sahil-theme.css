@@ -107,6 +107,12 @@
   transition: opacity 0.15s ease;
 }
 .sahil-theme a.sh-link:hover { opacity: 0.7; }
+.sahil-theme a.sh-link.is-active {
+  color: hsl(var(--sh-ink));
+  text-decoration-color: hsl(var(--sh-accent));
+  text-decoration-thickness: 2px;
+  font-weight: 500;
+}
 
 .sahil-theme .sh-rule {
   border: 0;
