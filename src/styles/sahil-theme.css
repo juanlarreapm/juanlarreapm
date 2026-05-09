@@ -140,6 +140,133 @@
 .sahil-theme .sh-list a { color: hsl(var(--sh-ink)); text-decoration: none; }
 .sahil-theme .sh-list a:hover { color: hsl(var(--sh-accent)); }
 
+/* Annotated index cards (Case Studies + Lab) */
+.sahil-theme .sh-cards { display: flex; flex-direction: column; }
+.sahil-theme .sh-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  padding: 2rem 0;
+  border-top: 1px solid hsl(var(--sh-line));
+  color: hsl(var(--sh-ink));
+  text-decoration: none;
+  position: relative;
+}
+.sahil-theme .sh-card:last-child { border-bottom: 1px solid hsl(var(--sh-line)); }
+@media (min-width: 720px) {
+  .sahil-theme .sh-card { grid-template-columns: minmax(0, 1fr) auto; gap: 3rem; align-items: start; }
+  .sahil-theme .sh-card.sh-card--no-stat { grid-template-columns: 1fr; }
+}
+.sahil-theme .sh-card-text { min-width: 0; }
+.sahil-theme .sh-card-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--sh-muted));
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sahil-theme .sh-card-eyebrow .sh-status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: hsl(var(--sh-accent));
+  display: inline-block;
+}
+.sahil-theme .sh-card-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: hsl(var(--sh-ink));
+  margin: 0 0 0.6rem 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  transition: color 200ms ease;
+}
+.sahil-theme .sh-card-title .sh-card-arrow {
+  font-size: 0.7em;
+  color: hsl(var(--sh-accent));
+  transform: translateX(0);
+  transition: transform 200ms ease;
+  display: inline-block;
+}
+.sahil-theme .sh-card:hover .sh-card-title { color: hsl(var(--sh-accent)); }
+.sahil-theme .sh-card:hover .sh-card-arrow { transform: translateX(4px); }
+.sahil-theme .sh-card-pitch {
+  font-size: 17px;
+  line-height: 1.55;
+  color: hsl(var(--sh-ink) / 0.85);
+  margin: 0 0 1rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.sahil-theme .sh-card-meta {
+  font-size: 13px;
+  color: hsl(var(--sh-muted));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: baseline;
+}
+.sahil-theme .sh-card-meta .sh-card-meta-sep { opacity: 0.5; }
+.sahil-theme .sh-card-meta .sh-card-period {
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+.sahil-theme .sh-card-stat {
+  text-align: left;
+  min-width: 0;
+}
+@media (min-width: 720px) {
+  .sahil-theme .sh-card-stat { text-align: right; max-width: 200px; }
+}
+.sahil-theme .sh-card-stat-value {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 500;
+  line-height: 1.05;
+  color: hsl(var(--sh-accent));
+  letter-spacing: -0.02em;
+  display: block;
+}
+.sahil-theme .sh-card-stat-label {
+  font-size: 12px;
+  color: hsl(var(--sh-muted));
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  margin-top: 0.3rem;
+  display: block;
+  line-height: 1.3;
+}
+.sahil-theme .sh-card-chip {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid hsl(var(--sh-line));
+  border-radius: 4px;
+  color: hsl(var(--sh-ink));
+  background: hsl(var(--sh-card));
+}
+
+/* Skeleton */
+.sahil-theme .sh-card-skeleton {
+  padding: 2rem 0;
+  border-top: 1px solid hsl(var(--sh-line));
+}
+.sahil-theme .sh-card-skeleton .bar {
+  height: 12px;
+  background: hsl(var(--sh-line));
+  border-radius: 3px;
+  margin-bottom: 0.6rem;
+  opacity: 0.6;
+}
+
 /* Timeline (used on /about) */
 .sahil-theme .sh-timeline {
   position: relative;
