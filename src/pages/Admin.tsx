@@ -392,6 +392,18 @@ const Admin = () => {
     },
   });
 
+  const deleteCompanyMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("companies").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["companies"] });
+      queryClient.invalidateQueries({ queryKey: ["experiences"] });
+      toast({ title: "Company and its positions deleted" });
+    },
+  });
+
   const deleteProjectMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("projects").delete().eq("id", id);
