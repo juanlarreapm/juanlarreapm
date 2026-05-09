@@ -66,6 +66,20 @@ function AppContent() {
     const root = document.documentElement;
     if (sahil) root.classList.add("sahil-theme");
     else root.classList.remove("sahil-theme");
+
+    // Swap favicon to match active theme
+    const sahilFavicon = "/favicon-sahil.png";
+    const defaultFavicon =
+      "https://storage.googleapis.com/gpt-engineer-file-uploads/BJ6HlcqMRgRoIR6ZsXVvxOFDj8d2/uploads/1767050665216-Xnip2025-12-29_18-24-17.jpg";
+    let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    link.type = sahil ? "image/png" : "image/x-icon";
+    link.href = sahil ? sahilFavicon : defaultFavicon;
+
     return () => root.classList.remove("sahil-theme");
   }, [sahil]);
 
