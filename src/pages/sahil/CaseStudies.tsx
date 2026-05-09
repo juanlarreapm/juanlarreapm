@@ -56,13 +56,12 @@ const SahilCaseStudies = () => {
       ) : items && items.length > 0 ? (
         <div className="sh-cards">
           {items.map((cs) => {
-            const stat = splitMetric(cs.metrics?.[0]);
             const tags = (cs.tags || []).slice(0, 2);
             return (
               <Link
                 key={cs.id}
                 to={`/case-studies/${cs.slug || cs.id}`}
-                className={`sh-card ${stat ? "" : "sh-card--no-stat"}`}
+                className="sh-card sh-card--no-stat"
               >
                 <div className="sh-card-text">
                   <div className="sh-card-eyebrow">{cs.company}</div>
