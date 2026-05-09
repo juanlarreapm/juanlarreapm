@@ -61,11 +61,11 @@ const SahilAbout = () => {
                   {exp.role}
                   {" · "}
                   {exp.company_url ? (
-                    <a href={exp.company_url} target="_blank" rel="noopener noreferrer">
+                    <a href={exp.company_url} target="_blank" rel="noopener noreferrer" className="sh-timeline-company">
                       {exp.company}
                     </a>
                   ) : (
-                    <span className="sh-muted">{exp.company}</span>
+                    <span className="sh-timeline-company">{exp.company}</span>
                   )}
                 </p>
                 {exp.description && <p className="sh-timeline-desc">{exp.description}</p>}

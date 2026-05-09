@@ -181,10 +181,15 @@
   color: hsl(var(--sh-ink));
   margin-bottom: 0.6rem;
   line-height: 1.4;
+  font-weight: 500;
 }
-.sahil-theme .sh-timeline-role a { color: hsl(var(--sh-ink)); text-decoration: none; }
-.sahil-theme .sh-timeline-role a:hover { color: hsl(var(--sh-accent)); }
-.sahil-theme .sh-timeline-role .sh-muted { color: hsl(var(--sh-muted)); }
+.sahil-theme .sh-timeline-company {
+  font-weight: 400;
+  color: hsl(var(--sh-ink));
+  text-decoration: none;
+}
+.sahil-theme a.sh-timeline-company:hover { color: hsl(var(--sh-accent)); }
+.sahil-theme .sh-timeline-company.sh-muted { color: hsl(var(--sh-muted)); }
 .sahil-theme .sh-timeline-desc {
   font-size: 16px;
   line-height: 1.65;
