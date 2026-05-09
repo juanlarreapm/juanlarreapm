@@ -141,3 +141,19 @@
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+.sahil-theme .sh-icon-link {
+  color: hsl(var(--sh-muted));
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+.sahil-theme .sh-icon-link:hover {
+  color: hsl(var(--sh-accent));
+}
+.sahil-theme .sh-icon-divider {
+  width: 1px;
+  height: 16px;
+  background: hsl(var(--sh-line));
+  display: inline-block;
+}
