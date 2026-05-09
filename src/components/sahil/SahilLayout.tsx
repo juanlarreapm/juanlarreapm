@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Linkedin, Github } from "lucide-react";
 import { usePageTracking } from "@/hooks/usePageTracking";
+import { useToolkitVisible } from "@/hooks/useToolkitVisible";
 import "@/styles/sahil-theme.css";
 
 interface SahilLayoutProps {
@@ -12,6 +13,7 @@ interface SahilLayoutProps {
 
 export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
   usePageTracking();
+  const isToolkitVisible = useToolkitVisible();
   const widthClass = narrow ? "max-w-[720px]" : "max-w-[960px]";
 
   return (
