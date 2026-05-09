@@ -60,6 +60,16 @@ const SahilCaseStudy = () => {
           {cs.role && <span>role · {cs.role}</span>}
           {cs.duration && <span>duration · {cs.duration}</span>}
         </div>
+
+        {cs.cover_image && (
+          <img
+            src={cs.cover_image}
+            alt={cs.title}
+            loading="lazy"
+            className="mt-8 w-full rounded-md"
+            style={{ border: "1px solid hsl(var(--sh-line))" }}
+          />
+        )}
       </section>
 
       <Section label="problem & context" html={cs.problem} />
