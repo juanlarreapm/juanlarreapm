@@ -53,27 +53,32 @@ const SahilAbout = () => {
       {experiences && experiences.length > 0 && (
         <section className="mb-16">
           <p className="sh-section-label">where I've worked</p>
-          <ul className="sh-list">
+          <div className="sh-timeline">
             {experiences.map((exp) => (
-              <li key={exp.id}>
-                <span className="yr">{exp.period}</span>
-                <span>
+              <article key={exp.id} className="sh-timeline-item">
+                <p className="sh-timeline-period">{exp.period}</p>
+                <p className="sh-timeline-role">
                   {exp.role}
+                  {" · "}
                   {exp.company_url ? (
-                    <>
-                      {" · "}
-                      <a href={exp.company_url} target="_blank" rel="noopener noreferrer" className="sh-link">
-                        {exp.company}
-                      </a>
-                    </>
+                    <a href={exp.company_url} target="_blank" rel="noopener noreferrer">
+                      {exp.company}
+                    </a>
                   ) : (
-                    <> · <span className="sh-muted">{exp.company}</span></>
+                    <span className="sh-muted">{exp.company}</span>
                   )}
-                </span>
-                <span className="meta">{exp.description || ""}</span>
-              </li>
+                </p>
+                {exp.description && <p className="sh-timeline-desc">{exp.description}</p>}
+                {exp.highlights && exp.highlights.length > 0 && (
+                  <ul className="sh-timeline-highlights">
+                    {exp.highlights.map((h, i) => (
+                      <li key={i}>{h}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
             ))}
-          </ul>
+          </div>
         </section>
       )}
     </SahilLayout>
