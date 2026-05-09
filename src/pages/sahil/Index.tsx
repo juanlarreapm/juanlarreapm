@@ -54,9 +54,6 @@ const SahilIndex = () => {
         </p>
       </section>
 
-      <section className="mb-12">
-        <div className="sh-signature">— juan</div>
-      </section>
 
       {isBlogVisible && posts && posts.length > 0 && (
         <section className="mb-16">
