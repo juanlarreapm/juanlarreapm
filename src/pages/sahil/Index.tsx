@@ -31,11 +31,11 @@ const SahilIndex = () => {
           I'm Juan. I'm a senior product manager with eight years of product <Link to="/about" className="sh-link">experience</Link> taking products from zero to one and keeping them growing.
         </p>
         <p className="sh-hero mb-6">
-          Right now I'm at{" "}
-          <a href="https://partstech.com" target="_blank" rel="noopener noreferrer" className="sh-link">
+          Right now I'm on the{" "}
+          <a href="https://oeconnection.com/products/partstech/" target="_blank" rel="noopener noreferrer" className="sh-link">
             PartsTech
-          </a>
-          , rebuilding how auto shops buy parts.
+          </a>{" "}
+          team at OEC, building the future of parts ordering for auto repair shops.
         </p>
         <p className="sh-hero mb-6">
           I like to <Link to="/lab" className="sh-link">tinker</Link>. Most of my best
