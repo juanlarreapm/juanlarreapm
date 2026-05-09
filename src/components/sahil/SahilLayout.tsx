@@ -26,8 +26,7 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
     <div className="sahil-theme">
       <main className={`${widthClass} mx-auto px-6 pt-16 pb-24 sh-fade`}>
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-16">
-          <Link to="/" className="flex items-center gap-3 no-underline" style={{ color: "inherit" }}>
-            <span className="sh-avatar-fallback">JL</span>
+          <Link to="/" className="no-underline" style={{ color: "inherit" }}>
             <span className="sh-name">Juan Larrea</span>
           </Link>
           <nav className="flex items-center gap-x-5 gap-y-2 flex-wrap">
