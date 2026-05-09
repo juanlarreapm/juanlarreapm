@@ -35,11 +35,11 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
               className="sh-body flex flex-wrap gap-x-5 gap-y-2"
               style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 16 }}
             >
-              <li><Link to="/about" className="sh-link">about</Link></li>
-              <li><Link to="/case-studies" className="sh-link">work</Link></li>
-              {isBlogVisible && <li><Link to="/blog" className="sh-link">writing</Link></li>}
-              <li><Link to="/lab" className="sh-link">lab</Link></li>
-              {isToolkitVisible && <li><Link to="/toolkit" className="sh-link">toolkit</Link></li>}
+              <li><Link to="/about" className={linkCls("/about")}>about</Link></li>
+              <li><Link to="/case-studies" className={linkCls("/case-studies")}>work</Link></li>
+              {isBlogVisible && <li><Link to="/blog" className={linkCls("/blog")}>writing</Link></li>}
+              <li><Link to="/lab" className={linkCls("/lab")}>lab</Link></li>
+              {isToolkitVisible && <li><Link to="/toolkit" className={linkCls("/toolkit")}>toolkit</Link></li>}
             </ul>
             <span className="sh-icon-divider" aria-hidden="true" />
             <div className="flex items-center gap-3">
