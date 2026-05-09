@@ -121,7 +121,17 @@ const CompanyEditor = () => {
             </div>
 
             <div>
-              <Label htmlFor="displayOrder">Display Order</Label>
+              <Label htmlFor="description">Description (optional)</Label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Brief description of the company"
+                className="w-full min-h-[100px] px-3 py-2 rounded-md border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
+              />
+            </div>
+
+            <div>
               <Input
                 id="displayOrder"
                 type="number"
