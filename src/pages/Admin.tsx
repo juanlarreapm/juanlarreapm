@@ -92,6 +92,20 @@ const Admin = () => {
     enabled: !!user,
   });
 
+  // Companies query
+  const { data: companies, isLoading: companiesLoading } = useQuery({
+    queryKey: ["companies"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("companies")
+        .select("*")
+        .order("display_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
   // Experiences query
   const { data: experiences, isLoading: experiencesLoading } = useQuery({
     queryKey: ["experiences"],
