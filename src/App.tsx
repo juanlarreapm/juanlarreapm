@@ -41,6 +41,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Admin from "./pages/Admin";
 import PostEditor from "./pages/PostEditor";
 import ExperienceEditor from "./pages/ExperienceEditor";
+import CompanyEditor from "./pages/CompanyEditor";
 import CaseStudyEditor from "./pages/CaseStudyEditor";
 import LabEditor from "./pages/LabEditor";
 import ToolkitItemEditor from "./pages/ToolkitItemEditor";
