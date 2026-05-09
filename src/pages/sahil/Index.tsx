@@ -48,8 +48,7 @@ const SahilIndex = () => {
               I write occasionally about <Link to="/blog" className="sh-link">product, taste, and shipping</Link>.{" "}
             </>
           )}
-          If you're hiring a PM who can ship, sell it internally, and find the metric
-          that matters,{" "}
+          If you're hiring a PM who can build the thing, get it shipped, and know if it worked,{" "}
           <a href="mailto:juanlarreapm@gmail.com" className="sh-link">say hi</a>.
         </p>
       </section>
