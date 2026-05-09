@@ -79,6 +79,7 @@ const SahilCaseStudies = () => {
                         {i < tags.length - 1 && <span className="sh-card-meta-sep" style={{ marginLeft: "0.75rem" }}>·</span>}
                       </span>
                     ))}
+                    <span className="sh-card-meta-sep">·</span>
                     <span className="sh-card-period">{yearOf(cs.created_at)}</span>
                   </div>
                 </div>

@@ -216,7 +216,6 @@
 .sahil-theme .sh-card-meta .sh-card-meta-sep { opacity: 0.5; }
 .sahil-theme .sh-card-meta .sh-card-period {
   font-variant-numeric: tabular-nums;
-  margin-left: auto;
 }
 .sahil-theme .sh-card-stat {
   text-align: left;
