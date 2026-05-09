@@ -20,6 +20,7 @@ const CompanyEditor = () => {
 
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
   const [displayOrder, setDisplayOrder] = useState(0);
 
   const { data: company, isLoading } = useQuery({
