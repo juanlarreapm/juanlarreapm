@@ -260,7 +260,32 @@ const Admin = () => {
     enabled: !!user && isAdmin,
   });
 
-  const toggleBlogVisibility = async () => {
+  const { data: activeThemeSetting } = useQuery({
+    queryKey: ["site_settings", "active_theme"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "active_theme")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
+  const setActiveTheme = async (value: "b2b" | "sahil") => {
+    try {
+      const { error } = await supabase
+        .from("site_settings")
+        .upsert({ key: "active_theme", value }, { onConflict: "key" });
+      if (error) throw error;
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "active_theme"] });
+      toast({ title: `Live site is now ${value === "sahil" ? "Sahil" : "B2B"}` });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
     const currentValue = blogVisibilitySetting?.value === "true";
     const newValue = !currentValue;
     
