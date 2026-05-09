@@ -38,7 +38,7 @@ const SahilCaseStudies = () => {
         <p className="sh-section-label">work</p>
         <h1 className="sh-title mb-6">Case studies.</h1>
         <p className="sh-hero">
-          Twelve products, five industries, eight years. A handful of the ones I'm most proud of.
+          A short list of the products I'm proudest of building.
         </p>
       </section>
 
