@@ -54,7 +54,11 @@ const SahilIndex = () => {
           Intellum, and consumer loyalty at INWEGO and Merchants Preferred.
         </p>
         <p className="sh-hero">
-          I write occasionally about <Link to="/blog" className="sh-link">product, taste, and shipping</Link>.
+          {isBlogVisible && (
+            <>
+              I write occasionally about <Link to="/blog" className="sh-link">product, taste, and shipping</Link>.{" "}
+            </>
+          )}
           If you're hiring a PM who can build the thing, sell it internally, and find
           the metric that matters —{" "}
           <a href="mailto:juanlarreapm@gmail.com" className="sh-link">say hi</a>.
