@@ -135,6 +135,9 @@ const About = () => {
                         ) : (
                           <h3 className="font-display font-semibold text-xl text-primary">{company.name}</h3>
                         )}
+                        {(company as any).description && (
+                          <p className="text-sm text-muted-foreground mt-2">{(company as any).description}</p>
+                        )}
                       </div>
                       <div className="space-y-6">
                         {positions.map((exp) => (

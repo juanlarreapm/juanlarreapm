@@ -80,6 +80,9 @@ const SahilAbout = () => {
                       <span className="sh-timeline-company">{company.name}</span>
                     )}
                   </p>
+                  {(company as any).description && (
+                    <p className="sh-timeline-desc">{(company as any).description}</p>
+                  )}
                   <div className="sh-position-list">
                     {positions.map((exp) => (
                       <div key={exp.id} className="sh-position">

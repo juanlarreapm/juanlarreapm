@@ -20,6 +20,7 @@ const CompanyEditor = () => {
 
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
   const [displayOrder, setDisplayOrder] = useState(0);
 
   const { data: company, isLoading } = useQuery({
@@ -41,6 +42,7 @@ const CompanyEditor = () => {
     if (company) {
       setName(company.name);
       setUrl(company.url || "");
+      setDescription(company.description || "");
       setDisplayOrder(company.display_order);
     }
   }, [company]);
@@ -50,6 +52,7 @@ const CompanyEditor = () => {
       const data = {
         name,
         url: url.trim() || null,
+        description: description.trim() || null,
         display_order: displayOrder,
       };
       if (isNew) {
@@ -118,7 +121,17 @@ const CompanyEditor = () => {
             </div>
 
             <div>
-              <Label htmlFor="displayOrder">Display Order</Label>
+              <Label htmlFor="description">Description (optional)</Label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Brief description of the company"
+                className="w-full min-h-[100px] px-3 py-2 rounded-md border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
+              />
+            </div>
+
+            <div>
               <Input
                 id="displayOrder"
                 type="number"
