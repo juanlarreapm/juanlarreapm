@@ -17,6 +17,10 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
   const isToolkitVisible = useToolkitVisible();
   const isBlogVisible = useBlogVisible();
   const widthClass = narrow ? "max-w-[720px]" : "max-w-[960px]";
+  const { pathname } = useLocation();
+  const isActive = (path: string) =>
+    path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(path + "/");
+  const linkCls = (path: string) => `sh-link${isActive(path) ? " is-active" : ""}`;
 
   return (
     <div className="sahil-theme">
