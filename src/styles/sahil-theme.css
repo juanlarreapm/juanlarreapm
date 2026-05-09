@@ -107,9 +107,11 @@
   transition: opacity 0.15s ease;
 }
 .sahil-theme a.sh-link:hover { opacity: 0.7; }
-.sahil-theme a.sh-link.is-active {
-  font-weight: 700;
+.sahil-theme nav a.sh-link { text-decoration: none; }
+.sahil-theme nav a.sh-link.is-active {
   text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .sahil-theme .sh-rule {
