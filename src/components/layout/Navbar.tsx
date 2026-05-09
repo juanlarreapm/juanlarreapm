@@ -39,10 +39,13 @@ export function Navbar() {
   });
 
   const isBlogVisible = blogVisibilitySetting?.value === "true";
+  const isToolkitVisible = useToolkitVisible();
 
-  // Build nav links dynamically based on blog visibility
-  // Insert Blog before Contact (which is now at index 5)
-  const navLinks = isBlogVisible ? [...baseNavLinks.slice(0, 5), blogLink, baseNavLinks[5]] : baseNavLinks;
+  const baseNavLinks = isToolkitVisible ? allNavLinks : allNavLinks.filter((l) => l.href !== "/toolkit");
+  const contactIdx = baseNavLinks.findIndex((l) => l.href === "/contact");
+  const navLinks = isBlogVisible
+    ? [...baseNavLinks.slice(0, contactIdx), blogLink, baseNavLinks[contactIdx]]
+    : baseNavLinks;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
