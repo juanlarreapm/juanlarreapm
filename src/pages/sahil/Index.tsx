@@ -28,17 +28,19 @@ const SahilIndex = () => {
       {/* Hero letter */}
       <section className="mb-20">
         <p className="sh-hero mb-6">
-          I'm Juan. I'm a <span className="sh-accent">senior product manager</span> helping
-          B2B SaaS companies go from zero to one — then grow it. I've shipped twelve
-          products across five industries over the last eight years.
+          I'm Juan. I'm a <span className="sh-accent">senior product manager</span> who
+          takes B2B SaaS products from zero to one and keeps them growing.
         </p>
         <p className="sh-hero mb-6">
           Right now I'm at{" "}
           <a href="https://partstech.com" target="_blank" rel="noopener noreferrer" className="sh-link">
             PartsTech
           </a>
-          , rebuilding how shops buy parts. Before that: retail at Nordstrom, edtech at
-          Intellum, and consumer loyalty at INWEGO and Merchants Preferred.
+          , rebuilding how auto shops buy parts.
+        </p>
+        <p className="sh-hero mb-6">
+          I like to tinker. Most of my best product thinking starts with something I
+          built myself.
         </p>
         <p className="sh-hero">
           {isBlogVisible && (
@@ -46,8 +48,8 @@ const SahilIndex = () => {
               I write occasionally about <Link to="/blog" className="sh-link">product, taste, and shipping</Link>.{" "}
             </>
           )}
-          If you're hiring a PM who can build the thing, sell it internally, and find
-          the metric that matters —{" "}
+          If you're hiring a PM who can ship, sell it internally, and find the metric
+          that matters,{" "}
           <a href="mailto:juanlarreapm@gmail.com" className="sh-link">say hi</a>.
         </p>
       </section>
