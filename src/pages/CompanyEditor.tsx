@@ -42,6 +42,7 @@ const CompanyEditor = () => {
     if (company) {
       setName(company.name);
       setUrl(company.url || "");
+      setDescription(company.description || "");
       setDisplayOrder(company.display_order);
     }
   }, [company]);
@@ -51,6 +52,7 @@ const CompanyEditor = () => {
       const data = {
         name,
         url: url.trim() || null,
+        description: description.trim() || null,
         display_order: displayOrder,
       };
       if (isNew) {
