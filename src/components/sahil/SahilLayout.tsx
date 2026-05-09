@@ -43,8 +43,8 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
               {isToolkitVisible && <li><Link to="/toolkit" className={linkCls("/toolkit")}>toolkit</Link></li>}
             </ul>
             <span className="sh-icon-divider" aria-hidden="true" />
-            <div className="flex items-center gap-3">
-              <a href="mailto:juanlarreapm@gmail.com" aria-label="Email" className="sh-icon-link">
+            <div className="flex items-center gap-5 sm:gap-4">
+              <a href="mailto:juanlarreapm@gmail.com" aria-label="Email" className="sh-icon-link p-1 -m-1">
                 <Mail size={18} />
               </a>
               <a href="https://www.linkedin.com/in/juanlarreapm/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="sh-icon-link">
