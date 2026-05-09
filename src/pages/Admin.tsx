@@ -602,6 +602,9 @@ const Admin = () => {
       case "experience":
         deleteExperienceMutation.mutate(deleteConfirm.id);
         break;
+      case "company":
+        deleteCompanyMutation.mutate(deleteConfirm.id);
+        break;
       case "project":
         deleteProjectMutation.mutate(deleteConfirm.id);
         break;
