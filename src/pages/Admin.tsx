@@ -1391,7 +1391,38 @@ const Admin = () => {
                   </div>
                 </div>
 
-                {/* Blog Visibility */}
+                {/* Live Site Design */}
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <Settings className="w-5 h-5 text-primary" />
+                    Live Site Design
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Switch the live site between the original B2B design and the new Sahil editorial design.
+                    The change applies to every public page and the admin shell.
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      variant={(activeThemeSetting?.value ?? "b2b") === "b2b" ? "default" : "outline"}
+                      onClick={() => setActiveTheme("b2b")}
+                      className={(activeThemeSetting?.value ?? "b2b") === "b2b" ? "bg-gradient-primary hover:opacity-90" : ""}
+                    >
+                      B2B (current)
+                    </Button>
+                    <Button
+                      variant={activeThemeSetting?.value === "sahil" ? "default" : "outline"}
+                      onClick={() => setActiveTheme("sahil")}
+                      className={activeThemeSetting?.value === "sahil" ? "bg-gradient-primary hover:opacity-90" : ""}
+                    >
+                      Sahil
+                    </Button>
+                    <span className="text-xs text-muted-foreground ml-2">
+                      Active: <strong>{activeThemeSetting?.value === "sahil" ? "Sahil" : "B2B"}</strong>
+                    </span>
+                  </div>
+                </div>
+
+
                 <div className="p-6 rounded-xl bg-card border border-border">
                   <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-primary" />
