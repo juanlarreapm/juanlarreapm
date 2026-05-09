@@ -1,0 +1,1 @@
+INSERT INTO public.site_settings (key, value) VALUES ('active_theme', 'b2b') ON CONFLICT (key) DO NOTHING;
