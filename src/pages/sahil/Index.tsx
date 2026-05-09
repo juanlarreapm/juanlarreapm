@@ -69,21 +69,6 @@ const SahilIndex = () => {
         <div className="sh-signature">— juan</div>
       </section>
 
-      {caseStudies && caseStudies.length > 0 && (
-        <section className="mb-16">
-          <p className="sh-section-label">selected work</p>
-          <ul className="sh-list">
-            {caseStudies.map((cs) => (
-              <li key={cs.id}>
-                <span className="yr">{yearOf(cs.created_at)}</span>
-                <Link to={`/case-studies/${cs.slug}`}>{cs.title}</Link>
-                <span className="meta">{cs.company}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
       {isBlogVisible && posts && posts.length > 0 && (
         <section className="mb-16">
           <p className="sh-section-label">recent writing</p>
