@@ -28,7 +28,7 @@ const SahilIndex = () => {
       {/* Hero letter */}
       <section className="mb-20">
         <p className="sh-hero mb-6">
-          I'm Juan. I'm a <span className="sh-accent">senior product manager</span> with eight years of product <Link to="/about" className="sh-link">experience</Link> taking products from zero to one and keeping them growing.
+          I'm Juan. I'm a senior product manager with eight years of product <Link to="/about" className="sh-link">experience</Link> taking products from zero to one and keeping them growing.
         </p>
         <p className="sh-hero mb-6">
           Right now I'm at{" "}
