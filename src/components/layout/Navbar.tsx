@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useToolkitVisible } from "@/hooks/useToolkitVisible";
 
-const baseNavLinks = [
+const allNavLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Case Studies", href: "/case-studies" },
