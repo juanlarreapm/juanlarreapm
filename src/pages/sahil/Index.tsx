@@ -2,10 +2,12 @@ import { SahilLayout } from "@/components/sahil/SahilLayout";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useBlogVisible } from "@/hooks/useBlogVisible";
 
 const yearOf = (d?: string | null) => (d ? new Date(d).getFullYear().toString() : "—");
 
 const SahilIndex = () => {
+  const isBlogVisible = useBlogVisible();
   const { data: caseStudies } = useQuery({
     queryKey: ["sahil-home-case-studies"],
     queryFn: async () => {
