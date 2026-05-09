@@ -193,6 +193,33 @@ export type Database = {
           },
         ]
       }
+      companies: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          name: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          name: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          name?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -220,6 +247,7 @@ export type Database = {
       experiences: {
         Row: {
           company: string
+          company_id: string
           company_url: string | null
           created_at: string
           description: string | null
@@ -232,6 +260,7 @@ export type Database = {
         }
         Insert: {
           company: string
+          company_id: string
           company_url?: string | null
           created_at?: string
           description?: string | null
@@ -244,6 +273,7 @@ export type Database = {
         }
         Update: {
           company?: string
+          company_id?: string
           company_url?: string | null
           created_at?: string
           description?: string | null
@@ -254,7 +284,15 @@ export type Database = {
           role?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "experiences_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       lab_projects: {
         Row: {
