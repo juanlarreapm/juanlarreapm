@@ -186,12 +186,11 @@
 .sahil-theme .sh-timeline-role .sh-timeline-company,
 .sahil-theme a.sh-timeline-company,
 .sahil-theme span.sh-timeline-company {
-  font-weight: 400;
-  color: hsl(var(--sh-ink));
+  font-weight: 400 !important;
+  color: hsl(var(--sh-muted));
   text-decoration: none;
 }
 .sahil-theme a.sh-timeline-company:hover { color: hsl(var(--sh-accent)); }
-.sahil-theme .sh-timeline-company.sh-muted { color: hsl(var(--sh-muted)); }
 .sahil-theme .sh-timeline-desc {
   font-size: 16px;
   line-height: 1.65;
