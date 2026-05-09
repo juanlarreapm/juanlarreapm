@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Mail, Linkedin, Github } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import "@/styles/sahil-theme.css";
@@ -72,7 +72,7 @@ const Sahil = () => {
             <span className="sh-avatar-fallback">JL</span>
             <span className="sh-name">Juan Larrea</span>
           </div>
-          <nav>
+          <nav className="flex items-center gap-x-5 gap-y-2 flex-wrap">
             <ul
               className="sh-body flex flex-wrap gap-x-5 gap-y-2"
               style={{ listStyle: "none", padding: 0, margin: 0 }}
@@ -82,10 +82,19 @@ const Sahil = () => {
               <li><a href="/blog" className="sh-link">writing</a></li>
               <li><a href="/lab" className="sh-link">lab</a></li>
               <li><a href="/toolkit" className="sh-link">toolkit</a></li>
-              <li><a href="mailto:juanlarreapm@gmail.com" className="sh-link">email</a></li>
-              <li><a href="https://www.linkedin.com/in/juanlarreapm/" target="_blank" rel="noopener noreferrer" className="sh-link">linkedin</a></li>
-              <li><a href="https://github.com/juanlarreapm" target="_blank" rel="noopener noreferrer" className="sh-link">github</a></li>
             </ul>
+            <span className="sh-icon-divider" aria-hidden="true" />
+            <div className="flex items-center gap-3">
+              <a href="mailto:juanlarreapm@gmail.com" aria-label="Email" className="sh-icon-link">
+                <Mail size={18} />
+              </a>
+              <a href="https://www.linkedin.com/in/juanlarreapm/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="sh-icon-link">
+                <Linkedin size={18} />
+              </a>
+              <a href="https://github.com/juanlarreapm" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="sh-icon-link">
+                <Github size={18} />
+              </a>
+            </div>
           </nav>
         </header>
 
