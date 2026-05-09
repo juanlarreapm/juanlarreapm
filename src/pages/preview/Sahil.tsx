@@ -65,67 +65,62 @@ const Sahil = () => {
         Sahil Preview · v1
       </div>
 
-      <main className="max-w-[1040px] mx-auto px-6 pt-28 pb-24 sh-fade">
-        {/* Header */}
-        <header className="flex items-center gap-3 mb-12">
-          <span className="sh-avatar-fallback">JL</span>
-          <span className="sh-name">Juan Larrea</span>
-        </header>
-
-        {/* Hero — two columns: intro left, nav right */}
-        <section className="mb-20 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-12 md:gap-16 items-start">
-          <div className="max-w-[640px]">
-            <p className="sh-hero mb-6">
-              I'm Juan. I'm a <span className="sh-accent">senior product manager</span> helping
-              B2B SaaS companies go from zero to one — then grow it. I've shipped twelve
-              products across five industries over the last eight years.
-            </p>
-            <p className="sh-hero mb-6">
-              Right now I'm at{" "}
-              <a
-                href="https://partstech.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sh-link"
-              >
-                PartsTech
-              </a>
-              , rebuilding how shops buy parts. Before that: retail at Nordstrom, edtech at
-              Intellum, and consumer loyalty at INWEGO and Merchants Preferred.
-            </p>
-            <p className="sh-hero">
-              I write occasionally about <a href="#writing" className="sh-link">product, taste, and shipping</a>.
-              If you're hiring a PM who can build the thing, sell it internally, and find
-              the metric that matters —{" "}
-              <a href="mailto:juanlarreapm@gmail.com" className="sh-link">say hi</a>.
-            </p>
+      <main className="max-w-[720px] mx-auto px-6 pt-28 pb-24 sh-fade">
+        {/* Header: name left, nav right, all on top */}
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-16">
+          <div className="flex items-center gap-3">
+            <span className="sh-avatar-fallback">JL</span>
+            <span className="sh-name">Juan Larrea</span>
           </div>
-
-          <nav className="md:pt-2 md:min-w-[160px] md:text-right">
-            <div className="sh-section-label">elsewhere</div>
-            <ul className="sh-body" style={{ listStyle: "none", padding: 0, margin: 0, lineHeight: 2 }}>
+          <nav>
+            <ul
+              className="sh-body flex flex-wrap gap-x-5 gap-y-2"
+              style={{ listStyle: "none", padding: 0, margin: 0 }}
+            >
               <li><a href="/about" className="sh-link">about</a></li>
               <li><a href="/case-studies" className="sh-link">work</a></li>
-              <li><a href="#writing" className="sh-link">writing</a></li>
+              <li><a href="/blog" className="sh-link">writing</a></li>
               <li><a href="/lab" className="sh-link">lab</a></li>
               <li><a href="/toolkit" className="sh-link">toolkit</a></li>
-            </ul>
-            <div className="sh-section-label" style={{ marginTop: "1.5rem" }}>contact</div>
-            <ul className="sh-body" style={{ listStyle: "none", padding: 0, margin: 0, lineHeight: 2 }}>
               <li><a href="mailto:juanlarreapm@gmail.com" className="sh-link">email</a></li>
               <li><a href="https://www.linkedin.com/in/juanlarreapm/" target="_blank" rel="noopener noreferrer" className="sh-link">linkedin</a></li>
               <li><a href="https://github.com/juanlarreapm" target="_blank" rel="noopener noreferrer" className="sh-link">github</a></li>
             </ul>
           </nav>
+        </header>
+
+        {/* Hero — single column letter */}
+        <section className="mb-20">
+          <p className="sh-hero mb-6">
+            I'm Juan. I'm a <span className="sh-accent">senior product manager</span> helping
+            B2B SaaS companies go from zero to one — then grow it. I've shipped twelve
+            products across five industries over the last eight years.
+          </p>
+          <p className="sh-hero mb-6">
+            Right now I'm at{" "}
+            <a
+              href="https://partstech.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sh-link"
+            >
+              PartsTech
+            </a>
+            , rebuilding how shops buy parts. Before that: retail at Nordstrom, edtech at
+            Intellum, and consumer loyalty at INWEGO and Merchants Preferred.
+          </p>
+          <p className="sh-hero">
+            I write occasionally about <a href="/blog" className="sh-link">product, taste, and shipping</a>.
+            If you're hiring a PM who can build the thing, sell it internally, and find
+            the metric that matters —{" "}
+            <a href="mailto:juanlarreapm@gmail.com" className="sh-link">say hi</a>.
+          </p>
         </section>
 
-        <div className="max-w-[640px]">
         {/* Signature */}
         <section className="mb-12">
           <div className="sh-signature">— juan</div>
         </section>
-
-        </div>
 
         <hr className="sh-rule mb-6" />
         <footer className="sh-chip">
