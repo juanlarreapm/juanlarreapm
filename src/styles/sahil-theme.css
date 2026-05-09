@@ -351,6 +351,29 @@
   left: 0;
   color: hsl(var(--sh-muted));
 }
+.sahil-theme .sh-position-list {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.sahil-theme .sh-position {
+  padding-left: 0.9rem;
+  border-left: 1px solid hsl(var(--sh-muted) / 0.25);
+}
+.sahil-theme .sh-position-role {
+  font-size: 16px;
+  font-weight: 500;
+  color: hsl(var(--sh-ink));
+  line-height: 1.4;
+}
+.sahil-theme .sh-position-period {
+  color: hsl(var(--sh-muted));
+  font-style: italic;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.4rem;
+}
 @media (max-width: 640px) {
   .sahil-theme .sh-timeline { padding-left: 1.5rem; }
   .sahil-theme .sh-timeline-item { margin-bottom: 2rem; }

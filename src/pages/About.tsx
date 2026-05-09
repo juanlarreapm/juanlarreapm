@@ -5,6 +5,18 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 const About = () => {
+  const { data: companies } = useQuery({
+    queryKey: ["companies"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("companies")
+        .select("*")
+        .order("display_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const { data: experiences, isLoading: experiencesLoading } = useQuery({
     queryKey: ["experiences"],
     queryFn: async () => {
@@ -102,39 +114,54 @@ const About = () => {
                   </div>
                 ))}
               </div>
-            ) : experiences && experiences.length > 0 ? (
+            ) : companies && companies.length > 0 ? (
               <div className="space-y-8">
-                {experiences.map((exp) => (
-                  <div key={exp.id} className="p-6 rounded-xl bg-card border border-border">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                      <h3 className="font-display font-semibold text-lg">{exp.role}</h3>
-                      <span className="text-sm text-muted-foreground">{exp.period}</span>
+                {companies.map((company) => {
+                  const positions = (experiences || []).filter((e) => e.company_id === company.id);
+                  if (positions.length === 0) return null;
+                  return (
+                    <div key={company.id} className="p-6 rounded-xl bg-card border border-border">
+                      <div className="mb-4 pb-3 border-b border-border">
+                        {company.url ? (
+                          <a
+                            href={company.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-display font-semibold text-xl text-primary inline-flex items-center gap-1.5 hover:underline"
+                          >
+                            {company.name}
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                        ) : (
+                          <h3 className="font-display font-semibold text-xl text-primary">{company.name}</h3>
+                        )}
+                      </div>
+                      <div className="space-y-6">
+                        {positions.map((exp) => (
+                          <div key={exp.id} className="pl-4 border-l-2 border-border">
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
+                              <h4 className="font-display font-medium text-base">{exp.role}</h4>
+                              <span className="text-sm text-muted-foreground">{exp.period}</span>
+                            </div>
+                            {exp.description && (
+                              <p className="text-sm text-muted-foreground mb-2 italic">{exp.description}</p>
+                            )}
+                            {exp.highlights && exp.highlights.length > 0 && (
+                              <ul className="space-y-2 mt-2">
+                                {exp.highlights.map((h, j) => (
+                                  <li key={j} className="text-sm text-muted-foreground flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />
+                                    {h}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    {exp.company_url ? (
-                      <a 
-                        href={exp.company_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-primary font-medium mb-2 inline-flex items-center gap-1.5 hover:underline"
-                      >
-                        {exp.company}
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    ) : (
-                      <p className="text-primary font-medium mb-2">{exp.company}</p>
-                    )}
-                    {exp.description && (
-                      <p className="text-sm text-muted-foreground mb-3 italic">{exp.description}</p>
-                    )}
-                    <ul className="space-y-2">
-                      {exp.highlights?.map((h, j) => (
-                        <li key={j} className="text-sm text-muted-foreground flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />{h}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="text-center py-12 rounded-xl bg-card border border-border">
