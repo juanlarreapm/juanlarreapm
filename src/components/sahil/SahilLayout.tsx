@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Mail, Linkedin, Github } from "lucide-react";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { useToolkitVisible } from "@/hooks/useToolkitVisible";
