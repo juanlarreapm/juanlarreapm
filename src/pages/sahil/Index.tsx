@@ -8,19 +8,6 @@ const yearOf = (d?: string | null) => (d ? new Date(d).getFullYear().toString() 
 
 const SahilIndex = () => {
   const isBlogVisible = useBlogVisible();
-  const { data: caseStudies } = useQuery({
-    queryKey: ["sahil-home-case-studies"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("id, title, slug, company, created_at")
-        .eq("published", true)
-        .order("display_order", { ascending: true })
-        .limit(5);
-      if (error) throw error;
-      return data;
-    },
-  });
 
   const { data: posts } = useQuery({
     queryKey: ["sahil-home-posts"],
@@ -68,21 +55,6 @@ const SahilIndex = () => {
       <section className="mb-12">
         <div className="sh-signature">— juan</div>
       </section>
-
-      {caseStudies && caseStudies.length > 0 && (
-        <section className="mb-16">
-          <p className="sh-section-label">selected work</p>
-          <ul className="sh-list">
-            {caseStudies.map((cs) => (
-              <li key={cs.id}>
-                <span className="yr">{yearOf(cs.created_at)}</span>
-                <Link to={`/case-studies/${cs.slug}`}>{cs.title}</Link>
-                <span className="meta">{cs.company}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       {isBlogVisible && posts && posts.length > 0 && (
         <section className="mb-16">
