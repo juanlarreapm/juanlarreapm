@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Linkedin, Github } from "lucide-react";
 import { usePageTracking } from "@/hooks/usePageTracking";
+import { useToolkitVisible } from "@/hooks/useToolkitVisible";
 import "@/styles/sahil-theme.css";
 
 interface SahilLayoutProps {
@@ -12,6 +13,7 @@ interface SahilLayoutProps {
 
 export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
   usePageTracking();
+  const isToolkitVisible = useToolkitVisible();
   const widthClass = narrow ? "max-w-[720px]" : "max-w-[960px]";
 
   return (
@@ -31,7 +33,7 @@ export function SahilLayout({ children, narrow = true }: SahilLayoutProps) {
               <li><Link to="/case-studies" className="sh-link">work</Link></li>
               <li><Link to="/blog" className="sh-link">writing</Link></li>
               <li><Link to="/lab" className="sh-link">lab</Link></li>
-              <li><Link to="/toolkit" className="sh-link">toolkit</Link></li>
+              {isToolkitVisible && <li><Link to="/toolkit" className="sh-link">toolkit</Link></li>}
             </ul>
             <span className="sh-icon-divider" aria-hidden="true" />
             <div className="flex items-center gap-3">

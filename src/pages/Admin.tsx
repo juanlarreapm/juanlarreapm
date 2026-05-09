@@ -246,6 +246,20 @@ const Admin = () => {
     enabled: !!user && isAdmin,
   });
 
+  const { data: toolkitVisibilitySetting } = useQuery({
+    queryKey: ["site_settings", "toolkit_visible"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("key", "toolkit_visible")
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user && isAdmin,
+  });
+
   const { data: openToOpportunitiesSetting } = useQuery({
     queryKey: ["site_settings", "open_to_opportunities"],
     queryFn: async () => {
@@ -300,6 +314,21 @@ const Admin = () => {
 
       queryClient.invalidateQueries({ queryKey: ["site_settings", "blog_visible"] });
       toast({ title: newValue ? "Blog is now visible" : "Blog is now hidden" });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const toggleToolkitVisibility = async () => {
+    const currentValue = toolkitVisibilitySetting?.value !== "false";
+    const newValue = !currentValue;
+    try {
+      const { error } = await supabase
+        .from("site_settings")
+        .upsert({ key: "toolkit_visible", value: newValue.toString() }, { onConflict: "key" });
+      if (error) throw error;
+      queryClient.invalidateQueries({ queryKey: ["site_settings", "toolkit_visible"] });
+      toast({ title: newValue ? "Toolkit is now visible" : "Toolkit is now hidden" });
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     }
@@ -1447,6 +1476,35 @@ const Admin = () => {
                         <>
                           <EyeOff className="w-4 h-4 mr-2" />
                           Blog Hidden
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <h3 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <Wrench className="w-5 h-5 text-primary" />
+                    Toolkit Visibility
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Show or hide the Toolkit section from the navigation menu.
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <Button
+                      variant={toolkitVisibilitySetting?.value !== "false" ? "default" : "outline"}
+                      onClick={toggleToolkitVisibility}
+                      className={toolkitVisibilitySetting?.value !== "false" ? "bg-gradient-primary hover:opacity-90" : ""}
+                    >
+                      {toolkitVisibilitySetting?.value !== "false" ? (
+                        <>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Toolkit Visible
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff className="w-4 h-4 mr-2" />
+                          Toolkit Hidden
                         </>
                       )}
                     </Button>

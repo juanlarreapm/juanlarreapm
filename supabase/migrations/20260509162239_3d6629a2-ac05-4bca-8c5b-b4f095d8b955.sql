@@ -1,0 +1,1 @@
+INSERT INTO site_settings (key, value) VALUES ('toolkit_visible', 'true') ON CONFLICT (key) DO NOTHING;

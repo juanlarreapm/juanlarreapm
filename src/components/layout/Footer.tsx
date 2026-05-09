@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { Linkedin, Mail, Github } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useToolkitVisible } from "@/hooks/useToolkitVisible";
 
-const baseNavLinks = [
+const allNavLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Case Studies", href: "/case-studies" },
@@ -34,8 +35,13 @@ export function Footer() {
   });
 
   const isBlogVisible = blogVisibilitySetting?.value === "true";
+  const isToolkitVisible = useToolkitVisible();
 
-  const navLinks = isBlogVisible ? [...baseNavLinks.slice(0, 5), blogLink, baseNavLinks[5]] : baseNavLinks;
+  const baseNavLinks = isToolkitVisible ? allNavLinks : allNavLinks.filter((l) => l.href !== "/toolkit");
+  const contactIdx = baseNavLinks.findIndex((l) => l.href === "/contact");
+  const navLinks = isBlogVisible
+    ? [...baseNavLinks.slice(0, contactIdx), blogLink, baseNavLinks[contactIdx]]
+    : baseNavLinks;
 
   return (
     <footer className="border-t border-border bg-card/50">
