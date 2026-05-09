@@ -107,6 +107,7 @@ function AppContent() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<PostEditor />} />
           <Route path="/admin/experiences/:id" element={<ExperienceEditor />} />
+          <Route path="/admin/companies/:id" element={<CompanyEditor />} />
           <Route path="/admin/case-studies/:id" element={<CaseStudyEditor />} />
           <Route path="/admin/lab/:id" element={<LabEditor />} />
           <Route path="/admin/toolkit/:type/:id" element={<ToolkitItemEditor />} />
