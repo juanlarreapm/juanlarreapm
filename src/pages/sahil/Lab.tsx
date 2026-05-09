@@ -44,14 +44,12 @@ const SahilLab = () => {
         <div className="sh-cards">
           {items.map((p) => {
             const stack = p.tech_stack || [];
-            const primary = stack[0];
-            const rest = stack.slice(1, 4);
             const isActive = (p.status || "").toLowerCase() === "active";
             return (
               <Link
                 key={p.id}
                 to={`/lab/${p.slug}`}
-                className={`sh-card ${primary ? "" : "sh-card--no-stat"}`}
+                className="sh-card sh-card--no-stat"
               >
                 <div className="sh-card-text">
                   <div className="sh-card-eyebrow">
@@ -64,20 +62,16 @@ const SahilLab = () => {
                   </h2>
                   {p.tagline && <p className="sh-card-pitch">{p.tagline}</p>}
                   <div className="sh-card-meta">
-                    {rest.map((t: string, i: number) => (
+                    {stack.slice(0, 4).map((t: string, i: number, arr: string[]) => (
                       <span key={t}>
                         {t}
-                        {i < rest.length - 1 && <span className="sh-card-meta-sep" style={{ marginLeft: "0.75rem" }}>·</span>}
+                        {i < arr.length - 1 && <span className="sh-card-meta-sep" style={{ marginLeft: "0.75rem" }}>·</span>}
                       </span>
                     ))}
+                    {stack.length > 0 && <span className="sh-card-meta-sep">·</span>}
                     <span className="sh-card-period">{yearOf(p.project_date || p.created_at)}</span>
                   </div>
                 </div>
-                {primary && (
-                  <div className="sh-card-stat">
-                    <span className="sh-card-chip">{primary}</span>
-                  </div>
-                )}
               </Link>
             );
           })}
