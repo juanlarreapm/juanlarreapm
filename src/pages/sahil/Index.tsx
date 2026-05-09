@@ -84,7 +84,7 @@ const SahilIndex = () => {
         </section>
       )}
 
-      {posts && posts.length > 0 && (
+      {isBlogVisible && posts && posts.length > 0 && (
         <section className="mb-16">
           <p className="sh-section-label">recent writing</p>
           <ul className="sh-list">
