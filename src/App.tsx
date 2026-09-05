@@ -84,6 +84,10 @@ function AppContent() {
     return () => root.classList.remove("sahil-theme");
   }, [sahil]);
 
+  if (!isResolved) {
+    return <div className="min-h-screen bg-background" />;
+  }
+
   return (
     <>
       <EasterEgg isActive={isActivated} onClose={reset} />
