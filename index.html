@@ -28,17 +28,18 @@
   <link id="app-favicon" rel="icon" type="image/x-icon" href="https://storage.googleapis.com/gpt-engineer-file-uploads/BJ6HlcqMRgRoIR6ZsXVvxOFDj8d2/uploads/1767050665216-Xnip2025-12-29_18-24-17.jpg">
   <script>
     (function () {
+      var t = null;
       try {
-        var t = localStorage.getItem("active_theme_cache");
-        if (t === "sahil") {
-          document.documentElement.classList.add("sahil-theme");
-          var link = document.getElementById("app-favicon");
-          if (link) {
-            link.type = "image/png";
-            link.href = "/favicon-sahil.png";
-          }
-        }
+        t = localStorage.getItem("active_theme_cache");
       } catch (e) {}
+      if (t !== "b2b") {
+        document.documentElement.classList.add("sahil-theme");
+        var link = document.getElementById("app-favicon");
+        if (link) {
+          link.type = "image/png";
+          link.href = "/favicon-sahil.png";
+        }
+      }
     })();
   </script>
   
