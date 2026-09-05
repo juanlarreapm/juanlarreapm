@@ -59,7 +59,7 @@ const queryClient = new QueryClient();
 
 function AppContent() {
   const { isActivated, reset } = useKonamiCode();
-  const theme = useActiveTheme();
+  const { theme, isResolved } = useActiveThemeState();
   const sahil = theme === "sahil";
 
   // Apply .sahil-theme to <html> so admin/auth/editors inherit Sahil tokens too.
