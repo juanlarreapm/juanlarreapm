@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { PageTransition } from "./components/PageTransition";
 import { EasterEgg } from "./components/EasterEgg";
 import { useKonamiCode } from "./hooks/useKonamiCode";
-import { useActiveTheme } from "./hooks/useActiveTheme";
+import { useActiveThemeState } from "./hooks/useActiveTheme";
 
 // b2b pages
 import Index from "./pages/Index";
@@ -59,7 +59,7 @@ const queryClient = new QueryClient();
 
 function AppContent() {
   const { isActivated, reset } = useKonamiCode();
-  const theme = useActiveTheme();
+  const { theme, isResolved } = useActiveThemeState();
   const sahil = theme === "sahil";
 
   // Apply .sahil-theme to <html> so admin/auth/editors inherit Sahil tokens too.
@@ -83,6 +83,10 @@ function AppContent() {
 
     return () => root.classList.remove("sahil-theme");
   }, [sahil]);
+
+  if (!isResolved) {
+    return <div className="min-h-screen bg-background" />;
+  }
 
   return (
     <>
