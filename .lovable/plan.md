@@ -1,56 +1,21 @@
-# LinkedIn-style Experience Section
+# Remove the design flash on first visit
 
-Rework Experience so a single company can hold multiple positions, like LinkedIn. One company header (name, link, optional date range) with nested roles underneath, each with its own period, description, and highlights.
+## What's happening
 
-## Data model
+The site remembers your chosen design in the browser after the first visit, so returning visitors see the right look instantly. In a brand-new/incognito window there's nothing remembered yet, so the page starts with the old design and swaps once the setting comes back from the server — that's the flicker you saw.
 
-New `companies` table:
-- `name` (text)
-- `url` (text, optional)
-- `display_order` (int)
+## The fix
 
-Modify `experiences`:
-- Add `company_id` (uuid, FK → companies.id)
-- Keep `role`, `period`, `description`, `highlights`, `display_order`
-- Drop reliance on `company` / `company_url` text columns (keep them temporarily for backfill, then drop in a follow-up migration)
+Two changes, both small:
 
-Backfill: for each distinct `company` string in existing experiences, create one company row, then point all matching experience rows at it.
+1. **Bake in the current choice as the starting point.** The page will assume the Sahil design from the very first paint (instead of assuming the old one), so a fresh visitor sees the correct look immediately. The remembered value and the server setting still win, so flipping the toggle in Admin keeps working.
+2. **Hold the page for a beat when nothing is known yet.** On a truly first visit, show a neutral blank canvas in the correct background color while the setting loads (typically a fraction of a second) instead of rendering the wrong design and swapping. Once loaded it renders normally and is remembered for next time.
 
-RLS: mirror the existing pattern — public can view, admins can manage.
+Result: no visible switch from one design to the other, in incognito or otherwise.
 
-## Admin changes
+## Technical details
 
-Reorganize the Experiences tab into two stacked sections:
-
-1. **Companies** — list with add/edit/delete + reorder. Editor fields: name, url, display order.
-2. **Positions** — when editing a position, pick a company from a dropdown (instead of typing a company name). Position editor keeps role, period, description, highlights, display order.
-
-Alternatively: nest positions under each company card in the admin list (expand to see roles, "Add position" button per company). This matches LinkedIn's mental model and is what I'd recommend.
-
-## /about display (both b2b and sahil themes)
-
-Group positions by company, sorted by company `display_order`, then positions by their own `display_order` (most recent first).
-
-```text
-Company Name                              2019 – Present
-  Senior Product Manager                  2022 – Present
-    description + highlights
-  Product Manager                         2019 – 2022
-    description + highlights
-```
-
-The company header is rendered once with an aggregated date range (earliest → latest of its positions, or "Present" if any position is current). Each role sits indented underneath.
-
-## Files touched
-
-- Migration: create `companies`, alter `experiences`, backfill, RLS.
-- `src/pages/ExperienceEditor.tsx` — replace company text inputs with company picker.
-- New `src/pages/CompanyEditor.tsx` and route in `App.tsx`.
-- `src/pages/Admin.tsx` — Experiences tab UI: company list with nested positions.
-- `src/pages/About.tsx` and `src/pages/sahil/About.tsx` — group + render by company.
-- `src/styles/sahil-theme.css` — small additions for nested role styling.
-
-## Out of scope (call out)
-
-- Company logos — can add later if you want them.
-- Drag-and-drop reordering — using numeric `display_order` like the rest of admin.
+- `index.html`: the inline pre-React script currently only applies `sahil-theme` when `localStorage.active_theme_cache === "sahil"`. Change it to treat a missing cache value as the build-time default (`sahil`) — apply the class and the Sahil favicon; only an explicit `"b2b"` cache value skips it.
+- `src/hooks/useActiveTheme.ts`: introduce `DEFAULT_THEME: ActiveTheme = "sahil"`, use it as the fallback in `readCachedTheme()`, and expose whether the value came from cache (`hasCachedTheme`) alongside the query's `isFetched` state.
+- `src/App.tsx`: when there is no cached theme and the query hasn't resolved yet, render a minimal `bg-background` full-screen placeholder instead of the routes; keep existing `.sahil-theme` class + favicon effect as-is.
+- Admin toggle, `site_settings.active_theme`, and the `/preview/*` routes are untouched.
