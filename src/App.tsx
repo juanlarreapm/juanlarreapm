@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { PageTransition } from "./components/PageTransition";
 import { EasterEgg } from "./components/EasterEgg";
 import { useKonamiCode } from "./hooks/useKonamiCode";
-import { useActiveTheme } from "./hooks/useActiveTheme";
+import { useActiveThemeState } from "./hooks/useActiveTheme";
 
 // b2b pages
 import Index from "./pages/Index";
